@@ -19,7 +19,8 @@ Item {
     property var refreshTask: null
 
     readonly property var repositories: { App.dependOn(Extensions.revision); return Extensions.repositories() }
-    readonly property var installedList: { App.dependOn(Extensions.revision); return Extensions.installed() }
+    // Without each one's sources (an opened row asks for its own).
+    readonly property var installedList: { App.dependOn(Extensions.revision); return Extensions.installedBrief() }
     readonly property var availableAll: { App.dependOn(Extensions.revision, App.settings.showNsfwSources); return page.tab === "available" ? Extensions.available() : [] }
     readonly property var availableLanguages: {
         const seen = {}
@@ -50,8 +51,7 @@ Item {
     readonly property var installedShown: {
         const q = query.trim().toLowerCase()
         if (!q) return installedList
-        return installedList.filter(e => e.name.toLowerCase().indexOf(q) >= 0
-            || (e.sources || []).some(s => (s.name || "").toLowerCase().indexOf(q) >= 0 || (s.baseUrl || "").toLowerCase().indexOf(q) >= 0))
+        return installedList.filter(e => e.name.toLowerCase().indexOf(q) >= 0 || (e.sourceText || "").indexOf(q) >= 0)
     }
     readonly property var rows: tab === "installed" ? installedShown : tab === "available" ? availableList : repositories
     // The list gets its rows from here: a new list (an extension installed
@@ -60,6 +60,8 @@ Item {
     property var shownRows: []
     property string shownTab: ""
     function showRows() {
+        // Once: the rows' first change and Component.onCompleted both ask.
+        if (shownRows === rows && shownTab === tab) return
         const keep = shownTab === tab
         const y = list.contentY
         shownTab = tab
@@ -476,7 +478,8 @@ Item {
             readonly property bool open: page.expanded[item.id] === true
             readonly property int firstSources: 12
             property bool allSources: false
-            readonly property int broken: (item.sources || []).filter(s => s.error).length
+            readonly property int broken: item.brokenCount || 0
+            readonly property var sources: { App.dependOn(Extensions.revision); return open ? Extensions.installedSources(item.id) : [] }
             width: parent ? parent.width : 0
             bottomPadding: 6
 
@@ -531,7 +534,7 @@ Item {
                         width: parent.width
                         text: (row.item.update ? row.item.version + " → " + row.item.update : row.item.version)
                             + " · " + row.item.languageName
-                            + ((row.item.sources || []).length > 1 ? " · " + row.item.sources.length + qsTr(" sources") : "")
+                            + ((row.item.sourceCount || 0) > 1 ? " · " + row.item.sourceCount + qsTr(" sources") : "")
                             + (row.item.problem ? " · " + row.item.problem : "")
                         color: row.item.problem ? Theme.danger : Theme.textMuted
                         font.family: Theme.fontSans
@@ -574,7 +577,7 @@ Item {
 
             // Its sources: on/off, settings, health.
             Repeater {
-                model: row.open ? (row.allSources ? row.item.sources : (row.item.sources || []).slice(0, row.firstSources)) : []
+                model: row.open ? (row.allSources ? row.sources : row.sources.slice(0, row.firstSources)) : []
                 delegate: Item {
                     id: sourceRow
                     required property var modelData
@@ -657,10 +660,10 @@ Item {
             }
             // A multi-language extension has dozens: twelve, then all.
             ScButton {
-                visible: row.open && (row.item.sources || []).length > row.firstSources && !row.allSources
+                visible: row.open && (row.item.sourceCount || 0) > row.firstSources && !row.allSources
                 x: Theme.gutter + 54
                 variant: "ghost"
-                text: qsTr("Show all %1 sources").arg((row.item.sources || []).length)
+                text: qsTr("Show all %1 sources").arg(row.item.sourceCount || 0)
                 onClicked: row.allSources = true
             }
         }

@@ -17,6 +17,10 @@ public:
 
     // [{key, label, enabled, disabledReason, nsfw, hasLatest}]
     Q_INVOKABLE QVariantList sources() const;
+    // The same for the built-in sources only (not extensions', of which
+    // readers have hundreds), and every source's key.
+    Q_INVOKABLE QVariantList builtinSources() const;
+    Q_INVOKABLE QStringList sourceKeys() const;
     // The content languages of the enabled sources: [{value, label}].
     Q_INVOKABLE QVariantList languages() const;
     Q_INVOKABLE QString sourceLabel(const QString &key) const;

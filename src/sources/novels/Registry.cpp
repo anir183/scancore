@@ -7,6 +7,7 @@
 #include "core/Text.h"
 #include "sources/Manifest.h"
 #include "sources/local/LocalSources.h"
+#include "sources/servers/Servers.h"
 
 #include <QFile>
 #include <QJsonDocument>
@@ -101,6 +102,10 @@ void Registry::rebuild() {
     // Sources of installed LNReader plugins.
     for (const auto &entry : ext::Manager::sources(ext::Kind::LNReader))
         sources.append(std::make_shared<plugins::PluginSource>(entry));
+    // The books of the reader's own OPDS catalogues.
+    for (const auto &server : servers::load())
+        if (auto source = servers::createNovelSource(server))
+            sources.append(std::shared_ptr<Source>(std::move(source)));
     // EPUB books on this device.
     SourceConfig local;
     local.key = QStringLiteral("local");

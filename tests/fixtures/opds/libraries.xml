@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>libraries</id>
+  <title>Libraries</title>
+  <entry><id>lib-manga</id><title>Manga</title><link rel="subsection" href="/opds/series-list.xml" type="application/atom+xml;profile=opds-catalog;kind=acquisition"/></entry>
+  <entry><id>lib-comics</id><title>Comics</title><link rel="subsection" href="/opds/series-list.xml" type="application/atom+xml;profile=opds-catalog;kind=acquisition"/></entry>
+</feed>

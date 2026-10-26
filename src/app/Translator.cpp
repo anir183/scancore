@@ -362,10 +362,11 @@ QString Translator::readerEngine() const {
         return onAndroid() ? chosen : QString();
     if (chosen == QLatin1String("local"))
         return OnDevice::instance()->any() ? chosen : QString();
-    // Automatic: the phone's own, else Vision with a Google key, else what
-    // was downloaded to this computer.
+    // Automatic: languages downloaded to this device (on phones too, for
+    // those without Google Play services), else the phone's own, else Vision
+    // with a Google key.
     if (onAndroid())
-        return QStringLiteral("mlkit");
+        return OnDevice::instance()->any() ? QStringLiteral("local") : QStringLiteral("mlkit");
     if (!setting("translateGoogleKey").isEmpty())
         return QStringLiteral("vision");
     return OnDevice::instance()->any() ? QStringLiteral("local") : QString();
@@ -394,7 +395,7 @@ QString Translator::textEngine() const {
     if (!setting("translateChatUrl").isEmpty() && !setting("translateChatModel").isEmpty())
         return QStringLiteral("chat");
     if (onAndroid())
-        return QStringLiteral("mlkit");
+        return OnDevice::instance()->any() ? QStringLiteral("local") : QStringLiteral("mlkit");
     return OnDevice::instance()->any() ? QStringLiteral("local") : QString();
 }
 
@@ -418,7 +419,8 @@ QVariantList Translator::readers() const {
     if (onAndroid())
         out.append(QVariantMap{{"value", "mlkit"}, {"label", tr("This phone")}, {"detail", tr("On the phone, with Google Play services")}});
     if (OnDevice::instance()->available())
-        out.append(QVariantMap{{"value", "local"}, {"label", tr("This computer")}, {"detail", tr("Downloaded once; pages never leave the computer")}});
+        out.append(onAndroid() ? QVariantMap{{"value", "local"}, {"label", tr("Downloaded languages")}, {"detail", tr("Downloaded once; pages never leave the device")}}
+                               : QVariantMap{{"value", "local"}, {"label", tr("This computer")}, {"detail", tr("Downloaded once; pages never leave the computer")}});
     out.append(QVariantMap{{"value", "vision"}, {"label", tr("Google Cloud Vision")}, {"detail", tr("Your Google Cloud key")}});
     return out;
 }
@@ -428,7 +430,8 @@ QVariantList Translator::translators() const {
     if (onAndroid())
         out.append(QVariantMap{{"value", "mlkit"}, {"label", tr("This phone")}, {"detail", tr("On the phone; a model per language")}});
     if (OnDevice::instance()->available())
-        out.append(QVariantMap{{"value", "local"}, {"label", tr("This computer")}, {"detail", tr("Downloaded once; nothing leaves the computer")}});
+        out.append(onAndroid() ? QVariantMap{{"value", "local"}, {"label", tr("Downloaded languages")}, {"detail", tr("Downloaded once; nothing leaves the device")}}
+                               : QVariantMap{{"value", "local"}, {"label", tr("This computer")}, {"detail", tr("Downloaded once; nothing leaves the computer")}});
     out.append(QVariantMap{{"value", "deepl"}, {"label", QStringLiteral("DeepL")}, {"detail", tr("Your DeepL key")}});
     out.append(QVariantMap{{"value", "google"}, {"label", tr("Google Translate")}, {"detail", tr("Your Google Cloud key")}});
     out.append(QVariantMap{{"value", "chat"}, {"label", tr("A language model")}, {"detail", tr("Any OpenAI-compatible service, or one on your computer")}});

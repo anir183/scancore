@@ -17,6 +17,7 @@
 #include "sources/bundled/comics/Engines.h"
 #endif
 #include "sources/comics/Registry.h"
+#include "sources/novels/Registry.h"
 
 #include <QCache>
 #include <optional>
@@ -83,10 +84,10 @@ QVariantList chaptersToUnits(const QList<Chapter> &chapters) {
 
 } // namespace
 
-QVariantList Comics::sources() const {
-    QVariantList out;
-    for (const auto &source : Registry::all())
-        out.append(QVariantMap{{"key", source->key()},
+namespace {
+
+QVariantMap sourceRow(const std::shared_ptr<comics::Source> &source) {
+    return QVariantMap{{"key", source->key()},
                                {"label", source->label()},
                                {"enabled", source->enabled()},
                                {"disabledReason", source->config().disabledReason},
@@ -97,7 +98,30 @@ QVariantList Comics::sources() const {
                                {"hasLatest", source->hasLatest()},
                                {"canBrowse", source->canBrowse()},
                                {"browseLatest", source->hasLatestListing()},
-                               {"extension", source->key().contains(QLatin1Char(':'))}});
+                               {"extension", source->key().contains(QLatin1Char(':'))}};
+}
+
+} // namespace
+
+QVariantList Comics::sources() const {
+    QVariantList out;
+    for (const auto &source : Registry::all())
+        out.append(sourceRow(source));
+    return out;
+}
+
+QVariantList Comics::builtinSources() const {
+    QVariantList out;
+    for (const auto &source : Registry::all())
+        if (!source->key().contains(QLatin1Char(':')))
+            out.append(sourceRow(source));
+    return out;
+}
+
+QStringList Comics::sourceKeys() const {
+    QStringList out;
+    for (const auto &source : Registry::all())
+        out.append(source->key());
     return out;
 }
 
@@ -816,6 +840,7 @@ QString Comics::saveServer(const QVariantMap &map) {
         list.append(server);
     servers::save(list);
     comics::Registry::rebuild();
+    novels::Registry::rebuild();
     emit App::instance()->manifestChanged();
     return server.id;
 }
@@ -825,6 +850,7 @@ void Comics::removeServer(const QString &id) {
     list.erase(std::remove_if(list.begin(), list.end(), [&](const servers::Server &s) { return s.id == id; }), list.end());
     servers::save(list);
     comics::Registry::rebuild();
+    novels::Registry::rebuild();
     emit App::instance()->manifestChanged();
 }
 

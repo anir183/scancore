@@ -509,7 +509,7 @@ SettingsPane {
         SettingRow {
             visible: OnDevice.available
             iconName: "download"
-            title: qsTr("Translate on this computer")
+            title: App.platform === "android" ? qsTr("Translate on this device") : qsTr("Translate on this computer")
             description: {
                 App.dependOn(OnDevice.revision)
                 return OnDevice.any() ? qsTr("Pages and chapters translated with nothing sent anywhere. Add or remove languages.")

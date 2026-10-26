@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>series-list</id>
+  <title>Manga</title>
+  <link rel="next" href="/opds/series-list-2.xml" type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
+  <entry>
+    <id>series-1</id>
+    <title>Smoke Series</title>
+    <author><name>Test Author</name></author>
+    <link rel="subsection" href="/opds/series.xml" type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
+    <link rel="http://opds-spec.org/image/thumbnail" href="/covers/series-1.png" type="image/png"/>
+  </entry>
+  <entry>
+    <id>book-novel</id>
+    <title>A Novel Book</title>
+    <author><name>Novel Author</name></author>
+    <summary>A book in EPUB.</summary>
+    <link rel="http://opds-spec.org/image" href="/covers/novel.png" type="image/png"/>
+    <link rel="http://opds-spec.org/acquisition" href="/books/novel.epub" type="application/epub+zip"/>
+  </entry>
+</feed>

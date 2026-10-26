@@ -644,9 +644,32 @@ Task *Extensions::refreshRepositories() {
     });
 }
 
-QVariantList Extensions::installed(const QString &kind) const {
-    const auto sources = ext::Manager::sources(kindOf(kind));
+namespace {
+
+QVariantMap sourceMap(const ext::SourceEntry &s, const QString &language) {
+    return QVariantMap{{"key", s.key},
+                       {"name", s.name},
+                       {"lang", s.lang},
+                       {"languageName", extensionLanguage(s.lang)},
+                       {"preferred", baseLanguage(s.lang) == language},
+                       {"baseUrl", s.baseUrl},
+                       {"enabled", s.enabled},
+                       {"blocked", s.blocked},
+                       {"error", ext::Manager::sourceError(s.key)}};
+}
+
+} // namespace
+
+// Every installed extension with its sources (`brief`: their count, how
+// many fail, and their names and sites as one text for searching, not the
+// list: 1,000 sources as JavaScript objects held Extensions' first frame
+// back on phones).
+QVariantList Extensions::installedRows(const QString &kind, bool brief) const {
     const auto language = contentLanguage();
+    // The sources by their extension, in one pass.
+    QHash<QString, QList<ext::SourceEntry>> byExtension;
+    for (const auto &s : ext::Manager::sources(kindOf(kind)))
+        byExtension[ext::kindName(s.kind) + QLatin1Char(':') + s.pkg].append(s);
     QVariantList out;
     auto list = ext::Manager::installed(kindOf(kind));
     std::sort(list.begin(), list.end(), [](const ext::Installed &a, const ext::Installed &b) {
@@ -664,23 +687,41 @@ QVariantList Extensions::installed(const QString &kind) const {
         map.insert(QStringLiteral("signer"), i.signers.isEmpty() ? QString() : i.signers.last().left(16));
         if (map.value(QStringLiteral("problem")).toString().isEmpty() && i.lib != ext::LibSupport::Supported)
             map.insert(QStringLiteral("problem"), libProblemText(i.package));
-        QVariantList own;
-        for (const auto &s : sources)
-            if (s.kind == i.package.kind && s.pkg == i.package.pkg)
-                own.append(QVariantMap{{"key", s.key},
-                                       {"name", s.name},
-                                       {"lang", s.lang},
-                                       {"languageName", extensionLanguage(s.lang)},
-                                       {"preferred", baseLanguage(s.lang) == language},
-                                       {"baseUrl", s.baseUrl},
-                                       {"enabled", s.enabled},
-                                       {"blocked", s.blocked},
-                                       {"error", ext::Manager::sourceError(s.key)}});
-        map.insert(QStringLiteral("sources"), own);
+        const auto own = byExtension.value(map.value(QStringLiteral("id")).toString());
+        if (brief) {
+            int broken = 0;
+            QStringList text;
+            for (const auto &s : own) {
+                broken += ext::Manager::sourceError(s.key).isEmpty() ? 0 : 1;
+                text << s.name << s.baseUrl;
+            }
+            map.insert(QStringLiteral("sourceCount"), int(own.size()));
+            map.insert(QStringLiteral("brokenCount"), broken);
+            map.insert(QStringLiteral("sourceText"), text.join(QLatin1Char(' ')).toLower());
+        } else {
+            QVariantList sources;
+            for (const auto &s : own)
+                sources.append(sourceMap(s, language));
+            map.insert(QStringLiteral("sources"), sources);
+        }
         out.append(map);
     }
     return out;
 }
+
+QVariantList Extensions::installed(const QString &kind) const { return installedRows(kind, false); }
+QVariantList Extensions::installedBrief(const QString &kind) const { return installedRows(kind, true); }
+
+QVariantList Extensions::installedSources(const QString &id) const {
+    const auto language = contentLanguage();
+    QVariantList out;
+    for (const auto &s : ext::Manager::sources(kindOf(id.section(QLatin1Char(':'), 0, 0))))
+        if (ext::kindName(s.kind) + QLatin1Char(':') + s.pkg == id)
+            out.append(sourceMap(s, language));
+    return out;
+}
+
+int Extensions::installedCount(const QString &kind) const { return int(ext::Manager::installed(kindOf(kind)).size()); }
 
 QVariantList Extensions::available(const QString &kind) const {
     const auto language = contentLanguage();

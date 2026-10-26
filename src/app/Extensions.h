@@ -104,6 +104,12 @@ public:
     // icon, nsfw, trusted, problem, update, repo, signer, sources: [{key,
     // name, lang, languageName, preferred, baseUrl, enabled, error}]}]
     Q_INVOKABLE QVariantList installed(const QString &kind = QString()) const;
+    // The same without each one's sources: their count (sourceCount), how
+    // many fail (brokenCount) and their names and sites (sourceText, lower
+    // case); one's sources by its id ("mihon:<pkg>") when it is opened.
+    Q_INVOKABLE QVariantList installedBrief(const QString &kind = QString()) const;
+    Q_INVOKABLE QVariantList installedSources(const QString &id) const;
+    Q_INVOKABLE int installedCount(const QString &kind = QString()) const;
     // Extensions the repositories list that are not installed, content
     // language first: [{id, kind, media, pkg, name, version, lang,
     // languageName, icon, nsfw, problem, preferred}]
@@ -137,6 +143,7 @@ signals:
     void installsFinished(int installed, int failed, const QString &firstError);
 
 private:
+    QVariantList installedRows(const QString &kind, bool brief) const;
     // Private so QML uses create(): Qt builds its own instance of a
     // singleton it can default-construct, and C++ and QML would then
     // work on different objects.

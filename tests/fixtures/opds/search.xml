@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>search</id>
+  <title>Search</title>
+  <entry><id>series-1</id><title>Smoke Series</title><link rel="subsection" href="/opds/series.xml" type="application/atom+xml;profile=opds-catalog;kind=acquisition"/></entry>
+</feed>

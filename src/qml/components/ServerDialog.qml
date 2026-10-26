@@ -2,8 +2,9 @@ import QtQuick
 import QtQuick.Controls.Basic
 import Scancore
 
-// Adding or changing one of the reader's own comic servers (Komga, Kavita,
-// Suwayomi): its kind, address and login, saved and tried at once.
+// Adding or changing one of the reader's own servers (Komga, Kavita,
+// Suwayomi, or any OPDS catalogue): its kind, address and login, saved and
+// tried at once.
 Dialog {
     id: dialog
     property var server: ({})
@@ -64,28 +65,41 @@ Dialog {
         }
         Text {
             width: parent.width
-            text: qsTr("Read the comics on your own Komga, Kavita or Suwayomi server. The login stays on this device.")
+            text: dialog.kind === "opds"
+                  ? qsTr("Any OPDS catalogue (Calibre-web, Kavita, Komga, Ubooquity…): paste its OPDS address. Comics open under Comics, EPUB books under Novels. The login stays on this device.")
+                  : qsTr("Read the comics on your own Komga, Kavita or Suwayomi server. The login stays on this device.")
             color: Theme.textMuted
             font.family: Theme.fontSans
             font.pixelSize: Theme.textSm
             wrapMode: Text.Wrap
         }
-        Segmented {
-            options: [{ value: "komga", label: "Komga" }, { value: "kavita", label: "Kavita" }, { value: "suwayomi", label: "Suwayomi" }]
-            value: dialog.kind
-            onPicked: (v) => dialog.kind = v
+        // Chips, not a segmented row: four kinds do not fit one at 360 px.
+        Flow {
+            width: parent.width
+            spacing: 8
+            Repeater {
+                model: [{ value: "komga", label: "Komga" }, { value: "kavita", label: "Kavita" }, { value: "suwayomi", label: "Suwayomi" },
+                        { value: "opds", label: "OPDS" }]
+                Chip {
+                    required property var modelData
+                    text: modelData.label
+                    selected: dialog.kind === modelData.value
+                    onClicked: dialog.kind = modelData.value
+                }
+            }
         }
         InlineField { id: nameField; width: parent.width; placeholderText: qsTr("Name (optional)") }
         InlineField {
             id: urlField
             width: parent.width
-            placeholderText: dialog.kind === "suwayomi" ? "http://192.168.1.20:4567" : dialog.kind === "kavita" ? "http://192.168.1.20:5000" : "http://192.168.1.20:25600"
+            placeholderText: dialog.kind === "suwayomi" ? "http://192.168.1.20:4567" : dialog.kind === "kavita" ? "http://192.168.1.20:5000"
+                           : dialog.kind === "opds" ? "http://192.168.1.20:8083/opds" : "http://192.168.1.20:25600"
             inputMethodHints: Qt.ImhUrlCharactersOnly | Qt.ImhNoAutoUppercase
         }
         InlineField {
             id: userField
             width: parent.width
-            placeholderText: dialog.kind === "komga" ? qsTr("Email") : qsTr("User name") + (dialog.kind === "suwayomi" ? qsTr(" (if it asks for one)") : "")
+            placeholderText: dialog.kind === "komga" ? qsTr("Email") : qsTr("User name") + (dialog.kind === "suwayomi" || dialog.kind === "opds" ? qsTr(" (if it asks for one)") : "")
             inputMethodHints: Qt.ImhNoAutoUppercase
         }
         InlineField {

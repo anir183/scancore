@@ -1,5 +1,7 @@
 #include "Servers.h"
 
+#include "Opds.h"
+
 #include "core/Database.h"
 #include "core/ImageCache.h"
 
@@ -419,7 +421,23 @@ std::unique_ptr<comics::Source> createSource(const Server &server) {
         return std::make_unique<KavitaSource>(config, server);
     if (server.kind == QLatin1String("suwayomi"))
         return std::make_unique<SuwayomiSource>(config, server);
+    if (server.kind == QLatin1String("opds"))
+        return opds::createComicSource(config, server);
     return nullptr;
+}
+
+std::unique_ptr<novels::Source> createNovelSource(const Server &server) {
+    if (server.kind != QLatin1String("opds"))
+        return nullptr;
+    novels::SourceConfig config;
+    config.key = QStringLiteral("server-") + server.id;
+    config.label = server.label.isEmpty() ? server.url : server.label;
+    config.engine = server.kind;
+    config.base = server.url;
+    config.hosts = {QUrl(server.url).host().toLower()};
+    config.language = QStringLiteral("*");
+    config.options = QJsonObject{{"server", server.id}};
+    return opds::createNovelSource(config, server);
 }
 
 void chapterRead(const QString &sourceKey, const QString &seriesUrl, const QString &chapterUrl, const QString &number) {

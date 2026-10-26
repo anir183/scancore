@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The home-screen widget's line in the widget picker. -->
+<resources>
+    <string name="widget_description">Continue reading and watching, and new chapters</string>
+</resources>

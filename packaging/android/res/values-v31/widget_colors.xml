@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The home-screen widget's colours: the wallpaper's own (Android 12+). -->
+<resources>
+    <color name="widget_background">@android:color/system_neutral1_50</color>
+    <color name="widget_row">@android:color/system_neutral2_100</color>
+    <color name="widget_text">@android:color/system_neutral1_900</color>
+    <color name="widget_muted">@android:color/system_neutral2_700</color>
+    <color name="widget_accent">@android:color/system_accent1_600</color>
+    <color name="widget_on_accent">@android:color/system_accent1_0</color>
+</resources>

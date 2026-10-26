@@ -69,6 +69,12 @@ target_link_libraries(scancore_library_tests PRIVATE scancore_core Qt6::Test Qt6
 target_compile_definitions(scancore_library_tests PRIVATE SCANCORE_SOURCE_DIR="${PROJECT_SOURCE_DIR}")
 add_test(NAME library COMMAND scancore_library_tests)
 
+# OPDS catalogues: feeds, sections, search, streamed pages and files.
+qt_add_executable(scancore_opds_tests tst_opds.cpp)
+target_link_libraries(scancore_opds_tests PRIVATE scancore_core Qt6::Test)
+target_compile_definitions(scancore_opds_tests PRIVATE SCANCORE_SOURCE_DIR="${PROJECT_SOURCE_DIR}")
+add_test(NAME opds COMMAND scancore_opds_tests)
+
 # Text helpers (sentences for reading aloud).
 qt_add_executable(scancore_text_tests tst_text.cpp)
 target_link_libraries(scancore_text_tests PRIVATE scancore_core Qt6::Test)
@@ -137,7 +143,7 @@ add_test(NAME plugins COMMAND scancore_plugin_tests)
 target_compile_definitions(scancore_plugin_tests PRIVATE SCANCORE_SOURCE_DIR="${PROJECT_SOURCE_DIR}")
 
 # Console programs on Windows too, so CTest shows their output.
-foreach(test scancore_tests scancore_catalogue_tests scancore_extension_tests scancore_plugin_tests scancore_probe scancore_host_tests)
+foreach(test scancore_tests scancore_opds_tests scancore_catalogue_tests scancore_extension_tests scancore_plugin_tests scancore_probe scancore_host_tests)
     if(TARGET ${test})
         set_target_properties(${test} PROPERTIES WIN32_EXECUTABLE FALSE)
     endif()

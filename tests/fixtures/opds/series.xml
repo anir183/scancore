@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:pse="http://vaemendis.net/opds-pse/ns">
+  <id>series-1</id>
+  <title>Smoke Series</title>
+  <entry>
+    <id>vol-1</id>
+    <title>Vol. 1</title>
+    <updated>2026-10-01T10:00:00Z</updated>
+    <summary>The first volume.</summary>
+    <link rel="http://opds-spec.org/image" href="/covers/vol-1.png" type="image/png"/>
+    <link rel="http://vaemendis.net/opds-pse/stream" href="/opds/pse/1?page={pageNumber}&amp;width={maxWidth}" type="image/jpeg" pse:count="3"/>
+    <link rel="http://opds-spec.org/acquisition" href="/books/smoke.cbz" type="application/vnd.comicbook+zip"/>
+  </entry>
+  <entry>
+    <id>vol-2</id>
+    <title>Vol. 2</title>
+    <link rel="http://opds-spec.org/acquisition" href="/books/smoke.cbz" type="application/vnd.comicbook+zip"/>
+  </entry>
+</feed>

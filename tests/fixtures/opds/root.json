@@ -1,0 +1,11 @@
+{
+  "metadata": { "title": "JSON catalogue" },
+  "links": [ { "rel": "self", "href": "/opds2/root.json", "type": "application/opds+json" },
+             { "rel": "search", "href": "/opds2/search{?query}", "type": "application/opds+json", "templated": true } ],
+  "navigation": [ { "href": "/opds2/new.json", "title": "New", "type": "application/opds+json", "rel": "http://opds-spec.org/sort/new" } ],
+  "publications": [
+    { "metadata": { "title": "JSON Book", "author": [{ "name": "First" }, "Second"], "identifier": "urn:test:1", "subject": ["Fantasy"] },
+      "links": [ { "rel": "http://opds-spec.org/acquisition", "href": "/books/novel.epub", "type": "application/epub+zip" } ],
+      "images": [ { "href": "/covers/json.png", "type": "image/png" } ] }
+  ]
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The home-screen widget's colours. -->
+<resources>
+    <color name="widget_background">#FF141418</color>
+    <color name="widget_row">#FF22222A</color>
+    <color name="widget_text">#FFF2F2F5</color>
+    <color name="widget_muted">#FFA3A3AE</color>
+    <color name="widget_accent">#FFB7A6FF</color>
+    <color name="widget_on_accent">#FF16161A</color>
+</resources>

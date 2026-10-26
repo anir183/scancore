@@ -8,6 +8,7 @@
 #include "app/MpvPlayer.h"
 #include "app/Presence.h"
 #include "app/CrashLog.h"
+#include "app/HomeWidget.h"
 #include "app/SingleInstance.h"
 #include "app/Sync.h"
 #include "app/Updater.h"
@@ -378,6 +379,7 @@ int main(int argc, char *argv[]) {
     Account::instance();
     Activity::instance();
     Sync::instance();
+    HomeWidget::instance()->start();
     auto *appState = App::instance();
     Customize::applyLanguage();
     QQmlApplicationEngine engine;

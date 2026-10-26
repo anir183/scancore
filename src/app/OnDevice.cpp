@@ -24,6 +24,10 @@
 
 #include <memory>
 
+#ifdef Q_OS_ANDROID
+#include <zlib.h>
+#endif
+
 namespace sc {
 
 namespace {
@@ -33,11 +37,29 @@ struct Runtime {
     const char *asset;
     const char *sha256;
     const char *library;
+    // Android: the library inside Microsoft's package (an AAR, a zip) on
+    // Maven Central, fetched alone with a range: where its entry starts and
+    // how long it is compressed. `sha256` is then the library's own.
+    const char *entry = nullptr;
+    qint64 offset = 0;
+    qint64 compressed = 0;
 };
 constexpr auto kRuntimeVersion = "1.31.0";
 Runtime runtimeBuild() {
     const auto cpu = QSysInfo::currentCpuArchitecture();
-#if defined(Q_OS_WIN)
+#if defined(Q_OS_ANDROID)
+    // onnxruntime-android-1.31.0.aar (sha256 72683787…0540a7, 55 MB): only
+    // this phone's library comes, 11 to 15 MB.
+    if (cpu == QLatin1String("arm64"))
+        return {"onnxruntime-android-1.31.0.aar", "8005a741e57117b4d7b476417706c0e9af13cf1b89db47e60f0cbc56e1af91e0", "lib/libonnxruntime.so",
+                "jni/arm64-v8a/libonnxruntime.so", 353648, 12887720};
+    if (cpu == QLatin1String("arm"))
+        return {"onnxruntime-android-1.31.0.aar", "2a63f9a56b211511209dbf4b5bc143f18d0b365977dd7a0afd57d95c85479af6", "lib/libonnxruntime.so",
+                "jni/armeabi-v7a/libonnxruntime.so", 13277471, 11639973};
+    if (cpu == QLatin1String("x86_64"))
+        return {"onnxruntime-android-1.31.0.aar", "068896846a7fe679cf780c1c532745286d9ef2e469f3dbde5bb9cf2c02095b18", "lib/libonnxruntime.so",
+                "jni/x86_64/libonnxruntime.so", 40108685, 14993057};
+#elif defined(Q_OS_WIN)
     if (cpu == QLatin1String("x86_64"))
         return {"onnxruntime-win-x64-1.31.0.zip", "3958d8a44984160692c1b4ffd0de3cb48f8c39f9d34bb31e433db06e30b82195", "lib/onnxruntime.dll"};
 #elif defined(Q_OS_MACOS)
@@ -250,10 +272,69 @@ void checkSha(const QByteArray &data, const QString &expected) {
         throw Error(QStringLiteral("The download was damaged. Try again."));
 }
 
+#ifdef Q_OS_ANDROID
+// The one library out of the AAR: its zip entry, asked for with a range
+// (the local header, then the deflated data), and inflated.
+QByteArray androidLibrary(const Runtime &build) {
+    Request request;
+    request.url = QUrl(QStringLiteral("https://repo1.maven.org/maven2/com/microsoft/onnxruntime/onnxruntime-android/%1/onnxruntime-android-%1.aar")
+                           .arg(QLatin1String(kRuntimeVersion)));
+    const qint64 headerRoom = 30 + 512;
+    request.headers.append(QPair<QByteArray, QByteArray>(
+        "Range", QStringLiteral("bytes=%1-%2").arg(build.offset).arg(build.offset + headerRoom + build.compressed - 1).toLatin1()));
+    request.timeoutMs = 900000;
+    request.maxBytes = headerRoom + build.compressed + 1024;
+    const auto response = Http::send(request);
+    if (response.status != 206)
+        throw Error(QStringLiteral("ONNX Runtime could not be downloaded (HTTP %1).").arg(response.status), response.status);
+    const auto &b = response.body;
+    const auto u16 = [&](int at) { return int(uchar(b[at])) | int(uchar(b[at + 1])) << 8; };
+    if (b.size() < 30 || uchar(b[0]) != 0x50 || uchar(b[1]) != 0x4b || uchar(b[2]) != 0x03 || uchar(b[3]) != 0x04 || u16(8) != 8)
+        throw Error(QStringLiteral("The download was damaged. Try again."));
+    const int name = u16(26), extra = u16(28);
+    if (b.mid(30, name) != QByteArray(build.entry) || b.size() < 30 + name + extra + build.compressed)
+        throw Error(QStringLiteral("The download was damaged. Try again."));
+    const auto *data = reinterpret_cast<const Bytef *>(b.constData() + 30 + name + extra);
+    z_stream z{};
+    if (inflateInit2(&z, -MAX_WBITS) != Z_OK)
+        throw Error(QStringLiteral("ONNX Runtime could not be unpacked."));
+    QByteArray out;
+    out.resize(48 * 1024 * 1024);
+    z.next_in = const_cast<Bytef *>(data);
+    z.avail_in = uInt(build.compressed);
+    int status = Z_OK;
+    while (status == Z_OK) {
+        if (z.total_out >= uLong(out.size()))
+            out.resize(out.size() * 2);
+        z.next_out = reinterpret_cast<Bytef *>(out.data()) + z.total_out;
+        z.avail_out = uInt(out.size() - z.total_out);
+        status = inflate(&z, Z_NO_FLUSH);
+    }
+    const auto size = z.total_out;
+    inflateEnd(&z);
+    if (status != Z_STREAM_END)
+        throw Error(QStringLiteral("ONNX Runtime could not be unpacked."));
+    out.resize(qsizetype(size));
+    return out;
+}
+#endif
+
 void installRuntime() {
     const auto build = runtimeBuild();
     if (!build.asset)
         throw Error(QStringLiteral("Translating on the computer is not available for this computer."));
+#ifdef Q_OS_ANDROID
+    report(QStringLiteral("Downloading ONNX Runtime (about %1 MB)…").arg(build.compressed / (1024 * 1024)));
+    const auto library = androidLibrary(build);
+    checkSha(library, QLatin1String(build.sha256));
+    const auto staging = runtimeDir() + QStringLiteral(".new");
+    QDir(staging).removeRecursively();
+    save(staging + QLatin1Char('/') + QLatin1String(build.library), library);
+    save(staging + QStringLiteral("/scancore-version.txt"), kRuntimeVersion);
+    QDir(runtimeDir()).removeRecursively();
+    if (!QDir().rename(staging, runtimeDir()))
+        throw Error(QStringLiteral("ONNX Runtime could not be installed."));
+#else
     report(QStringLiteral("Downloading ONNX Runtime…"));
     const auto archive = fetch(QStringLiteral("https://github.com/microsoft/onnxruntime/releases/download/v%1/%2")
                                    .arg(QLatin1String(kRuntimeVersion), QLatin1String(build.asset)),
@@ -276,6 +357,7 @@ void installRuntime() {
     QDir(runtimeDir()).removeRecursively();
     if (!QDir().rename(staging, runtimeDir()))
         throw Error(QStringLiteral("ONNX Runtime could not be installed."));
+#endif
 }
 
 QString hf(const char *repo, const char *revision, const QString &path) {

@@ -102,6 +102,19 @@
             android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
             android:exported="false" />
 
+        <!-- The home-screen widget: Continue, and new chapters. -->
+        <receiver
+            android:name="com.mediumdev.scancore.HomeWidget"
+            android:label="SCANCORE"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/scancore_widget_info" />
+        </receiver>
+
         <service
             android:name="com.mediumdev.scancore.ReadAloudService"
             android:foregroundServiceType="mediaPlayback"

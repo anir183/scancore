@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls.Basic
 import Scancore
 
-// Translating on the computer (OnDevice): the languages that can be
+// Translating on this device (OnDevice): the languages that can be
 // translated into the one chosen (Translator.target), each downloaded or
 // removed here. The first download also brings ONNX Runtime.
 Dialog {
@@ -29,7 +29,8 @@ Dialog {
         target: dialog.installTask
         function onProgressed(partial) { if (partial && partial.status) dialog.status = partial.status }
         function onFinished() {
-            Router.toast(qsTr("Ready: pages in this language can be translated on this computer."), "success")
+            Router.toast(App.platform === "android" ? qsTr("Ready: pages in this language can be translated on this device.")
+                                                    : qsTr("Ready: pages in this language can be translated on this computer."), "success")
             dialog.installing = ""
         }
         function onFailed(error) {
@@ -76,7 +77,7 @@ Dialog {
             x: 24
             y: 22
             width: parent.width - x - 64
-            text: qsTr("Translate on this computer")
+            text: App.platform === "android" ? qsTr("Translate on this device") : qsTr("Translate on this computer")
             color: Theme.text
             font.family: Theme.fontDisplay
             font.pixelSize: Theme.textLg

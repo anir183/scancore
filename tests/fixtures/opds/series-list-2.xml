@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>series-list-2</id>
+  <title>Manga</title>
+  <entry>
+    <id>book-second</id>
+    <title>Second Page Comic</title>
+    <link rel="http://opds-spec.org/acquisition" href="/books/smoke.cbz" type="application/vnd.comicbook+zip"/>
+  </entry>
+</feed>

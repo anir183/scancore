@@ -47,6 +47,7 @@ add_library(scancore_core STATIC
     sources/local/LocalNovels.cpp
     sources/local/MihonLayout.cpp
     sources/servers/Servers.cpp
+    sources/servers/Opds.cpp
     sources/novels/LnCrawl.cpp
     sources/novels/Registry.cpp
     sources/novels/TextBlocks.cpp
@@ -152,6 +153,7 @@ qt_add_qml_module(scancore
         app/Speech.cpp app/Speech.h
         app/ReadAloud.cpp app/ReadAloud.h
         app/MediaControls.cpp app/MediaControls.h
+        app/HomeWidget.cpp app/HomeWidget.h
         app/Translator.cpp app/Translator.h
         app/Trackers.cpp app/Trackers.h app/MoreTrackers.cpp app/TrackerCommon.h
         app/Story.cpp app/Story.h app/Upkeep.cpp app/Upkeep.h
@@ -288,6 +290,11 @@ if(ANDROID)
         QT_ANDROID_COMPILE_SDK_VERSION 37)
 else()
     target_link_libraries(scancore PRIVATE Qt6::Widgets)
+endif()
+# Android: zlib (the NDK's) unpacks ONNX Runtime out of its package
+# (app/OnDevice.cpp).
+if(ANDROID)
+    target_link_libraries(scancore PRIVATE z)
 endif()
 # What plays, on the system's own now playing (app/MediaControls.cpp):
 # Windows' media controls and macOS' Now Playing; Linux has MPRIS (D-Bus,

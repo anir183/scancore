@@ -172,6 +172,11 @@ ApplicationWindow {
         target: App
         function onOpenRequested(target) {
             const lower = String(target).toLowerCase()
+            // The home-screen widget's rows: that series, where it was left.
+            if (lower.startsWith("scancore://continue/")) {
+                shell.resumeSeries(decodeURIComponent(String(target).slice("scancore://continue/".length)))
+                return
+            }
             if (lower.endsWith(".sct")) {
                 window.pendingTheme = target
                 themeConfirm.open()
@@ -339,6 +344,19 @@ ApplicationWindow {
 
         function land(target) { hero.land(target) }
 
+        // A series by its id where it was left (the widget): the entry
+        // from Continue, else its page.
+        property var resumeTask: null
+        function resumeSeries(id) {
+            const task = Library.continueItems("", 40)
+            resumeTask = task
+            task.finished.connect((list) => {
+                const entry = Array.from(list).find(e => e.id === id)
+                if (entry) { resume(entry); return }
+                const row = Library.seriesRow(id)
+                if (row && row.sourceUrl) Router.openSeries(row, null)
+            })
+        }
         function resume(entry) {
             const props = { url: entry.sourceUrl, summary: entry, autoResume: true }
             if (entry.media === "anime" && String(entry.source || "").startsWith("aniyomi:")) {

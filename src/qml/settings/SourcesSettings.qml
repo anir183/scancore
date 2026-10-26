@@ -9,7 +9,10 @@ SettingsPane {
     iconName: "globe"
 
     property var refreshTask: null
-    readonly property var allComicSources: Comics.sources()
+    // Built-in comic sources only (extensions' have their own page), and
+    // every key for the sources gone from under saved series.
+    readonly property var allComicSources: Comics.builtinSources()
+    readonly property var comicKeys: Comics.sourceKeys()
     readonly property var allNovelSources: { App.dependOn(Extensions.novelPackInstalled); return Novels.sources() }
     // Built-in sources only: extensions have their own page (above), and a
     // row each for hundreds of extension sources made this page crawl.
@@ -46,7 +49,7 @@ SettingsPane {
     // for everyone, or their extension removed).
     readonly property var goneSources: {
         const out = []
-        const known = new Set(allComicSources.map(s => s.key).concat(allNovelSources.map(s => s.key)))
+        const known = new Set(comicKeys.concat(allNovelSources.map(s => s.key)))
         for (const [media, counts] of [["comic", comicCounts], ["novel", novelCounts]])
             for (const key of Object.keys(counts))
                 if (!known.has(key) && key !== "local") {
@@ -108,12 +111,12 @@ SettingsPane {
         }
     }
 
-    // The reader's own Komga, Kavita and Suwayomi servers.
+    // The reader's own Komga, Kavita, Suwayomi and OPDS servers.
     ServerDialog { id: serverDialog; onClosed: pane.serversChanged() }
     signal serversChanged()
     SettingsGroup {
         title: qsTr("Your servers")
-        note: qsTr("Komga, Kavita and Suwayomi servers you run: their comics are a source like the others, searched with them and saved to the library.")
+        note: qsTr("Komga, Kavita and Suwayomi servers you run, and OPDS catalogues: their comics and books are a source like the others, searched with them and saved to the library.")
         Repeater {
             // A handful, as many as the reader runs.
             model: { App.dependOn(pane.serversChanged); return Comics.servers() }
@@ -121,7 +124,7 @@ SettingsPane {
                 required property var modelData
                 iconName: "server"
                 title: modelData.label
-                description: modelData.kind.charAt(0).toUpperCase() + modelData.kind.slice(1) + " · " + modelData.url
+                description: (modelData.kind === "opds" ? "OPDS" : modelData.kind.charAt(0).toUpperCase() + modelData.kind.slice(1)) + " · " + modelData.url
                 Row {
                     spacing: 4
                     IconButton { iconName: "pencil"; tip: qsTr("Change"); onClicked: serverDialog.start(modelData) }
@@ -146,7 +149,7 @@ SettingsPane {
 
     // Extensions from the repositories the user added.
     readonly property var extensionRepos: { App.dependOn(Extensions.revision); return Extensions.repositories() }
-    readonly property int extensionCount: { App.dependOn(Extensions.revision); return Extensions.installed().length }
+    readonly property int extensionCount: { App.dependOn(Extensions.revision); return Extensions.installedCount() }
     SettingsGroup {
         title: qsTr("Extensions")
         note: qsTr("SCANCORE runs Mihon, Tachiyomi, Aniyomi and LNReader extensions from repositories you add. It has no repository of its own.")
@@ -255,22 +258,31 @@ SettingsPane {
             title: qsTr("Source languages")
             description: qsTr("Built-in sources in these languages are on. Series you already read keep opening whatever you choose.")
         }
-        Flow {
+        // Built after the page's first frame: dozens of chips held it back.
+        Loader {
             x: 16
             width: parent.width - 32
-            bottomPadding: 14
-            spacing: 8
-            Repeater {
-                model: { App.dependOn(App.manifestVersion, App.settings.builtinLanguages); return App.builtinLanguages() }
-                Chip {
-                    required property var modelData
-                    text: modelData.label + " · " + modelData.count
-                    selected: modelData.on
-                    onClicked: {
-                        const on = App.builtinLanguages().filter(l => l.on).map(l => l.value)
-                        const next = modelData.on ? on.filter(v => v !== modelData.value) : on.concat([modelData.value])
-                        // At least one language stays on.
-                        if (next.length > 0) App.setSetting("builtinLanguages", next)
+            asynchronous: true
+            sourceComponent: languageChips
+        }
+        Component {
+            id: languageChips
+            Flow {
+                width: parent ? parent.width : 0
+                bottomPadding: 14
+                spacing: 8
+                Repeater {
+                    model: { App.dependOn(App.manifestVersion, App.settings.builtinLanguages); return App.builtinLanguages() }
+                    Chip {
+                        required property var modelData
+                        text: modelData.label + " · " + modelData.count
+                        selected: modelData.on
+                        onClicked: {
+                            const on = App.builtinLanguages().filter(l => l.on).map(l => l.value)
+                            const next = modelData.on ? on.filter(v => v !== modelData.value) : on.concat([modelData.value])
+                            // At least one language stays on.
+                            if (next.length > 0) App.setSetting("builtinLanguages", next)
+                        }
                     }
                 }
             }
