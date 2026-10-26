@@ -2,6 +2,22 @@
 
 Downloads for the current version are listed on the [releases page](https://github.com/medium-gh/scancore/releases).
 
+## 2.16.0 — 2026-10-27
+
+CloudStream extensions, your own OPDS and Jellyfin servers, a home-screen widget, FB2 and MOBI books, a new Wrapped, and a steadier strip reader. The last 2.x feature release: fixes come as 2.16.x until 3.0.
+
+- **CloudStream extensions**: add a CloudStream repository (its link, a `cloudstreamrepo://` link or a repository code) in Extensions, and its plugins' sites show under Anime like any other source: browse their sections, search, open a title with its seasons and dub or sub, and play from every server they find, with subtitles. On Android the CloudStream part (about 4 MB) downloads with your first CloudStream extension. CloudStream's library is GPL-3.0 and ships only in that download and in the desktop Extensions runtime; SCANCORE itself stays MIT.
+- **Your servers**: OPDS catalogues (Calibre-web, Kavita, Komga, Ubooquity, Codex) in Settings → Sources → Your servers: their comics and EPUB books are sources like the others. A Jellyfin server's shows and films play under Anime, with resume points kept in step both ways.
+- **FB2 and MOBI books** (also AZW3, AZW and PRC) open in the novel reader, from a file or a folder you added.
+- **Home-screen widget** (Android): continue reading and watching, and how many new chapters wait, in your wallpaper's colours.
+- **Music in the system's now playing**: cover, time and a seek bar on Android's lock screen and media controls, MPRIS on Linux, and Windows' and macOS' media controls.
+- **On-device translation and sharper scans on Android**: Settings → Reading downloads ONNX Runtime the first time, for translation without Google services and Enlarge downloaded pages.
+- **Wrapped, redone**: four styles, slides you can hide, titles and covers you can keep private, a music slide, and a card to save as a story, square or wide picture, with up to six stats you pick.
+- **Strip reader**: no more jump or black flash when a page above the screen finishes loading, and the next chapter is fetched again when the first try fails.
+- Faster: the Extensions page with hundreds installed and Settings → Sources open at once, Library refreshes skip what did not change, and read aloud starts only when used.
+- Long translations fit on phones: Wrapped's card, the tab bar (Portuguese, Turkish, Vietnamese) and the reader layout cards. On phones, "Settings → Sources" links open Sources itself.
+- Fixed: Wrapped's Customise changed nothing; Wrapped's month letters in Japanese, Korean, Chinese and Vietnamese.
+
 ## 2.15.0 — 2026-10-26
 
 Music: anime songs, your own files and music extensions, with lyrics that follow along.

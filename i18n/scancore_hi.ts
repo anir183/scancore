@@ -684,6 +684,10 @@
             <source>music extensions</source>
             <translation>संगीत एक्सटेंशन</translation>
         </message>
+        <message>
+            <source>Paste the link from the repository's page, or the link to its index, repo.json or plugin list; several at once work too. SCANCORE reads Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader repositories, and CloudStream repository codes.</source>
+            <translation>रिपॉज़िटरी के पेज का लिंक, या उसके index, repo.json या प्लगइन सूची का लिंक पेस्ट करें; एक साथ कई भी चलते हैं। SCANCORE Mihon, Tachiyomi, Aniyomi, CloudStream और LNReader रिपॉज़िटरी पढ़ता है। CloudStream रिपॉज़िटरी कोड भी चलते हैं।</translation>
+        </message>
     </context>
     <context>
         <name>AddSectionSheet</name>
@@ -3790,6 +3794,10 @@
             <source>Music</source>
             <translation>संगीत</translation>
         </message>
+        <message>
+            <source>Show all %1 sources</source>
+            <translation>सभी %1 स्रोत दिखाएँ</translation>
+        </message>
     </context>
     <context>
         <name>FilterSheet</name>
@@ -4200,6 +4208,21 @@
         <message>
             <source>Continue the story</source>
             <translation>कहानी आगे पढ़ें</translation>
+        </message>
+        <message>
+            <source>Your year in comics, novels, anime and music</source>
+            <translation>कॉमिक्स, उपन्यास, एनीमे और संगीत में आपका साल</translation>
+        </message>
+    </context>
+    <context>
+        <name>HomeWidget</name>
+        <message>
+            <source>Episode %1</source>
+            <translation>एपिसोड %1</translation>
+        </message>
+        <message>
+            <source>Chapter %1</source>
+            <translation>चैप्टर %1</translation>
         </message>
     </context>
     <context>
@@ -6759,6 +6782,18 @@
             <source>All files (*)</source>
             <translation>सभी फ़ाइलें (*)</translation>
         </message>
+        <message>
+            <source>Open a book file (EPUB, FB2, MOBI or PDF)</source>
+            <translation>किताब की फ़ाइल खोलें (EPUB, FB2, MOBI या PDF)</translation>
+        </message>
+        <message>
+            <source>Choose the folders that hold your EPUB, FB2 and MOBI books in Settings → Sources.</source>
+            <translation>सेटिंग → स्रोत में अपनी EPUB, FB2 और MOBI किताबों वाले फ़ोल्डर चुनें।</translation>
+        </message>
+        <message>
+            <source>Books (*.epub *.fb2 *.fb2.zip *.mobi *.azw3 *.azw *.prc *.pdf)</source>
+            <translation>किताबें (*.epub *.fb2 *.fb2.zip *.mobi *.azw3 *.azw *.prc *.pdf)</translation>
+        </message>
     </context>
     <context>
         <name>NowPlayingPage</name>
@@ -7504,6 +7539,14 @@
             <source>Download</source>
             <translation>डाउनलोड करें</translation>
         </message>
+        <message>
+            <source>Ready: pages in this language can be translated on this device.</source>
+            <translation>तैयार: इस भाषा के पेज इसी डिवाइस पर अनुवाद हो सकते हैं।</translation>
+        </message>
+        <message>
+            <source>Translate on this device</source>
+            <translation>इसी डिवाइस पर अनुवाद करें</translation>
+        </message>
     </context>
     <context>
         <name>PageHeader</name>
@@ -7983,6 +8026,62 @@
         <message>
             <source>The image could not be saved.</source>
             <translation>चित्र सहेजा नहीं जा सका।</translation>
+        </message>
+        <message>
+            <source>This is no longer on %1.</source>
+            <translation>यह अब %1 पर नहीं है।</translation>
+        </message>
+        <message>
+            <source>%1 cannot do that.</source>
+            <translation>%1 यह नहीं कर सकता।</translation>
+        </message>
+        <message>
+            <source>%1 has no video file for this.</source>
+            <translation>%1 के पास इसके लिए वीडियो फ़ाइल नहीं है।</translation>
+        </message>
+        <message>
+            <source>Original</source>
+            <translation>मूल</translation>
+        </message>
+        <message>
+            <source>Transcoded by the server (H.264)</source>
+            <translation>सर्वर द्वारा बदला गया (H.264)</translation>
+        </message>
+        <message>
+            <source>%1 is not an OPDS catalogue (its address may be the server's page, not its OPDS feed).</source>
+            <translation>%1 OPDS कैटलॉग नहीं है (हो सकता है पता सर्वर का पेज हो, उसका OPDS फ़ीड नहीं)।</translation>
+        </message>
+        <message>
+            <source>The book could not be saved.</source>
+            <translation>किताब सहेजी नहीं जा सकी।</translation>
+        </message>
+        <message>
+            <source>%1 stopped sending the book.</source>
+            <translation>%1 ने किताब भेजना बंद कर दिया।</translation>
+        </message>
+        <message>
+            <source>The catalogue's start</source>
+            <translation>कैटलॉग की शुरुआत</translation>
+        </message>
+        <message>
+            <source>Section</source>
+            <translation>सेक्शन</translation>
+        </message>
+        <message>
+            <source>This is a folder of series: pick it under Section in this source's filters to see them.</source>
+            <translation>यह सीरीज़ का फ़ोल्डर है: उन्हें देखने के लिए इस स्रोत के फ़िल्टर में सेक्शन से इसे चुनें।</translation>
+        </message>
+        <message>
+            <source>This folder has no comics SCANCORE can read (CBZ, CBR, CB7, PDF or streamed pages). Books in EPUB are under Novels.</source>
+            <translation>इस फ़ोल्डर में ऐसे कॉमिक्स नहीं हैं जिन्हें SCANCORE पढ़ सके (CBZ, CBR, CB7, PDF या स्ट्रीम किए पेज)। EPUB किताबें उपन्यास में हैं।</translation>
+        </message>
+        <message>
+            <source>This book is not in EPUB.</source>
+            <translation>यह किताब EPUB में नहीं है।</translation>
+        </message>
+        <message>
+            <source>This folder has no books in EPUB here: it may be a folder of series (pick it under Section in this source's filters), or hold comics (under Comics).</source>
+            <translation>इस फ़ोल्डर में यहाँ EPUB किताबें नहीं हैं: हो सकता है यह सीरीज़ का फ़ोल्डर हो (इस स्रोत के फ़िल्टर में सेक्शन से चुनें), या इसमें कॉमिक्स हों (कॉमिक्स में)।</translation>
         </message>
     </context>
     <context>
@@ -8733,6 +8832,10 @@
             <source>Choose…</source>
             <translation>चुनें…</translation>
         </message>
+        <message>
+            <source>Translate on this device</source>
+            <translation>इसी डिवाइस पर अनुवाद करें</translation>
+        </message>
     </context>
     <context>
         <name>RecentSearches</name>
@@ -9238,10 +9341,37 @@
         </message>
     </context>
     <context>
+        <name>sc::HomeWidget</name>
+        <message>
+            <source>Continue</source>
+            <translation>जारी रखें</translation>
+        </message>
+        <message>
+            <source>Nothing yet: what you read and watch shows here.</source>
+            <translation>अभी कुछ नहीं: आप जो पढ़ते और देखते हैं, वह यहाँ दिखेगा।</translation>
+        </message>
+        <message>
+            <source>Open SCANCORE</source>
+            <translation>SCANCORE खोलें</translation>
+        </message>
+        <message>
+            <source>1 new chapter</source>
+            <translation>1 नया चैप्टर</translation>
+        </message>
+        <message>
+            <source>%1 new chapters</source>
+            <translation>%1 नए चैप्टर</translation>
+        </message>
+    </context>
+    <context>
         <name>sc::MediaControls</name>
         <message>
             <source>Reading aloud</source>
             <translation>पढ़कर सुनाना</translation>
+        </message>
+        <message>
+            <source>Music</source>
+            <translation>संगीत</translation>
         </message>
     </context>
     <context>
@@ -9340,6 +9470,18 @@
         <message>
             <source>Downloaded once; nothing leaves the computer</source>
             <translation>एक बार डाउनलोड; कुछ भी कंप्यूटर से बाहर नहीं जाता</translation>
+        </message>
+        <message>
+            <source>Downloaded languages</source>
+            <translation>डाउनलोड की गई भाषाएँ</translation>
+        </message>
+        <message>
+            <source>Downloaded once; pages never leave the device</source>
+            <translation>एक बार डाउनलोड; पेज कभी डिवाइस से बाहर नहीं जाते</translation>
+        </message>
+        <message>
+            <source>Downloaded once; nothing leaves the device</source>
+            <translation>एक बार डाउनलोड; कुछ भी डिवाइस से बाहर नहीं जाता</translation>
         </message>
     </context>
     <context>
@@ -9726,6 +9868,26 @@
         <message>
             <source>Save and try</source>
             <translation>सहेजें और आज़माएँ</translation>
+        </message>
+        <message>
+            <source>Connected: 1 show or film found.</source>
+            <translation>जुड़ गया: 1 शो या फ़िल्म मिली।</translation>
+        </message>
+        <message>
+            <source>Connected: more than %1 shows and films found.</source>
+            <translation>जुड़ गया: %1 से ज़्यादा शो और फ़िल्में मिलीं।</translation>
+        </message>
+        <message>
+            <source>Connected: %1 shows and films found.</source>
+            <translation>जुड़ गया: %1 शो और फ़िल्में मिलीं।</translation>
+        </message>
+        <message>
+            <source>Any OPDS catalogue (Calibre-web, Kavita, Komga, Ubooquity…): paste its OPDS address. Comics open under Comics, EPUB books under Novels. The login stays on this device.</source>
+            <translation>कोई भी OPDS कैटलॉग (Calibre-web, Kavita, Komga, Ubooquity…): उसका OPDS पता चिपकाएँ। कॉमिक्स कॉमिक्स में खुलते हैं, EPUB किताबें उपन्यास में। लॉगिन इसी डिवाइस पर रहता है।</translation>
+        </message>
+        <message>
+            <source>Watch the shows and films on your own Jellyfin server under Anime. Where you stop is kept on the server too, so its other apps carry on from there. The login stays on this device.</source>
+            <translation>अपने Jellyfin सर्वर के शो और फ़िल्में एनीमे में देखें। आप जहाँ रुकते हैं, सर्वर भी याद रखता है, ताकि उसके दूसरे ऐप वहीं से आगे चलाएँ। लॉगिन इसी डिवाइस पर रहता है।</translation>
         </message>
     </context>
     <context>
@@ -10565,6 +10727,22 @@
         <message>
             <source>Whether the extensions runtime answers, a quick test of a source, and the sites each extension contacted.</source>
             <translation>एक्सटेंशन रनटाइम जवाब देता है या नहीं, किसी स्रोत की झटपट जाँच, और हर एक्सटेंशन ने जिन साइटों से संपर्क किया।</translation>
+        </message>
+        <message>
+            <source>Komga, Kavita and Suwayomi servers you run, and OPDS catalogues: their comics and books are a source like the others, searched with them and saved to the library. A Jellyfin server's shows and films play under Anime.</source>
+            <translation>आपके चलाए Komga, Kavita और Suwayomi सर्वर, और OPDS कैटलॉग: इनके कॉमिक्स और किताबें बाकी स्रोतों जैसे ही एक स्रोत हैं, उन्हीं के साथ खोजे जाते हैं और लाइब्रेरी में सहेजे जाते हैं। Jellyfin सर्वर के शो और फ़िल्में एनीमे में चलती हैं।</translation>
+        </message>
+        <message>
+            <source>Each folder or file in these folders is a series: folders of images, CBZ, CBR, 7z and PDF files for comics, and EPUB, FB2 and MOBI books for novels. </source>
+            <translation>इन फ़ोल्डरों का हर फ़ोल्डर या फ़ाइल एक सीरीज़ है: कॉमिक्स के लिए इमेज फ़ोल्डर, CBZ, CBR, 7z और PDF फ़ाइलें, और उपन्यासों के लिए EPUB, FB2 और MOBI किताबें। </translation>
+        </message>
+        <message>
+            <source>Comics and books (*.cbz *.zip *.cbr *.rar *.cb7 *.7z *.pdf *.epub *.fb2 *.mobi *.azw3)</source>
+            <translation>कॉमिक्स और किताबें (*.cbz *.zip *.cbr *.rar *.cb7 *.7z *.pdf *.epub *.fb2 *.mobi *.azw3)</translation>
+        </message>
+        <message>
+            <source>SCANCORE runs Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader extensions from repositories you add. It has no repository of its own.</source>
+            <translation>SCANCORE आपकी जोड़ी रिपॉज़िटरी से Mihon, Tachiyomi, Aniyomi, CloudStream और LNReader एक्सटेंशन चलाता है। इसकी अपनी कोई रिपॉज़िटरी नहीं है।</translation>
         </message>
     </context>
     <context>
@@ -11629,6 +11807,10 @@
             <source>Save series to your library and check them for updates; their next chapters show here.</source>
             <translation>सीरीज़ को अपनी लाइब्रेरी में सेव करें और अपडेट जांचें; उनके अगले चैप्टर यहां दिखेंगे।</translation>
         </message>
+        <message>
+            <source>Show all %1</source>
+            <translation>सभी %1 दिखाएँ</translation>
+        </message>
     </context>
     <context>
         <name>UpdateBanner</name>
@@ -12347,6 +12529,293 @@
         <message>
             <source>Could not save the picture</source>
             <translation>तस्वीर सहेजी नहीं जा सकी</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>Monday</comment>
+            <translation>सो</translation>
+        </message>
+        <message>
+            <source>T</source>
+            <comment>Tuesday</comment>
+            <translation>मं</translation>
+        </message>
+        <message>
+            <source>W</source>
+            <comment>Wednesday</comment>
+            <translation>बु</translation>
+        </message>
+        <message>
+            <source>T</source>
+            <comment>Thursday</comment>
+            <translation>गु</translation>
+        </message>
+        <message>
+            <source>F</source>
+            <comment>Friday</comment>
+            <translation>शु</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>Saturday</comment>
+            <translation>श</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>Sunday</comment>
+            <translation>र</translation>
+        </message>
+        <message>
+            <source>A comic</source>
+            <translation>एक कॉमिक</translation>
+        </message>
+        <message>
+            <source>A novel</source>
+            <translation>एक उपन्यास</translation>
+        </message>
+        <message>
+            <source>An anime</source>
+            <translation>एक एनीमे</translation>
+        </message>
+        <message>
+            <source>A song</source>
+            <translation>एक गाना</translation>
+        </message>
+        <message>
+            <source>A series</source>
+            <translation>एक सीरीज़</translation>
+        </message>
+        <message>
+            <source>Time spent</source>
+            <translation>बिताया समय</translation>
+        </message>
+        <message>
+            <source>Chapters and episodes</source>
+            <translation>चैप्टर और एपिसोड</translation>
+        </message>
+        <message>
+            <source>Number one of each</source>
+            <translation>हर एक का नंबर वन</translation>
+        </message>
+        <message>
+            <source>Genres</source>
+            <translation>शैलियाँ</translation>
+        </message>
+        <message>
+            <source>Author</source>
+            <translation>लेखक</translation>
+        </message>
+        <message>
+            <source>Music</source>
+            <translation>संगीत</translation>
+        </message>
+        <message>
+            <source>Streak</source>
+            <translation>लगातार</translation>
+        </message>
+        <message>
+            <source>Where it started</source>
+            <translation>शुरुआत कहाँ से हुई</translation>
+        </message>
+        <message>
+            <source>wrapped</source>
+            <translation>wrapped</translation>
+        </message>
+        <message>
+            <source>Customise</source>
+            <translation>कस्टमाइज़ करें</translation>
+        </message>
+        <message>
+            <source>Chapters you finish and time spent reading, watching and listening show up here.</source>
+            <translation>आपके पूरे किए अध्याय और पढ़ने, देखने और सुनने में बिताया समय यहाँ दिखता है।</translation>
+        </message>
+        <message>
+            <source>Wrapped</source>
+            <translation>Wrapped</translation>
+        </message>
+        <message>
+            <source>Your year in comics, novels, anime and music</source>
+            <translation>कॉमिक्स, उपन्यास, एनीमे और संगीत में आपका साल</translation>
+        </message>
+        <message>
+            <source>hours</source>
+            <translation>घंटे</translation>
+        </message>
+        <message>
+            <source>minutes</source>
+            <translation>मिनट</translation>
+        </message>
+        <message>
+            <source>That's %1 days without a break.</source>
+            <translation>यानी लगातार %1 दिन।</translation>
+        </message>
+        <message>
+            <source>You listened for</source>
+            <translation>आपने सुना</translation>
+        </message>
+        <message>
+            <source>to %1 songs</source>
+            <translation>%1 गाने</translation>
+        </message>
+        <message>
+            <source>and the artist you played most: %1</source>
+            <translation>और आपका सबसे ज़्यादा सुना कलाकार: %1</translation>
+        </message>
+        <message>
+            <source>day</source>
+            <translation>दिन</translation>
+        </message>
+        <message>
+            <source>days</source>
+            <translation>दिन</translation>
+        </message>
+        <message>
+            <source>Active days</source>
+            <translation>सक्रिय दिन</translation>
+        </message>
+        <message>
+            <source>Top author</source>
+            <translation>टॉप लेखक</translation>
+        </message>
+        <message>
+            <source>Wrapped %1</source>
+            <translation>Wrapped %1</translation>
+        </message>
+        <message>
+            <source>Top series: </source>
+            <translation>टॉप सीरीज़: </translation>
+        </message>
+        <message>
+            <source>Customise Wrapped</source>
+            <translation>Wrapped कस्टमाइज़ करें</translation>
+        </message>
+        <message>
+            <source>Style</source>
+            <translation>स्टाइल</translation>
+        </message>
+        <message>
+            <source>Vivid</source>
+            <translation>चटक</translation>
+        </message>
+        <message>
+            <source>Your accent</source>
+            <translation>आपका एक्सेंट रंग</translation>
+        </message>
+        <message>
+            <source>Midnight</source>
+            <translation>आधी रात</translation>
+        </message>
+        <message>
+            <source>Paper</source>
+            <translation>कागज़</translation>
+        </message>
+        <message>
+            <source>Hide titles and covers</source>
+            <translation>शीर्षक और कवर छिपाएँ</translation>
+        </message>
+        <message>
+            <source>For sharing: series show as “A comic”, “An anime”.</source>
+            <translation>शेयर करने के लिए: सीरीज़ “एक कॉमिक”, “एक एनीमे” के रूप में दिखती हैं।</translation>
+        </message>
+        <message>
+            <source>Slides</source>
+            <translation>स्लाइड</translation>
+        </message>
+        <message>
+            <source>Card</source>
+            <translation>कार्ड</translation>
+        </message>
+        <message>
+            <source>Story</source>
+            <translation>स्टोरी</translation>
+        </message>
+        <message>
+            <source>Square</source>
+            <translation>वर्गाकार</translation>
+        </message>
+        <message>
+            <source>Wide</source>
+            <translation>चौड़ा</translation>
+        </message>
+        <message>
+            <source>What it shows: the first four you pick.</source>
+            <translation>क्या दिखाता है: आपके चुने पहले चार।</translation>
+        </message>
+        <message>
+            <source>What it shows: up to six.</source>
+            <translation>क्या दिखाता है: छह तक।</translation>
+        </message>
+        <message>
+            <source>Covers of the top series</source>
+            <translation>टॉप सीरीज़ के कवर</translation>
+        </message>
+        <message>
+            <source>My username</source>
+            <translation>मेरा यूज़रनेम</translation>
+        </message>
+        <message>
+            <source>See the card</source>
+            <translation>कार्ड देखें</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>January</comment>
+            <translation>ज</translation>
+        </message>
+        <message>
+            <source>F</source>
+            <comment>February</comment>
+            <translation>फ़</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>March</comment>
+            <translation>मा</translation>
+        </message>
+        <message>
+            <source>A</source>
+            <comment>April</comment>
+            <translation>अ</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>May</comment>
+            <translation>म</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>June</comment>
+            <translation>जू</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>July</comment>
+            <translation>जु</translation>
+        </message>
+        <message>
+            <source>A</source>
+            <comment>August</comment>
+            <translation>अ</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>September</comment>
+            <translation>सि</translation>
+        </message>
+        <message>
+            <source>O</source>
+            <comment>October</comment>
+            <translation>अ</translation>
+        </message>
+        <message>
+            <source>N</source>
+            <comment>November</comment>
+            <translation>न</translation>
+        </message>
+        <message>
+            <source>D</source>
+            <comment>December</comment>
+            <translation>दि</translation>
         </message>
     </context>
     <context>

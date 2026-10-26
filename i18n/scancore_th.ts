@@ -684,6 +684,10 @@
             <source>music extensions</source>
             <translation>ส่วนขยายเพลง</translation>
         </message>
+        <message>
+            <source>Paste the link from the repository's page, or the link to its index, repo.json or plugin list; several at once work too. SCANCORE reads Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader repositories, and CloudStream repository codes.</source>
+            <translation>วางลิงก์จากหน้าของคลัง หรือลิงก์ไปยัง index, repo.json หรือรายการปลั๊กอิน วางหลายลิงก์พร้อมกันก็ได้ SCANCORE อ่านคลังของ Mihon, Tachiyomi, Aniyomi, CloudStream และ LNReader ใช้รหัสคลังของ CloudStream ได้ด้วย</translation>
+        </message>
     </context>
     <context>
         <name>AddSectionSheet</name>
@@ -3790,6 +3794,10 @@
             <source>Music</source>
             <translation>เพลง</translation>
         </message>
+        <message>
+            <source>Show all %1 sources</source>
+            <translation>แสดงแหล่งทั้งหมด %1 แหล่ง</translation>
+        </message>
     </context>
     <context>
         <name>FilterSheet</name>
@@ -4200,6 +4208,21 @@
         <message>
             <source>Continue the story</source>
             <translation>อ่านเรื่องราวต่อ</translation>
+        </message>
+        <message>
+            <source>Your year in comics, novels, anime and music</source>
+            <translation>ปีของคุณกับการ์ตูน นิยาย อนิเมะ และเพลง</translation>
+        </message>
+    </context>
+    <context>
+        <name>HomeWidget</name>
+        <message>
+            <source>Episode %1</source>
+            <translation>ตอนที่ %1</translation>
+        </message>
+        <message>
+            <source>Chapter %1</source>
+            <translation>ตอนที่ %1</translation>
         </message>
     </context>
     <context>
@@ -6759,6 +6782,18 @@
             <source>All files (*)</source>
             <translation>ไฟล์ทั้งหมด (*)</translation>
         </message>
+        <message>
+            <source>Open a book file (EPUB, FB2, MOBI or PDF)</source>
+            <translation>เปิดไฟล์หนังสือ (EPUB, FB2, MOBI หรือ PDF)</translation>
+        </message>
+        <message>
+            <source>Choose the folders that hold your EPUB, FB2 and MOBI books in Settings → Sources.</source>
+            <translation>เลือกโฟลเดอร์ที่มีหนังสือ EPUB, FB2 และ MOBI ใน การตั้งค่า → แหล่ง</translation>
+        </message>
+        <message>
+            <source>Books (*.epub *.fb2 *.fb2.zip *.mobi *.azw3 *.azw *.prc *.pdf)</source>
+            <translation>หนังสือ (*.epub *.fb2 *.fb2.zip *.mobi *.azw3 *.azw *.prc *.pdf)</translation>
+        </message>
     </context>
     <context>
         <name>NowPlayingPage</name>
@@ -7504,6 +7539,14 @@
             <source>Download</source>
             <translation>ดาวน์โหลด</translation>
         </message>
+        <message>
+            <source>Ready: pages in this language can be translated on this device.</source>
+            <translation>พร้อมแล้ว: หน้าในภาษานี้แปลบนอุปกรณ์นี้ได้</translation>
+        </message>
+        <message>
+            <source>Translate on this device</source>
+            <translation>แปลบนอุปกรณ์นี้</translation>
+        </message>
     </context>
     <context>
         <name>PageHeader</name>
@@ -7983,6 +8026,62 @@
         <message>
             <source>The image could not be saved.</source>
             <translation>บันทึกรูปภาพไม่ได้</translation>
+        </message>
+        <message>
+            <source>This is no longer on %1.</source>
+            <translation>ไม่มีใน %1 แล้ว</translation>
+        </message>
+        <message>
+            <source>%1 cannot do that.</source>
+            <translation>%1 ทำแบบนั้นไม่ได้</translation>
+        </message>
+        <message>
+            <source>%1 has no video file for this.</source>
+            <translation>%1 ไม่มีไฟล์วิดีโอสำหรับรายการนี้</translation>
+        </message>
+        <message>
+            <source>Original</source>
+            <translation>ต้นฉบับ</translation>
+        </message>
+        <message>
+            <source>Transcoded by the server (H.264)</source>
+            <translation>แปลงโดยเซิร์ฟเวอร์ (H.264)</translation>
+        </message>
+        <message>
+            <source>%1 is not an OPDS catalogue (its address may be the server's page, not its OPDS feed).</source>
+            <translation>%1 ไม่ใช่แคตตาล็อก OPDS (ที่อยู่อาจเป็นหน้าของเซิร์ฟเวอร์ ไม่ใช่ฟีด OPDS)</translation>
+        </message>
+        <message>
+            <source>The book could not be saved.</source>
+            <translation>บันทึกหนังสือไม่ได้</translation>
+        </message>
+        <message>
+            <source>%1 stopped sending the book.</source>
+            <translation>%1 หยุดส่งหนังสือ</translation>
+        </message>
+        <message>
+            <source>The catalogue's start</source>
+            <translation>หน้าแรกของแคตตาล็อก</translation>
+        </message>
+        <message>
+            <source>Section</source>
+            <translation>หมวด</translation>
+        </message>
+        <message>
+            <source>This is a folder of series: pick it under Section in this source's filters to see them.</source>
+            <translation>นี่คือโฟลเดอร์รวมเรื่อง: เลือกในหมวดของตัวกรองแหล่งนี้เพื่อดู</translation>
+        </message>
+        <message>
+            <source>This folder has no comics SCANCORE can read (CBZ, CBR, CB7, PDF or streamed pages). Books in EPUB are under Novels.</source>
+            <translation>โฟลเดอร์นี้ไม่มีการ์ตูนที่ SCANCORE อ่านได้ (CBZ, CBR, CB7, PDF หรือหน้าแบบสตรีม) หนังสือ EPUB อยู่ในนิยาย</translation>
+        </message>
+        <message>
+            <source>This book is not in EPUB.</source>
+            <translation>หนังสือเล่มนี้ไม่ใช่ EPUB</translation>
+        </message>
+        <message>
+            <source>This folder has no books in EPUB here: it may be a folder of series (pick it under Section in this source's filters), or hold comics (under Comics).</source>
+            <translation>โฟลเดอร์นี้ไม่มีหนังสือ EPUB: อาจเป็นโฟลเดอร์รวมเรื่อง (เลือกในหมวดของตัวกรองแหล่งนี้) หรือมีการ์ตูน (อยู่ในการ์ตูน)</translation>
         </message>
     </context>
     <context>
@@ -8733,6 +8832,10 @@
             <source>Choose…</source>
             <translation>เลือก…</translation>
         </message>
+        <message>
+            <source>Translate on this device</source>
+            <translation>แปลบนอุปกรณ์นี้</translation>
+        </message>
     </context>
     <context>
         <name>RecentSearches</name>
@@ -9238,10 +9341,37 @@
         </message>
     </context>
     <context>
+        <name>sc::HomeWidget</name>
+        <message>
+            <source>Continue</source>
+            <translation>ดำเนินการต่อ</translation>
+        </message>
+        <message>
+            <source>Nothing yet: what you read and watch shows here.</source>
+            <translation>ยังไม่มี: สิ่งที่คุณอ่านและดูจะแสดงที่นี่</translation>
+        </message>
+        <message>
+            <source>Open SCANCORE</source>
+            <translation>เปิด SCANCORE</translation>
+        </message>
+        <message>
+            <source>1 new chapter</source>
+            <translation>1 ตอนใหม่</translation>
+        </message>
+        <message>
+            <source>%1 new chapters</source>
+            <translation>%1 ตอนใหม่</translation>
+        </message>
+    </context>
+    <context>
         <name>sc::MediaControls</name>
         <message>
             <source>Reading aloud</source>
             <translation>อ่านออกเสียง</translation>
+        </message>
+        <message>
+            <source>Music</source>
+            <translation>เพลง</translation>
         </message>
     </context>
     <context>
@@ -9340,6 +9470,18 @@
         <message>
             <source>Downloaded once; nothing leaves the computer</source>
             <translation>ดาวน์โหลดครั้งเดียว ไม่มีอะไรออกจากคอมพิวเตอร์</translation>
+        </message>
+        <message>
+            <source>Downloaded languages</source>
+            <translation>ภาษาที่ดาวน์โหลดแล้ว</translation>
+        </message>
+        <message>
+            <source>Downloaded once; pages never leave the device</source>
+            <translation>ดาวน์โหลดครั้งเดียว หน้าไม่ออกจากอุปกรณ์เลย</translation>
+        </message>
+        <message>
+            <source>Downloaded once; nothing leaves the device</source>
+            <translation>ดาวน์โหลดครั้งเดียว ไม่มีอะไรออกจากอุปกรณ์</translation>
         </message>
     </context>
     <context>
@@ -9726,6 +9868,26 @@
         <message>
             <source>Save and try</source>
             <translation>บันทึกและลอง</translation>
+        </message>
+        <message>
+            <source>Connected: 1 show or film found.</source>
+            <translation>เชื่อมต่อแล้ว: พบรายการหรือภาพยนตร์ 1 เรื่อง</translation>
+        </message>
+        <message>
+            <source>Connected: more than %1 shows and films found.</source>
+            <translation>เชื่อมต่อแล้ว: พบรายการและภาพยนตร์มากกว่า %1 เรื่อง</translation>
+        </message>
+        <message>
+            <source>Connected: %1 shows and films found.</source>
+            <translation>เชื่อมต่อแล้ว: พบรายการและภาพยนตร์ %1 เรื่อง</translation>
+        </message>
+        <message>
+            <source>Any OPDS catalogue (Calibre-web, Kavita, Komga, Ubooquity…): paste its OPDS address. Comics open under Comics, EPUB books under Novels. The login stays on this device.</source>
+            <translation>แคตตาล็อก OPDS ใดก็ได้ (Calibre-web, Kavita, Komga, Ubooquity…): วางที่อยู่ OPDS การ์ตูนจะเปิดในการ์ตูน หนังสือ EPUB เปิดในนิยาย ข้อมูลเข้าสู่ระบบอยู่ในอุปกรณ์นี้เท่านั้น</translation>
+        </message>
+        <message>
+            <source>Watch the shows and films on your own Jellyfin server under Anime. Where you stop is kept on the server too, so its other apps carry on from there. The login stays on this device.</source>
+            <translation>ดูรายการและภาพยนตร์จากเซิร์ฟเวอร์ Jellyfin ของคุณเองในอนิเมะ เซิร์ฟเวอร์จะจำจุดที่คุณหยุดไว้ด้วย แอปอื่นของมันจึงดูต่อได้ ข้อมูลเข้าสู่ระบบอยู่ในอุปกรณ์นี้เท่านั้น</translation>
         </message>
     </context>
     <context>
@@ -10565,6 +10727,22 @@
         <message>
             <source>Whether the extensions runtime answers, a quick test of a source, and the sites each extension contacted.</source>
             <translation>รันไทม์ส่วนขยายตอบหรือไม่ ทดสอบแหล่งอย่างรวดเร็ว และเว็บไซต์ที่ส่วนขยายแต่ละตัวติดต่อ</translation>
+        </message>
+        <message>
+            <source>Komga, Kavita and Suwayomi servers you run, and OPDS catalogues: their comics and books are a source like the others, searched with them and saved to the library. A Jellyfin server's shows and films play under Anime.</source>
+            <translation>เซิร์ฟเวอร์ Komga, Kavita และ Suwayomi ที่คุณใช้ และแคตตาล็อก OPDS: การ์ตูนและหนังสือจากที่นั่นเป็นแหล่งเหมือนแหล่งอื่น ค้นหาไปพร้อมกันและบันทึกในคลังได้ รายการและภาพยนตร์จากเซิร์ฟเวอร์ Jellyfin เล่นในอนิเมะ</translation>
+        </message>
+        <message>
+            <source>Each folder or file in these folders is a series: folders of images, CBZ, CBR, 7z and PDF files for comics, and EPUB, FB2 and MOBI books for novels. </source>
+            <translation>ทุกโฟลเดอร์หรือไฟล์ในโฟลเดอร์เหล่านี้คือหนึ่งเรื่อง: โฟลเดอร์รูปภาพ ไฟล์ CBZ, CBR, 7z และ PDF สำหรับการ์ตูน และหนังสือ EPUB, FB2 และ MOBI สำหรับนิยาย </translation>
+        </message>
+        <message>
+            <source>Comics and books (*.cbz *.zip *.cbr *.rar *.cb7 *.7z *.pdf *.epub *.fb2 *.mobi *.azw3)</source>
+            <translation>การ์ตูนและหนังสือ (*.cbz *.zip *.cbr *.rar *.cb7 *.7z *.pdf *.epub *.fb2 *.mobi *.azw3)</translation>
+        </message>
+        <message>
+            <source>SCANCORE runs Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader extensions from repositories you add. It has no repository of its own.</source>
+            <translation>SCANCORE รันส่วนขยาย Mihon, Tachiyomi, Aniyomi, CloudStream และ LNReader จากคลังที่คุณเพิ่ม ไม่มีคลังของตัวเอง</translation>
         </message>
     </context>
     <context>
@@ -11629,6 +11807,10 @@
             <source>Save series to your library and check them for updates; their next chapters show here.</source>
             <translation>บันทึกเรื่องลงคลังและตรวจหาการอัปเดต ตอนถัดไปจะแสดงที่นี่</translation>
         </message>
+        <message>
+            <source>Show all %1</source>
+            <translation>แสดงทั้งหมด %1</translation>
+        </message>
     </context>
     <context>
         <name>UpdateBanner</name>
@@ -12347,6 +12529,293 @@
         <message>
             <source>Could not save the picture</source>
             <translation>บันทึกรูปภาพไม่ได้</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>Monday</comment>
+            <translation>จ</translation>
+        </message>
+        <message>
+            <source>T</source>
+            <comment>Tuesday</comment>
+            <translation>อ</translation>
+        </message>
+        <message>
+            <source>W</source>
+            <comment>Wednesday</comment>
+            <translation>พ</translation>
+        </message>
+        <message>
+            <source>T</source>
+            <comment>Thursday</comment>
+            <translation>พฤ</translation>
+        </message>
+        <message>
+            <source>F</source>
+            <comment>Friday</comment>
+            <translation>ศ</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>Saturday</comment>
+            <translation>ส</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>Sunday</comment>
+            <translation>อา</translation>
+        </message>
+        <message>
+            <source>A comic</source>
+            <translation>การ์ตูนเรื่องหนึ่ง</translation>
+        </message>
+        <message>
+            <source>A novel</source>
+            <translation>นิยายเรื่องหนึ่ง</translation>
+        </message>
+        <message>
+            <source>An anime</source>
+            <translation>อนิเมะเรื่องหนึ่ง</translation>
+        </message>
+        <message>
+            <source>A song</source>
+            <translation>เพลงหนึ่ง</translation>
+        </message>
+        <message>
+            <source>A series</source>
+            <translation>เรื่องหนึ่ง</translation>
+        </message>
+        <message>
+            <source>Time spent</source>
+            <translation>เวลาที่ใช้</translation>
+        </message>
+        <message>
+            <source>Chapters and episodes</source>
+            <translation>ตอนและตอนอนิเมะ</translation>
+        </message>
+        <message>
+            <source>Number one of each</source>
+            <translation>อันดับหนึ่งของแต่ละอย่าง</translation>
+        </message>
+        <message>
+            <source>Genres</source>
+            <translation>ประเภท</translation>
+        </message>
+        <message>
+            <source>Author</source>
+            <translation>ผู้เขียน</translation>
+        </message>
+        <message>
+            <source>Music</source>
+            <translation>เพลง</translation>
+        </message>
+        <message>
+            <source>Streak</source>
+            <translation>ต่อเนื่อง</translation>
+        </message>
+        <message>
+            <source>Where it started</source>
+            <translation>จุดเริ่มต้น</translation>
+        </message>
+        <message>
+            <source>wrapped</source>
+            <translation>wrapped</translation>
+        </message>
+        <message>
+            <source>Customise</source>
+            <translation>ปรับแต่ง</translation>
+        </message>
+        <message>
+            <source>Chapters you finish and time spent reading, watching and listening show up here.</source>
+            <translation>ตอนที่อ่านจบและเวลาที่ใช้อ่าน ดู และฟัง จะแสดงที่นี่</translation>
+        </message>
+        <message>
+            <source>Wrapped</source>
+            <translation>Wrapped</translation>
+        </message>
+        <message>
+            <source>Your year in comics, novels, anime and music</source>
+            <translation>ปีของคุณกับการ์ตูน นิยาย อนิเมะ และเพลง</translation>
+        </message>
+        <message>
+            <source>hours</source>
+            <translation>ชั่วโมง</translation>
+        </message>
+        <message>
+            <source>minutes</source>
+            <translation>นาที</translation>
+        </message>
+        <message>
+            <source>That's %1 days without a break.</source>
+            <translation>ติดต่อกัน %1 วัน</translation>
+        </message>
+        <message>
+            <source>You listened for</source>
+            <translation>คุณฟังไป</translation>
+        </message>
+        <message>
+            <source>to %1 songs</source>
+            <translation>%1 เพลง</translation>
+        </message>
+        <message>
+            <source>and the artist you played most: %1</source>
+            <translation>และศิลปินที่คุณฟังมากที่สุด: %1</translation>
+        </message>
+        <message>
+            <source>day</source>
+            <translation>วัน</translation>
+        </message>
+        <message>
+            <source>days</source>
+            <translation>วัน</translation>
+        </message>
+        <message>
+            <source>Active days</source>
+            <translation>วันที่ใช้งาน</translation>
+        </message>
+        <message>
+            <source>Top author</source>
+            <translation>ผู้เขียนอันดับหนึ่ง</translation>
+        </message>
+        <message>
+            <source>Wrapped %1</source>
+            <translation>Wrapped %1</translation>
+        </message>
+        <message>
+            <source>Top series: </source>
+            <translation>เรื่องอันดับหนึ่ง: </translation>
+        </message>
+        <message>
+            <source>Customise Wrapped</source>
+            <translation>ปรับแต่ง Wrapped</translation>
+        </message>
+        <message>
+            <source>Style</source>
+            <translation>สไตล์</translation>
+        </message>
+        <message>
+            <source>Vivid</source>
+            <translation>สดใส</translation>
+        </message>
+        <message>
+            <source>Your accent</source>
+            <translation>สีเน้นของคุณ</translation>
+        </message>
+        <message>
+            <source>Midnight</source>
+            <translation>เที่ยงคืน</translation>
+        </message>
+        <message>
+            <source>Paper</source>
+            <translation>กระดาษ</translation>
+        </message>
+        <message>
+            <source>Hide titles and covers</source>
+            <translation>ซ่อนชื่อและปก</translation>
+        </message>
+        <message>
+            <source>For sharing: series show as “A comic”, “An anime”.</source>
+            <translation>สำหรับแชร์: เรื่องจะแสดงเป็น “การ์ตูนเรื่องหนึ่ง”, “อนิเมะเรื่องหนึ่ง”</translation>
+        </message>
+        <message>
+            <source>Slides</source>
+            <translation>สไลด์</translation>
+        </message>
+        <message>
+            <source>Card</source>
+            <translation>การ์ด</translation>
+        </message>
+        <message>
+            <source>Story</source>
+            <translation>สตอรี่</translation>
+        </message>
+        <message>
+            <source>Square</source>
+            <translation>สี่เหลี่ยมจัตุรัส</translation>
+        </message>
+        <message>
+            <source>Wide</source>
+            <translation>กว้าง</translation>
+        </message>
+        <message>
+            <source>What it shows: the first four you pick.</source>
+            <translation>สิ่งที่แสดง: สี่อย่างแรกที่คุณเลือก</translation>
+        </message>
+        <message>
+            <source>What it shows: up to six.</source>
+            <translation>สิ่งที่แสดง: สูงสุดหก</translation>
+        </message>
+        <message>
+            <source>Covers of the top series</source>
+            <translation>ปกเรื่องยอดนิยม</translation>
+        </message>
+        <message>
+            <source>My username</source>
+            <translation>ชื่อผู้ใช้ของฉัน</translation>
+        </message>
+        <message>
+            <source>See the card</source>
+            <translation>ดูการ์ด</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>January</comment>
+            <translation>1</translation>
+        </message>
+        <message>
+            <source>F</source>
+            <comment>February</comment>
+            <translation>2</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>March</comment>
+            <translation>3</translation>
+        </message>
+        <message>
+            <source>A</source>
+            <comment>April</comment>
+            <translation>4</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>May</comment>
+            <translation>5</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>June</comment>
+            <translation>6</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>July</comment>
+            <translation>7</translation>
+        </message>
+        <message>
+            <source>A</source>
+            <comment>August</comment>
+            <translation>8</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>September</comment>
+            <translation>9</translation>
+        </message>
+        <message>
+            <source>O</source>
+            <comment>October</comment>
+            <translation>10</translation>
+        </message>
+        <message>
+            <source>N</source>
+            <comment>November</comment>
+            <translation>11</translation>
+        </message>
+        <message>
+            <source>D</source>
+            <comment>December</comment>
+            <translation>12</translation>
         </message>
     </context>
     <context>

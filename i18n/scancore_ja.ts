@@ -684,6 +684,10 @@
             <source>music extensions</source>
             <translation>音楽拡張機能</translation>
         </message>
+        <message>
+            <source>Paste the link from the repository's page, or the link to its index, repo.json or plugin list; several at once work too. SCANCORE reads Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader repositories, and CloudStream repository codes.</source>
+            <translation>リポジトリのページのリンク、またはその index、repo.json、プラグイン一覧へのリンクを貼り付けてください。複数まとめても使えます。SCANCORE は Mihon、Tachiyomi、Aniyomi、CloudStream、LNReader のリポジトリを読み込めます。CloudStream のリポジトリコードも使えます。</translation>
+        </message>
     </context>
     <context>
         <name>AddSectionSheet</name>
@@ -3798,6 +3802,10 @@
             <source>Music</source>
             <translation>音楽</translation>
         </message>
+        <message>
+            <source>Show all %1 sources</source>
+            <translation>%1 個のソースをすべて表示</translation>
+        </message>
     </context>
     <context>
         <name>FilterSheet</name>
@@ -4208,6 +4216,21 @@
         <message>
             <source>Continue the story</source>
             <translation>物語の続き</translation>
+        </message>
+        <message>
+            <source>Your year in comics, novels, anime and music</source>
+            <translation>コミック・小説・アニメ・音楽で振り返るあなたの1年</translation>
+        </message>
+    </context>
+    <context>
+        <name>HomeWidget</name>
+        <message>
+            <source>Episode %1</source>
+            <translation>エピソード %1</translation>
+        </message>
+        <message>
+            <source>Chapter %1</source>
+            <translation>チャプター %1</translation>
         </message>
     </context>
     <context>
@@ -6767,6 +6790,18 @@
             <source>All files (*)</source>
             <translation>すべてのファイル (*)</translation>
         </message>
+        <message>
+            <source>Open a book file (EPUB, FB2, MOBI or PDF)</source>
+            <translation>本のファイルを開く（EPUB、FB2、MOBI、PDF）</translation>
+        </message>
+        <message>
+            <source>Choose the folders that hold your EPUB, FB2 and MOBI books in Settings → Sources.</source>
+            <translation>設定 → ソースで EPUB・FB2・MOBI の本があるフォルダーを選んでください。</translation>
+        </message>
+        <message>
+            <source>Books (*.epub *.fb2 *.fb2.zip *.mobi *.azw3 *.azw *.prc *.pdf)</source>
+            <translation>本 (*.epub *.fb2 *.fb2.zip *.mobi *.azw3 *.azw *.prc *.pdf)</translation>
+        </message>
     </context>
     <context>
         <name>NowPlayingPage</name>
@@ -7512,6 +7547,14 @@
             <source>Download</source>
             <translation>ダウンロード</translation>
         </message>
+        <message>
+            <source>Ready: pages in this language can be translated on this device.</source>
+            <translation>準備完了：この言語のページをこの端末で翻訳できます。</translation>
+        </message>
+        <message>
+            <source>Translate on this device</source>
+            <translation>この端末で翻訳</translation>
+        </message>
     </context>
     <context>
         <name>PageHeader</name>
@@ -7991,6 +8034,62 @@
         <message>
             <source>The image could not be saved.</source>
             <translation>画像を保存できませんでした。</translation>
+        </message>
+        <message>
+            <source>This is no longer on %1.</source>
+            <translation>%1 にはもうありません。</translation>
+        </message>
+        <message>
+            <source>%1 cannot do that.</source>
+            <translation>%1 はそれを実行できません。</translation>
+        </message>
+        <message>
+            <source>%1 has no video file for this.</source>
+            <translation>%1 にはこの動画ファイルがありません。</translation>
+        </message>
+        <message>
+            <source>Original</source>
+            <translation>オリジナル</translation>
+        </message>
+        <message>
+            <source>Transcoded by the server (H.264)</source>
+            <translation>サーバーで変換（H.264）</translation>
+        </message>
+        <message>
+            <source>%1 is not an OPDS catalogue (its address may be the server's page, not its OPDS feed).</source>
+            <translation>%1 は OPDS カタログではありません（アドレスが OPDS フィードではなくサーバーのページかもしれません）。</translation>
+        </message>
+        <message>
+            <source>The book could not be saved.</source>
+            <translation>本を保存できませんでした。</translation>
+        </message>
+        <message>
+            <source>%1 stopped sending the book.</source>
+            <translation>%1 が本の送信を止めました。</translation>
+        </message>
+        <message>
+            <source>The catalogue's start</source>
+            <translation>カタログのトップ</translation>
+        </message>
+        <message>
+            <source>Section</source>
+            <translation>セクション</translation>
+        </message>
+        <message>
+            <source>This is a folder of series: pick it under Section in this source's filters to see them.</source>
+            <translation>シリーズのフォルダーです：表示するには、このソースのフィルターの「セクション」で選んでください。</translation>
+        </message>
+        <message>
+            <source>This folder has no comics SCANCORE can read (CBZ, CBR, CB7, PDF or streamed pages). Books in EPUB are under Novels.</source>
+            <translation>このフォルダーには SCANCORE で読めるコミックがありません（CBZ、CBR、CB7、PDF、ストリーミングのページ）。EPUB の本は「小説」にあります。</translation>
+        </message>
+        <message>
+            <source>This book is not in EPUB.</source>
+            <translation>この本は EPUB ではありません。</translation>
+        </message>
+        <message>
+            <source>This folder has no books in EPUB here: it may be a folder of series (pick it under Section in this source's filters), or hold comics (under Comics).</source>
+            <translation>このフォルダーには EPUB の本がありません：シリーズのフォルダーかもしれません（このソースのフィルターの「セクション」で選択）。またはコミックが入っています（「コミック」へ）。</translation>
         </message>
     </context>
     <context>
@@ -8741,6 +8840,10 @@
             <source>Choose…</source>
             <translation>選択…</translation>
         </message>
+        <message>
+            <source>Translate on this device</source>
+            <translation>この端末で翻訳</translation>
+        </message>
     </context>
     <context>
         <name>RecentSearches</name>
@@ -9253,10 +9356,37 @@
         </message>
     </context>
     <context>
+        <name>sc::HomeWidget</name>
+        <message>
+            <source>Continue</source>
+            <translation>続ける</translation>
+        </message>
+        <message>
+            <source>Nothing yet: what you read and watch shows here.</source>
+            <translation>まだありません：読んだり観たりしたものがここに表示されます。</translation>
+        </message>
+        <message>
+            <source>Open SCANCORE</source>
+            <translation>SCANCORE を開く</translation>
+        </message>
+        <message>
+            <source>1 new chapter</source>
+            <translation>新しい章 1 件</translation>
+        </message>
+        <message>
+            <source>%1 new chapters</source>
+            <translation>新しい章 %1 件</translation>
+        </message>
+    </context>
+    <context>
         <name>sc::MediaControls</name>
         <message>
             <source>Reading aloud</source>
             <translation>読み上げ</translation>
+        </message>
+        <message>
+            <source>Music</source>
+            <translation>音楽</translation>
         </message>
     </context>
     <context>
@@ -9355,6 +9485,18 @@
         <message>
             <source>Downloaded once; nothing leaves the computer</source>
             <translation>一度ダウンロード。何もコンピューターの外に出ません</translation>
+        </message>
+        <message>
+            <source>Downloaded languages</source>
+            <translation>ダウンロード済みの言語</translation>
+        </message>
+        <message>
+            <source>Downloaded once; pages never leave the device</source>
+            <translation>一度だけダウンロード。ページは端末の外に出ません</translation>
+        </message>
+        <message>
+            <source>Downloaded once; nothing leaves the device</source>
+            <translation>一度だけダウンロード。端末の外には何も送られません</translation>
         </message>
     </context>
     <context>
@@ -9741,6 +9883,26 @@
         <message>
             <source>Save and try</source>
             <translation>保存してテスト</translation>
+        </message>
+        <message>
+            <source>Connected: 1 show or film found.</source>
+            <translation>接続しました：番組または映画が 1 件見つかりました。</translation>
+        </message>
+        <message>
+            <source>Connected: more than %1 shows and films found.</source>
+            <translation>接続しました：番組と映画が %1 件以上見つかりました。</translation>
+        </message>
+        <message>
+            <source>Connected: %1 shows and films found.</source>
+            <translation>接続しました：番組と映画が %1 件見つかりました。</translation>
+        </message>
+        <message>
+            <source>Any OPDS catalogue (Calibre-web, Kavita, Komga, Ubooquity…): paste its OPDS address. Comics open under Comics, EPUB books under Novels. The login stays on this device.</source>
+            <translation>任意の OPDS カタログ（Calibre-web、Kavita、Komga、Ubooquity…）：OPDS アドレスを貼り付けます。コミックは「コミック」、EPUB の本は「小説」で開きます。ログイン情報はこの端末に残ります。</translation>
+        </message>
+        <message>
+            <source>Watch the shows and films on your own Jellyfin server under Anime. Where you stop is kept on the server too, so its other apps carry on from there. The login stays on this device.</source>
+            <translation>自分の Jellyfin サーバーの番組と映画を「アニメ」で観られます。止めた位置はサーバーにも記録され、ほかのアプリでもそこから続きを観られます。ログイン情報はこの端末に残ります。</translation>
         </message>
     </context>
     <context>
@@ -10580,6 +10742,22 @@
         <message>
             <source>Whether the extensions runtime answers, a quick test of a source, and the sites each extension contacted.</source>
             <translation>拡張機能ランタイムが応答するか、ソースの簡単なテスト、各拡張機能が接続したサイト。</translation>
+        </message>
+        <message>
+            <source>Komga, Kavita and Suwayomi servers you run, and OPDS catalogues: their comics and books are a source like the others, searched with them and saved to the library. A Jellyfin server's shows and films play under Anime.</source>
+            <translation>自分で運営する Komga・Kavita・Suwayomi サーバーと OPDS カタログ：そのコミックや本はほかと同じソースとして一緒に検索され、ライブラリに保存されます。Jellyfin サーバーの番組と映画は「アニメ」で再生されます。</translation>
+        </message>
+        <message>
+            <source>Each folder or file in these folders is a series: folders of images, CBZ, CBR, 7z and PDF files for comics, and EPUB, FB2 and MOBI books for novels. </source>
+            <translation>これらのフォルダー内の各フォルダーやファイルが 1 つのシリーズです：コミックは画像フォルダー、CBZ、CBR、7z、PDF、小説は EPUB、FB2、MOBI の本。</translation>
+        </message>
+        <message>
+            <source>Comics and books (*.cbz *.zip *.cbr *.rar *.cb7 *.7z *.pdf *.epub *.fb2 *.mobi *.azw3)</source>
+            <translation>コミックと本 (*.cbz *.zip *.cbr *.rar *.cb7 *.7z *.pdf *.epub *.fb2 *.mobi *.azw3)</translation>
+        </message>
+        <message>
+            <source>SCANCORE runs Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader extensions from repositories you add. It has no repository of its own.</source>
+            <translation>SCANCORE は追加したリポジトリの Mihon、Tachiyomi、Aniyomi、CloudStream、LNReader の拡張機能を動かします。独自のリポジトリはありません。</translation>
         </message>
     </context>
     <context>
@@ -11644,6 +11822,10 @@
             <source>Save series to your library and check them for updates; their next chapters show here.</source>
             <translation>シリーズをライブラリに保存して更新を確認すると、次のチャプターがここに表示されます。</translation>
         </message>
+        <message>
+            <source>Show all %1</source>
+            <translation>すべて表示（%1）</translation>
+        </message>
     </context>
     <context>
         <name>UpdateBanner</name>
@@ -12362,6 +12544,293 @@
         <message>
             <source>Could not save the picture</source>
             <translation>画像を保存できませんでした</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>Monday</comment>
+            <translation>月</translation>
+        </message>
+        <message>
+            <source>T</source>
+            <comment>Tuesday</comment>
+            <translation>火</translation>
+        </message>
+        <message>
+            <source>W</source>
+            <comment>Wednesday</comment>
+            <translation>水</translation>
+        </message>
+        <message>
+            <source>T</source>
+            <comment>Thursday</comment>
+            <translation>木</translation>
+        </message>
+        <message>
+            <source>F</source>
+            <comment>Friday</comment>
+            <translation>金</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>Saturday</comment>
+            <translation>土</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>Sunday</comment>
+            <translation>日</translation>
+        </message>
+        <message>
+            <source>A comic</source>
+            <translation>あるコミック</translation>
+        </message>
+        <message>
+            <source>A novel</source>
+            <translation>ある小説</translation>
+        </message>
+        <message>
+            <source>An anime</source>
+            <translation>あるアニメ</translation>
+        </message>
+        <message>
+            <source>A song</source>
+            <translation>ある曲</translation>
+        </message>
+        <message>
+            <source>A series</source>
+            <translation>あるシリーズ</translation>
+        </message>
+        <message>
+            <source>Time spent</source>
+            <translation>利用時間</translation>
+        </message>
+        <message>
+            <source>Chapters and episodes</source>
+            <translation>章とエピソード</translation>
+        </message>
+        <message>
+            <source>Number one of each</source>
+            <translation>それぞれのナンバーワン</translation>
+        </message>
+        <message>
+            <source>Genres</source>
+            <translation>ジャンル</translation>
+        </message>
+        <message>
+            <source>Author</source>
+            <translation>作家</translation>
+        </message>
+        <message>
+            <source>Music</source>
+            <translation>音楽</translation>
+        </message>
+        <message>
+            <source>Streak</source>
+            <translation>連続記録</translation>
+        </message>
+        <message>
+            <source>Where it started</source>
+            <translation>すべての始まり</translation>
+        </message>
+        <message>
+            <source>wrapped</source>
+            <translation>wrapped</translation>
+        </message>
+        <message>
+            <source>Customise</source>
+            <translation>カスタマイズ</translation>
+        </message>
+        <message>
+            <source>Chapters you finish and time spent reading, watching and listening show up here.</source>
+            <translation>読み終えた章と、読む・観る・聴くのに使った時間がここに表示されます。</translation>
+        </message>
+        <message>
+            <source>Wrapped</source>
+            <translation>Wrapped</translation>
+        </message>
+        <message>
+            <source>Your year in comics, novels, anime and music</source>
+            <translation>コミック・小説・アニメ・音楽で振り返るあなたの1年</translation>
+        </message>
+        <message>
+            <source>hours</source>
+            <translation>時間</translation>
+        </message>
+        <message>
+            <source>minutes</source>
+            <translation>分</translation>
+        </message>
+        <message>
+            <source>That's %1 days without a break.</source>
+            <translation>%1 日連続です。</translation>
+        </message>
+        <message>
+            <source>You listened for</source>
+            <translation>聴いた時間</translation>
+        </message>
+        <message>
+            <source>to %1 songs</source>
+            <translation>%1 曲</translation>
+        </message>
+        <message>
+            <source>and the artist you played most: %1</source>
+            <translation>いちばん聴いたアーティスト：%1</translation>
+        </message>
+        <message>
+            <source>day</source>
+            <translation>日</translation>
+        </message>
+        <message>
+            <source>days</source>
+            <translation>日</translation>
+        </message>
+        <message>
+            <source>Active days</source>
+            <translation>アクティブな日数</translation>
+        </message>
+        <message>
+            <source>Top author</source>
+            <translation>トップ作家</translation>
+        </message>
+        <message>
+            <source>Wrapped %1</source>
+            <translation>Wrapped %1</translation>
+        </message>
+        <message>
+            <source>Top series: </source>
+            <translation>トップシリーズ：</translation>
+        </message>
+        <message>
+            <source>Customise Wrapped</source>
+            <translation>Wrapped をカスタマイズ</translation>
+        </message>
+        <message>
+            <source>Style</source>
+            <translation>スタイル</translation>
+        </message>
+        <message>
+            <source>Vivid</source>
+            <translation>ビビッド</translation>
+        </message>
+        <message>
+            <source>Your accent</source>
+            <translation>アクセントカラー</translation>
+        </message>
+        <message>
+            <source>Midnight</source>
+            <translation>ミッドナイト</translation>
+        </message>
+        <message>
+            <source>Paper</source>
+            <translation>紙</translation>
+        </message>
+        <message>
+            <source>Hide titles and covers</source>
+            <translation>タイトルと表紙を隠す</translation>
+        </message>
+        <message>
+            <source>For sharing: series show as “A comic”, “An anime”.</source>
+            <translation>共有用：シリーズは「あるコミック」「あるアニメ」と表示されます。</translation>
+        </message>
+        <message>
+            <source>Slides</source>
+            <translation>スライド</translation>
+        </message>
+        <message>
+            <source>Card</source>
+            <translation>カード</translation>
+        </message>
+        <message>
+            <source>Story</source>
+            <translation>ストーリー</translation>
+        </message>
+        <message>
+            <source>Square</source>
+            <translation>正方形</translation>
+        </message>
+        <message>
+            <source>Wide</source>
+            <translation>ワイド</translation>
+        </message>
+        <message>
+            <source>What it shows: the first four you pick.</source>
+            <translation>表示する内容：最初に選んだ 4 つ。</translation>
+        </message>
+        <message>
+            <source>What it shows: up to six.</source>
+            <translation>表示する内容：最大 6 つ。</translation>
+        </message>
+        <message>
+            <source>Covers of the top series</source>
+            <translation>トップシリーズの表紙</translation>
+        </message>
+        <message>
+            <source>My username</source>
+            <translation>自分のユーザー名</translation>
+        </message>
+        <message>
+            <source>See the card</source>
+            <translation>カードを見る</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>January</comment>
+            <translation>1</translation>
+        </message>
+        <message>
+            <source>F</source>
+            <comment>February</comment>
+            <translation>2</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>March</comment>
+            <translation>3</translation>
+        </message>
+        <message>
+            <source>A</source>
+            <comment>April</comment>
+            <translation>4</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>May</comment>
+            <translation>5</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>June</comment>
+            <translation>6</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>July</comment>
+            <translation>7</translation>
+        </message>
+        <message>
+            <source>A</source>
+            <comment>August</comment>
+            <translation>8</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>September</comment>
+            <translation>9</translation>
+        </message>
+        <message>
+            <source>O</source>
+            <comment>October</comment>
+            <translation>10</translation>
+        </message>
+        <message>
+            <source>N</source>
+            <comment>November</comment>
+            <translation>11</translation>
+        </message>
+        <message>
+            <source>D</source>
+            <comment>December</comment>
+            <translation>12</translation>
         </message>
     </context>
     <context>

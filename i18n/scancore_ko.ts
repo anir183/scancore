@@ -684,6 +684,10 @@
             <source>music extensions</source>
             <translation>음악 확장</translation>
         </message>
+        <message>
+            <source>Paste the link from the repository's page, or the link to its index, repo.json or plugin list; several at once work too. SCANCORE reads Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader repositories, and CloudStream repository codes.</source>
+            <translation>저장소 페이지의 링크, 또는 index, repo.json, 플러그인 목록 링크를 붙여 넣으세요. 여러 개를 한 번에 넣어도 돼요. SCANCORE는 Mihon, Tachiyomi, Aniyomi, CloudStream, LNReader 저장소를 읽을 수 있어요. CloudStream 저장소 코드도 돼요.</translation>
+        </message>
     </context>
     <context>
         <name>AddSectionSheet</name>
@@ -3798,6 +3802,10 @@
             <source>Music</source>
             <translation>음악</translation>
         </message>
+        <message>
+            <source>Show all %1 sources</source>
+            <translation>소스 %1개 모두 보기</translation>
+        </message>
     </context>
     <context>
         <name>FilterSheet</name>
@@ -4208,6 +4216,21 @@
         <message>
             <source>Continue the story</source>
             <translation>이야기 이어 보기</translation>
+        </message>
+        <message>
+            <source>Your year in comics, novels, anime and music</source>
+            <translation>만화, 소설, 애니메이션, 음악으로 본 나의 한 해</translation>
+        </message>
+    </context>
+    <context>
+        <name>HomeWidget</name>
+        <message>
+            <source>Episode %1</source>
+            <translation>에피소드 %1</translation>
+        </message>
+        <message>
+            <source>Chapter %1</source>
+            <translation>챕터 %1</translation>
         </message>
     </context>
     <context>
@@ -6767,6 +6790,18 @@
             <source>All files (*)</source>
             <translation>모든 파일 (*)</translation>
         </message>
+        <message>
+            <source>Open a book file (EPUB, FB2, MOBI or PDF)</source>
+            <translation>책 파일 열기 (EPUB, FB2, MOBI 또는 PDF)</translation>
+        </message>
+        <message>
+            <source>Choose the folders that hold your EPUB, FB2 and MOBI books in Settings → Sources.</source>
+            <translation>설정 → 소스에서 EPUB, FB2, MOBI 책이 있는 폴더를 고르세요.</translation>
+        </message>
+        <message>
+            <source>Books (*.epub *.fb2 *.fb2.zip *.mobi *.azw3 *.azw *.prc *.pdf)</source>
+            <translation>책 (*.epub *.fb2 *.fb2.zip *.mobi *.azw3 *.azw *.prc *.pdf)</translation>
+        </message>
     </context>
     <context>
         <name>NowPlayingPage</name>
@@ -7512,6 +7547,14 @@
             <source>Download</source>
             <translation>다운로드</translation>
         </message>
+        <message>
+            <source>Ready: pages in this language can be translated on this device.</source>
+            <translation>준비 완료: 이 언어의 페이지를 이 기기에서 번역할 수 있습니다.</translation>
+        </message>
+        <message>
+            <source>Translate on this device</source>
+            <translation>이 기기에서 번역</translation>
+        </message>
     </context>
     <context>
         <name>PageHeader</name>
@@ -7991,6 +8034,62 @@
         <message>
             <source>The image could not be saved.</source>
             <translation>이미지를 저장할 수 없습니다.</translation>
+        </message>
+        <message>
+            <source>This is no longer on %1.</source>
+            <translation>이제 %1에 없습니다.</translation>
+        </message>
+        <message>
+            <source>%1 cannot do that.</source>
+            <translation>%1에서 그 작업을 할 수 없습니다.</translation>
+        </message>
+        <message>
+            <source>%1 has no video file for this.</source>
+            <translation>%1에 이 항목의 동영상 파일이 없습니다.</translation>
+        </message>
+        <message>
+            <source>Original</source>
+            <translation>원본</translation>
+        </message>
+        <message>
+            <source>Transcoded by the server (H.264)</source>
+            <translation>서버에서 변환됨 (H.264)</translation>
+        </message>
+        <message>
+            <source>%1 is not an OPDS catalogue (its address may be the server's page, not its OPDS feed).</source>
+            <translation>%1은(는) OPDS 카탈로그가 아닙니다(주소가 OPDS 피드가 아니라 서버 페이지일 수 있습니다).</translation>
+        </message>
+        <message>
+            <source>The book could not be saved.</source>
+            <translation>책을 저장하지 못했습니다.</translation>
+        </message>
+        <message>
+            <source>%1 stopped sending the book.</source>
+            <translation>%1에서 책 전송을 멈췄습니다.</translation>
+        </message>
+        <message>
+            <source>The catalogue's start</source>
+            <translation>카탈로그 처음</translation>
+        </message>
+        <message>
+            <source>Section</source>
+            <translation>섹션</translation>
+        </message>
+        <message>
+            <source>This is a folder of series: pick it under Section in this source's filters to see them.</source>
+            <translation>시리즈 폴더입니다: 보려면 이 소스의 필터에서 섹션으로 선택하세요.</translation>
+        </message>
+        <message>
+            <source>This folder has no comics SCANCORE can read (CBZ, CBR, CB7, PDF or streamed pages). Books in EPUB are under Novels.</source>
+            <translation>이 폴더에는 SCANCORE가 읽을 수 있는 만화가 없습니다(CBZ, CBR, CB7, PDF 또는 스트리밍 페이지). EPUB 책은 소설에 있습니다.</translation>
+        </message>
+        <message>
+            <source>This book is not in EPUB.</source>
+            <translation>이 책은 EPUB이 아닙니다.</translation>
+        </message>
+        <message>
+            <source>This folder has no books in EPUB here: it may be a folder of series (pick it under Section in this source's filters), or hold comics (under Comics).</source>
+            <translation>이 폴더에는 EPUB 책이 없습니다: 시리즈 폴더일 수 있습니다(이 소스의 필터에서 섹션으로 선택). 아니면 만화가 들어 있습니다(만화에서).</translation>
         </message>
     </context>
     <context>
@@ -8741,6 +8840,10 @@
             <source>Choose…</source>
             <translation>선택…</translation>
         </message>
+        <message>
+            <source>Translate on this device</source>
+            <translation>이 기기에서 번역</translation>
+        </message>
     </context>
     <context>
         <name>RecentSearches</name>
@@ -9253,10 +9356,37 @@
         </message>
     </context>
     <context>
+        <name>sc::HomeWidget</name>
+        <message>
+            <source>Continue</source>
+            <translation>계속</translation>
+        </message>
+        <message>
+            <source>Nothing yet: what you read and watch shows here.</source>
+            <translation>아직 없음: 읽고 본 것이 여기에 표시됩니다.</translation>
+        </message>
+        <message>
+            <source>Open SCANCORE</source>
+            <translation>SCANCORE 열기</translation>
+        </message>
+        <message>
+            <source>1 new chapter</source>
+            <translation>새 챕터 1개</translation>
+        </message>
+        <message>
+            <source>%1 new chapters</source>
+            <translation>새 챕터 %1개</translation>
+        </message>
+    </context>
+    <context>
         <name>sc::MediaControls</name>
         <message>
             <source>Reading aloud</source>
             <translation>소리 내어 읽기</translation>
+        </message>
+        <message>
+            <source>Music</source>
+            <translation>음악</translation>
         </message>
     </context>
     <context>
@@ -9355,6 +9485,18 @@
         <message>
             <source>Downloaded once; nothing leaves the computer</source>
             <translation>한 번 다운로드. 아무것도 컴퓨터 밖으로 나가지 않습니다</translation>
+        </message>
+        <message>
+            <source>Downloaded languages</source>
+            <translation>다운로드한 언어</translation>
+        </message>
+        <message>
+            <source>Downloaded once; pages never leave the device</source>
+            <translation>한 번만 다운로드하며 페이지는 기기 밖으로 나가지 않습니다</translation>
+        </message>
+        <message>
+            <source>Downloaded once; nothing leaves the device</source>
+            <translation>한 번만 다운로드하며 기기 밖으로 아무것도 나가지 않습니다</translation>
         </message>
     </context>
     <context>
@@ -9741,6 +9883,26 @@
         <message>
             <source>Save and try</source>
             <translation>저장하고 테스트</translation>
+        </message>
+        <message>
+            <source>Connected: 1 show or film found.</source>
+            <translation>연결됨: 프로그램 또는 영화 1개를 찾았습니다.</translation>
+        </message>
+        <message>
+            <source>Connected: more than %1 shows and films found.</source>
+            <translation>연결됨: 프로그램과 영화 %1개 이상을 찾았습니다.</translation>
+        </message>
+        <message>
+            <source>Connected: %1 shows and films found.</source>
+            <translation>연결됨: 프로그램과 영화 %1개를 찾았습니다.</translation>
+        </message>
+        <message>
+            <source>Any OPDS catalogue (Calibre-web, Kavita, Komga, Ubooquity…): paste its OPDS address. Comics open under Comics, EPUB books under Novels. The login stays on this device.</source>
+            <translation>어떤 OPDS 카탈로그든(Calibre-web, Kavita, Komga, Ubooquity…) OPDS 주소를 붙여 넣으세요. 만화는 만화에서, EPUB 책은 소설에서 열립니다. 로그인 정보는 이 기기에만 남습니다.</translation>
+        </message>
+        <message>
+            <source>Watch the shows and films on your own Jellyfin server under Anime. Where you stop is kept on the server too, so its other apps carry on from there. The login stays on this device.</source>
+            <translation>내 Jellyfin 서버의 프로그램과 영화를 애니메이션에서 보세요. 멈춘 위치를 서버도 기억해서 다른 앱에서도 거기서부터 이어집니다. 로그인 정보는 이 기기에만 남습니다.</translation>
         </message>
     </context>
     <context>
@@ -10580,6 +10742,22 @@
         <message>
             <source>Whether the extensions runtime answers, a quick test of a source, and the sites each extension contacted.</source>
             <translation>확장 프로그램 런타임 응답 여부, 소스 빠른 테스트, 각 확장 프로그램이 접속한 사이트.</translation>
+        </message>
+        <message>
+            <source>Komga, Kavita and Suwayomi servers you run, and OPDS catalogues: their comics and books are a source like the others, searched with them and saved to the library. A Jellyfin server's shows and films play under Anime.</source>
+            <translation>직접 운영하는 Komga, Kavita, Suwayomi 서버와 OPDS 카탈로그: 그 만화와 책은 다른 소스처럼 함께 검색되고 서재에 저장됩니다. Jellyfin 서버의 프로그램과 영화는 애니메이션에서 재생됩니다.</translation>
+        </message>
+        <message>
+            <source>Each folder or file in these folders is a series: folders of images, CBZ, CBR, 7z and PDF files for comics, and EPUB, FB2 and MOBI books for novels. </source>
+            <translation>이 폴더 안의 각 폴더나 파일이 하나의 시리즈입니다: 만화는 이미지 폴더, CBZ, CBR, 7z, PDF 파일, 소설은 EPUB, FB2, MOBI 책입니다. </translation>
+        </message>
+        <message>
+            <source>Comics and books (*.cbz *.zip *.cbr *.rar *.cb7 *.7z *.pdf *.epub *.fb2 *.mobi *.azw3)</source>
+            <translation>만화와 책 (*.cbz *.zip *.cbr *.rar *.cb7 *.7z *.pdf *.epub *.fb2 *.mobi *.azw3)</translation>
+        </message>
+        <message>
+            <source>SCANCORE runs Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader extensions from repositories you add. It has no repository of its own.</source>
+            <translation>SCANCORE는 추가한 저장소의 Mihon, Tachiyomi, Aniyomi, CloudStream, LNReader 확장 프로그램을 실행합니다. 자체 저장소는 없습니다.</translation>
         </message>
     </context>
     <context>
@@ -11644,6 +11822,10 @@
             <source>Save series to your library and check them for updates; their next chapters show here.</source>
             <translation>시리즈를 라이브러리에 저장하고 업데이트를 확인하면 다음 챕터가 여기에 표시됩니다.</translation>
         </message>
+        <message>
+            <source>Show all %1</source>
+            <translation>모두 보기(%1)</translation>
+        </message>
     </context>
     <context>
         <name>UpdateBanner</name>
@@ -12362,6 +12544,293 @@
         <message>
             <source>Could not save the picture</source>
             <translation>사진을 저장하지 못했습니다</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>Monday</comment>
+            <translation>월</translation>
+        </message>
+        <message>
+            <source>T</source>
+            <comment>Tuesday</comment>
+            <translation>화</translation>
+        </message>
+        <message>
+            <source>W</source>
+            <comment>Wednesday</comment>
+            <translation>수</translation>
+        </message>
+        <message>
+            <source>T</source>
+            <comment>Thursday</comment>
+            <translation>목</translation>
+        </message>
+        <message>
+            <source>F</source>
+            <comment>Friday</comment>
+            <translation>금</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>Saturday</comment>
+            <translation>토</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>Sunday</comment>
+            <translation>일</translation>
+        </message>
+        <message>
+            <source>A comic</source>
+            <translation>만화 한 편</translation>
+        </message>
+        <message>
+            <source>A novel</source>
+            <translation>소설 한 편</translation>
+        </message>
+        <message>
+            <source>An anime</source>
+            <translation>애니메이션 한 편</translation>
+        </message>
+        <message>
+            <source>A song</source>
+            <translation>노래 한 곡</translation>
+        </message>
+        <message>
+            <source>A series</source>
+            <translation>시리즈 하나</translation>
+        </message>
+        <message>
+            <source>Time spent</source>
+            <translation>사용 시간</translation>
+        </message>
+        <message>
+            <source>Chapters and episodes</source>
+            <translation>챕터와 에피소드</translation>
+        </message>
+        <message>
+            <source>Number one of each</source>
+            <translation>분야별 1위</translation>
+        </message>
+        <message>
+            <source>Genres</source>
+            <translation>장르</translation>
+        </message>
+        <message>
+            <source>Author</source>
+            <translation>작가</translation>
+        </message>
+        <message>
+            <source>Music</source>
+            <translation>음악</translation>
+        </message>
+        <message>
+            <source>Streak</source>
+            <translation>연속 기록</translation>
+        </message>
+        <message>
+            <source>Where it started</source>
+            <translation>모든 것의 시작</translation>
+        </message>
+        <message>
+            <source>wrapped</source>
+            <translation>wrapped</translation>
+        </message>
+        <message>
+            <source>Customise</source>
+            <translation>사용자 지정</translation>
+        </message>
+        <message>
+            <source>Chapters you finish and time spent reading, watching and listening show up here.</source>
+            <translation>끝낸 화와 읽고, 보고, 들은 시간이 여기에 표시됩니다.</translation>
+        </message>
+        <message>
+            <source>Wrapped</source>
+            <translation>Wrapped</translation>
+        </message>
+        <message>
+            <source>Your year in comics, novels, anime and music</source>
+            <translation>만화, 소설, 애니메이션, 음악으로 본 나의 한 해</translation>
+        </message>
+        <message>
+            <source>hours</source>
+            <translation>시간</translation>
+        </message>
+        <message>
+            <source>minutes</source>
+            <translation>분</translation>
+        </message>
+        <message>
+            <source>That's %1 days without a break.</source>
+            <translation>%1일 연속입니다.</translation>
+        </message>
+        <message>
+            <source>You listened for</source>
+            <translation>들은 시간</translation>
+        </message>
+        <message>
+            <source>to %1 songs</source>
+            <translation>노래 %1곡</translation>
+        </message>
+        <message>
+            <source>and the artist you played most: %1</source>
+            <translation>가장 많이 들은 아티스트: %1</translation>
+        </message>
+        <message>
+            <source>day</source>
+            <translation>일</translation>
+        </message>
+        <message>
+            <source>days</source>
+            <translation>일</translation>
+        </message>
+        <message>
+            <source>Active days</source>
+            <translation>활동한 날</translation>
+        </message>
+        <message>
+            <source>Top author</source>
+            <translation>최애 작가</translation>
+        </message>
+        <message>
+            <source>Wrapped %1</source>
+            <translation>Wrapped %1</translation>
+        </message>
+        <message>
+            <source>Top series: </source>
+            <translation>최애 시리즈: </translation>
+        </message>
+        <message>
+            <source>Customise Wrapped</source>
+            <translation>Wrapped 사용자 지정</translation>
+        </message>
+        <message>
+            <source>Style</source>
+            <translation>스타일</translation>
+        </message>
+        <message>
+            <source>Vivid</source>
+            <translation>선명하게</translation>
+        </message>
+        <message>
+            <source>Your accent</source>
+            <translation>내 강조 색상</translation>
+        </message>
+        <message>
+            <source>Midnight</source>
+            <translation>자정</translation>
+        </message>
+        <message>
+            <source>Paper</source>
+            <translation>종이</translation>
+        </message>
+        <message>
+            <source>Hide titles and covers</source>
+            <translation>제목과 표지 숨기기</translation>
+        </message>
+        <message>
+            <source>For sharing: series show as “A comic”, “An anime”.</source>
+            <translation>공유용: 시리즈는 “만화 한 편”, “애니메이션 한 편”으로 표시됩니다.</translation>
+        </message>
+        <message>
+            <source>Slides</source>
+            <translation>슬라이드</translation>
+        </message>
+        <message>
+            <source>Card</source>
+            <translation>카드</translation>
+        </message>
+        <message>
+            <source>Story</source>
+            <translation>스토리</translation>
+        </message>
+        <message>
+            <source>Square</source>
+            <translation>정사각형</translation>
+        </message>
+        <message>
+            <source>Wide</source>
+            <translation>넓게</translation>
+        </message>
+        <message>
+            <source>What it shows: the first four you pick.</source>
+            <translation>보이는 내용: 처음 고른 4개.</translation>
+        </message>
+        <message>
+            <source>What it shows: up to six.</source>
+            <translation>보이는 내용: 최대 6개.</translation>
+        </message>
+        <message>
+            <source>Covers of the top series</source>
+            <translation>인기 시리즈 표지</translation>
+        </message>
+        <message>
+            <source>My username</source>
+            <translation>내 사용자 이름</translation>
+        </message>
+        <message>
+            <source>See the card</source>
+            <translation>카드 보기</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>January</comment>
+            <translation>1</translation>
+        </message>
+        <message>
+            <source>F</source>
+            <comment>February</comment>
+            <translation>2</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>March</comment>
+            <translation>3</translation>
+        </message>
+        <message>
+            <source>A</source>
+            <comment>April</comment>
+            <translation>4</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>May</comment>
+            <translation>5</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>June</comment>
+            <translation>6</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>July</comment>
+            <translation>7</translation>
+        </message>
+        <message>
+            <source>A</source>
+            <comment>August</comment>
+            <translation>8</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>September</comment>
+            <translation>9</translation>
+        </message>
+        <message>
+            <source>O</source>
+            <comment>October</comment>
+            <translation>10</translation>
+        </message>
+        <message>
+            <source>N</source>
+            <comment>November</comment>
+            <translation>11</translation>
+        </message>
+        <message>
+            <source>D</source>
+            <comment>December</comment>
+            <translation>12</translation>
         </message>
     </context>
     <context>

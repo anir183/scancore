@@ -684,6 +684,10 @@
             <source>music extensions</source>
             <translation>tiện ích âm nhạc</translation>
         </message>
+        <message>
+            <source>Paste the link from the repository's page, or the link to its index, repo.json or plugin list; several at once work too. SCANCORE reads Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader repositories, and CloudStream repository codes.</source>
+            <translation>Dán liên kết từ trang kho, hoặc liên kết tới index, repo.json hay danh sách plugin; dán nhiều cái một lúc cũng được. SCANCORE đọc kho của Mihon, Tachiyomi, Aniyomi, CloudStream và LNReader. Mã kho CloudStream cũng dùng được.</translation>
+        </message>
     </context>
     <context>
         <name>AddSectionSheet</name>
@@ -3798,6 +3802,10 @@
             <source>Music</source>
             <translation>Âm nhạc</translation>
         </message>
+        <message>
+            <source>Show all %1 sources</source>
+            <translation>Hiện tất cả %1 nguồn</translation>
+        </message>
     </context>
     <context>
         <name>FilterSheet</name>
@@ -4208,6 +4216,21 @@
         <message>
             <source>Continue the story</source>
             <translation>Đọc tiếp câu chuyện</translation>
+        </message>
+        <message>
+            <source>Your year in comics, novels, anime and music</source>
+            <translation>Năm của bạn với truyện tranh, tiểu thuyết, anime và âm nhạc</translation>
+        </message>
+    </context>
+    <context>
+        <name>HomeWidget</name>
+        <message>
+            <source>Episode %1</source>
+            <translation>Tập %1</translation>
+        </message>
+        <message>
+            <source>Chapter %1</source>
+            <translation>Chương %1</translation>
         </message>
     </context>
     <context>
@@ -6767,6 +6790,18 @@
             <source>All files (*)</source>
             <translation>Mọi tệp (*)</translation>
         </message>
+        <message>
+            <source>Open a book file (EPUB, FB2, MOBI or PDF)</source>
+            <translation>Mở tệp sách (EPUB, FB2, MOBI hoặc PDF)</translation>
+        </message>
+        <message>
+            <source>Choose the folders that hold your EPUB, FB2 and MOBI books in Settings → Sources.</source>
+            <translation>Chọn các thư mục chứa sách EPUB, FB2 và MOBI của bạn trong Cài đặt → Nguồn.</translation>
+        </message>
+        <message>
+            <source>Books (*.epub *.fb2 *.fb2.zip *.mobi *.azw3 *.azw *.prc *.pdf)</source>
+            <translation>Sách (*.epub *.fb2 *.fb2.zip *.mobi *.azw3 *.azw *.prc *.pdf)</translation>
+        </message>
     </context>
     <context>
         <name>NowPlayingPage</name>
@@ -7512,6 +7547,14 @@
             <source>Download</source>
             <translation>Tải xuống</translation>
         </message>
+        <message>
+            <source>Ready: pages in this language can be translated on this device.</source>
+            <translation>Sẵn sàng: các trang bằng ngôn ngữ này có thể được dịch trên thiết bị này.</translation>
+        </message>
+        <message>
+            <source>Translate on this device</source>
+            <translation>Dịch trên thiết bị này</translation>
+        </message>
     </context>
     <context>
         <name>PageHeader</name>
@@ -7991,6 +8034,62 @@
         <message>
             <source>The image could not be saved.</source>
             <translation>Không lưu được ảnh.</translation>
+        </message>
+        <message>
+            <source>This is no longer on %1.</source>
+            <translation>Mục này không còn trên %1.</translation>
+        </message>
+        <message>
+            <source>%1 cannot do that.</source>
+            <translation>%1 không làm được việc đó.</translation>
+        </message>
+        <message>
+            <source>%1 has no video file for this.</source>
+            <translation>%1 không có tệp video cho mục này.</translation>
+        </message>
+        <message>
+            <source>Original</source>
+            <translation>Gốc</translation>
+        </message>
+        <message>
+            <source>Transcoded by the server (H.264)</source>
+            <translation>Máy chủ chuyển mã (H.264)</translation>
+        </message>
+        <message>
+            <source>%1 is not an OPDS catalogue (its address may be the server's page, not its OPDS feed).</source>
+            <translation>%1 không phải là danh mục OPDS (địa chỉ có thể là trang của máy chủ, không phải nguồn OPDS của nó).</translation>
+        </message>
+        <message>
+            <source>The book could not be saved.</source>
+            <translation>Không lưu được sách.</translation>
+        </message>
+        <message>
+            <source>%1 stopped sending the book.</source>
+            <translation>%1 đã ngừng gửi sách.</translation>
+        </message>
+        <message>
+            <source>The catalogue's start</source>
+            <translation>Đầu danh mục</translation>
+        </message>
+        <message>
+            <source>Section</source>
+            <translation>Mục</translation>
+        </message>
+        <message>
+            <source>This is a folder of series: pick it under Section in this source's filters to see them.</source>
+            <translation>Đây là thư mục các bộ: chọn nó trong Mục ở bộ lọc của nguồn này để xem chúng.</translation>
+        </message>
+        <message>
+            <source>This folder has no comics SCANCORE can read (CBZ, CBR, CB7, PDF or streamed pages). Books in EPUB are under Novels.</source>
+            <translation>Thư mục này không có truyện tranh SCANCORE đọc được (CBZ, CBR, CB7, PDF hoặc trang phát trực tuyến). Sách EPUB nằm trong Tiểu thuyết.</translation>
+        </message>
+        <message>
+            <source>This book is not in EPUB.</source>
+            <translation>Sách này không phải EPUB.</translation>
+        </message>
+        <message>
+            <source>This folder has no books in EPUB here: it may be a folder of series (pick it under Section in this source's filters), or hold comics (under Comics).</source>
+            <translation>Thư mục này không có sách EPUB ở đây: có thể là thư mục các bộ (chọn nó trong Mục ở bộ lọc của nguồn này), hoặc chứa truyện tranh (trong Truyện tranh).</translation>
         </message>
     </context>
     <context>
@@ -8741,6 +8840,10 @@
             <source>Choose…</source>
             <translation>Chọn…</translation>
         </message>
+        <message>
+            <source>Translate on this device</source>
+            <translation>Dịch trên thiết bị này</translation>
+        </message>
     </context>
     <context>
         <name>RecentSearches</name>
@@ -9253,10 +9356,37 @@
         </message>
     </context>
     <context>
+        <name>sc::HomeWidget</name>
+        <message>
+            <source>Continue</source>
+            <translation>Tiếp tục</translation>
+        </message>
+        <message>
+            <source>Nothing yet: what you read and watch shows here.</source>
+            <translation>Chưa có gì: những gì bạn đọc và xem sẽ hiện ở đây.</translation>
+        </message>
+        <message>
+            <source>Open SCANCORE</source>
+            <translation>Mở SCANCORE</translation>
+        </message>
+        <message>
+            <source>1 new chapter</source>
+            <translation>1 chương mới</translation>
+        </message>
+        <message>
+            <source>%1 new chapters</source>
+            <translation>%1 chương mới</translation>
+        </message>
+    </context>
+    <context>
         <name>sc::MediaControls</name>
         <message>
             <source>Reading aloud</source>
             <translation>Đọc to</translation>
+        </message>
+        <message>
+            <source>Music</source>
+            <translation>Âm nhạc</translation>
         </message>
     </context>
     <context>
@@ -9355,6 +9485,18 @@
         <message>
             <source>Downloaded once; nothing leaves the computer</source>
             <translation>Tải một lần; không có gì rời khỏi máy tính</translation>
+        </message>
+        <message>
+            <source>Downloaded languages</source>
+            <translation>Ngôn ngữ đã tải</translation>
+        </message>
+        <message>
+            <source>Downloaded once; pages never leave the device</source>
+            <translation>Tải một lần; trang không bao giờ rời khỏi thiết bị</translation>
+        </message>
+        <message>
+            <source>Downloaded once; nothing leaves the device</source>
+            <translation>Tải một lần; không gì rời khỏi thiết bị</translation>
         </message>
     </context>
     <context>
@@ -9741,6 +9883,26 @@
         <message>
             <source>Save and try</source>
             <translation>Lưu và thử</translation>
+        </message>
+        <message>
+            <source>Connected: 1 show or film found.</source>
+            <translation>Đã kết nối: tìm thấy 1 chương trình hoặc phim.</translation>
+        </message>
+        <message>
+            <source>Connected: more than %1 shows and films found.</source>
+            <translation>Đã kết nối: tìm thấy hơn %1 chương trình và phim.</translation>
+        </message>
+        <message>
+            <source>Connected: %1 shows and films found.</source>
+            <translation>Đã kết nối: tìm thấy %1 chương trình và phim.</translation>
+        </message>
+        <message>
+            <source>Any OPDS catalogue (Calibre-web, Kavita, Komga, Ubooquity…): paste its OPDS address. Comics open under Comics, EPUB books under Novels. The login stays on this device.</source>
+            <translation>Bất kỳ danh mục OPDS nào (Calibre-web, Kavita, Komga, Ubooquity…): dán địa chỉ OPDS của nó. Truyện tranh mở trong Truyện tranh, sách EPUB trong Tiểu thuyết. Thông tin đăng nhập ở lại trên thiết bị này.</translation>
+        </message>
+        <message>
+            <source>Watch the shows and films on your own Jellyfin server under Anime. Where you stop is kept on the server too, so its other apps carry on from there. The login stays on this device.</source>
+            <translation>Xem chương trình và phim trên máy chủ Jellyfin của riêng bạn trong Anime. Máy chủ cũng nhớ chỗ bạn dừng, để các ứng dụng khác của nó tiếp tục từ đó. Thông tin đăng nhập ở lại trên thiết bị này.</translation>
         </message>
     </context>
     <context>
@@ -10580,6 +10742,22 @@
         <message>
             <source>Whether the extensions runtime answers, a quick test of a source, and the sites each extension contacted.</source>
             <translation>Môi trường tiện ích có trả lời không, thử nhanh một nguồn và các trang web mà mỗi tiện ích đã liên hệ.</translation>
+        </message>
+        <message>
+            <source>Komga, Kavita and Suwayomi servers you run, and OPDS catalogues: their comics and books are a source like the others, searched with them and saved to the library. A Jellyfin server's shows and films play under Anime.</source>
+            <translation>Máy chủ Komga, Kavita và Suwayomi bạn chạy, và các danh mục OPDS: truyện tranh và sách của chúng là một nguồn như các nguồn khác, được tìm cùng và lưu vào thư viện. Chương trình và phim của máy chủ Jellyfin phát trong Anime.</translation>
+        </message>
+        <message>
+            <source>Each folder or file in these folders is a series: folders of images, CBZ, CBR, 7z and PDF files for comics, and EPUB, FB2 and MOBI books for novels. </source>
+            <translation>Mỗi thư mục hoặc tệp trong các thư mục này là một bộ: thư mục ảnh, tệp CBZ, CBR, 7z và PDF cho truyện tranh, và sách EPUB, FB2 và MOBI cho tiểu thuyết. </translation>
+        </message>
+        <message>
+            <source>Comics and books (*.cbz *.zip *.cbr *.rar *.cb7 *.7z *.pdf *.epub *.fb2 *.mobi *.azw3)</source>
+            <translation>Truyện tranh và sách (*.cbz *.zip *.cbr *.rar *.cb7 *.7z *.pdf *.epub *.fb2 *.mobi *.azw3)</translation>
+        </message>
+        <message>
+            <source>SCANCORE runs Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader extensions from repositories you add. It has no repository of its own.</source>
+            <translation>SCANCORE chạy các tiện ích Mihon, Tachiyomi, Aniyomi, CloudStream và LNReader từ các kho bạn thêm. Nó không có kho riêng.</translation>
         </message>
     </context>
     <context>
@@ -11644,6 +11822,10 @@
             <source>Save series to your library and check them for updates; their next chapters show here.</source>
             <translation>Lưu bộ truyện vào thư viện và kiểm tra cập nhật; các chương tiếp theo sẽ hiện ở đây.</translation>
         </message>
+        <message>
+            <source>Show all %1</source>
+            <translation>Hiện tất cả %1</translation>
+        </message>
     </context>
     <context>
         <name>UpdateBanner</name>
@@ -12362,6 +12544,293 @@
         <message>
             <source>Could not save the picture</source>
             <translation>Không lưu được ảnh</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>Monday</comment>
+            <translation>T2</translation>
+        </message>
+        <message>
+            <source>T</source>
+            <comment>Tuesday</comment>
+            <translation>T3</translation>
+        </message>
+        <message>
+            <source>W</source>
+            <comment>Wednesday</comment>
+            <translation>T4</translation>
+        </message>
+        <message>
+            <source>T</source>
+            <comment>Thursday</comment>
+            <translation>T5</translation>
+        </message>
+        <message>
+            <source>F</source>
+            <comment>Friday</comment>
+            <translation>T6</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>Saturday</comment>
+            <translation>T7</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>Sunday</comment>
+            <translation>CN</translation>
+        </message>
+        <message>
+            <source>A comic</source>
+            <translation>Một truyện tranh</translation>
+        </message>
+        <message>
+            <source>A novel</source>
+            <translation>Một tiểu thuyết</translation>
+        </message>
+        <message>
+            <source>An anime</source>
+            <translation>Một anime</translation>
+        </message>
+        <message>
+            <source>A song</source>
+            <translation>Một bài hát</translation>
+        </message>
+        <message>
+            <source>A series</source>
+            <translation>Một bộ</translation>
+        </message>
+        <message>
+            <source>Time spent</source>
+            <translation>Thời gian đã dùng</translation>
+        </message>
+        <message>
+            <source>Chapters and episodes</source>
+            <translation>Chương và tập</translation>
+        </message>
+        <message>
+            <source>Number one of each</source>
+            <translation>Số một của mỗi loại</translation>
+        </message>
+        <message>
+            <source>Genres</source>
+            <translation>Thể loại</translation>
+        </message>
+        <message>
+            <source>Author</source>
+            <translation>Tác giả</translation>
+        </message>
+        <message>
+            <source>Music</source>
+            <translation>Âm nhạc</translation>
+        </message>
+        <message>
+            <source>Streak</source>
+            <translation>Chuỗi ngày</translation>
+        </message>
+        <message>
+            <source>Where it started</source>
+            <translation>Nơi mọi thứ bắt đầu</translation>
+        </message>
+        <message>
+            <source>wrapped</source>
+            <translation>wrapped</translation>
+        </message>
+        <message>
+            <source>Customise</source>
+            <translation>Tùy chỉnh</translation>
+        </message>
+        <message>
+            <source>Chapters you finish and time spent reading, watching and listening show up here.</source>
+            <translation>Các chương bạn đọc xong và thời gian đọc, xem và nghe sẽ hiện ở đây.</translation>
+        </message>
+        <message>
+            <source>Wrapped</source>
+            <translation>Wrapped</translation>
+        </message>
+        <message>
+            <source>Your year in comics, novels, anime and music</source>
+            <translation>Năm của bạn với truyện tranh, tiểu thuyết, anime và âm nhạc</translation>
+        </message>
+        <message>
+            <source>hours</source>
+            <translation>giờ</translation>
+        </message>
+        <message>
+            <source>minutes</source>
+            <translation>phút</translation>
+        </message>
+        <message>
+            <source>That's %1 days without a break.</source>
+            <translation>Đó là %1 ngày liên tục.</translation>
+        </message>
+        <message>
+            <source>You listened for</source>
+            <translation>Bạn đã nghe</translation>
+        </message>
+        <message>
+            <source>to %1 songs</source>
+            <translation>%1 bài hát</translation>
+        </message>
+        <message>
+            <source>and the artist you played most: %1</source>
+            <translation>và nghệ sĩ bạn nghe nhiều nhất: %1</translation>
+        </message>
+        <message>
+            <source>day</source>
+            <translation>ngày</translation>
+        </message>
+        <message>
+            <source>days</source>
+            <translation>ngày</translation>
+        </message>
+        <message>
+            <source>Active days</source>
+            <translation>Ngày hoạt động</translation>
+        </message>
+        <message>
+            <source>Top author</source>
+            <translation>Tác giả hàng đầu</translation>
+        </message>
+        <message>
+            <source>Wrapped %1</source>
+            <translation>Wrapped %1</translation>
+        </message>
+        <message>
+            <source>Top series: </source>
+            <translation>Bộ hàng đầu: </translation>
+        </message>
+        <message>
+            <source>Customise Wrapped</source>
+            <translation>Tùy chỉnh Wrapped</translation>
+        </message>
+        <message>
+            <source>Style</source>
+            <translation>Phong cách</translation>
+        </message>
+        <message>
+            <source>Vivid</source>
+            <translation>Rực rỡ</translation>
+        </message>
+        <message>
+            <source>Your accent</source>
+            <translation>Màu nhấn của bạn</translation>
+        </message>
+        <message>
+            <source>Midnight</source>
+            <translation>Nửa đêm</translation>
+        </message>
+        <message>
+            <source>Paper</source>
+            <translation>Giấy</translation>
+        </message>
+        <message>
+            <source>Hide titles and covers</source>
+            <translation>Ẩn tên và bìa</translation>
+        </message>
+        <message>
+            <source>For sharing: series show as “A comic”, “An anime”.</source>
+            <translation>Để chia sẻ: các bộ hiện dưới dạng “Một truyện tranh”, “Một anime”.</translation>
+        </message>
+        <message>
+            <source>Slides</source>
+            <translation>Trang chiếu</translation>
+        </message>
+        <message>
+            <source>Card</source>
+            <translation>Thẻ</translation>
+        </message>
+        <message>
+            <source>Story</source>
+            <translation>Story</translation>
+        </message>
+        <message>
+            <source>Square</source>
+            <translation>Vuông</translation>
+        </message>
+        <message>
+            <source>Wide</source>
+            <translation>Rộng</translation>
+        </message>
+        <message>
+            <source>What it shows: the first four you pick.</source>
+            <translation>Hiển thị: bốn mục đầu tiên bạn chọn.</translation>
+        </message>
+        <message>
+            <source>What it shows: up to six.</source>
+            <translation>Hiển thị: tối đa sáu.</translation>
+        </message>
+        <message>
+            <source>Covers of the top series</source>
+            <translation>Bìa các bộ hàng đầu</translation>
+        </message>
+        <message>
+            <source>My username</source>
+            <translation>Tên người dùng của tôi</translation>
+        </message>
+        <message>
+            <source>See the card</source>
+            <translation>Xem thẻ</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>January</comment>
+            <translation>1</translation>
+        </message>
+        <message>
+            <source>F</source>
+            <comment>February</comment>
+            <translation>2</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>March</comment>
+            <translation>3</translation>
+        </message>
+        <message>
+            <source>A</source>
+            <comment>April</comment>
+            <translation>4</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>May</comment>
+            <translation>5</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>June</comment>
+            <translation>6</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>July</comment>
+            <translation>7</translation>
+        </message>
+        <message>
+            <source>A</source>
+            <comment>August</comment>
+            <translation>8</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>September</comment>
+            <translation>9</translation>
+        </message>
+        <message>
+            <source>O</source>
+            <comment>October</comment>
+            <translation>10</translation>
+        </message>
+        <message>
+            <source>N</source>
+            <comment>November</comment>
+            <translation>11</translation>
+        </message>
+        <message>
+            <source>D</source>
+            <comment>December</comment>
+            <translation>12</translation>
         </message>
     </context>
     <context>

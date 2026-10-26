@@ -684,6 +684,10 @@
             <source>music extensions</source>
             <translation>extensions musicales</translation>
         </message>
+        <message>
+            <source>Paste the link from the repository's page, or the link to its index, repo.json or plugin list; several at once work too. SCANCORE reads Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader repositories, and CloudStream repository codes.</source>
+            <translation>Collez le lien de la page du dépôt, ou celui de son index, de son repo.json ou de sa liste de plugins ; plusieurs à la fois aussi. SCANCORE lit les dépôts Mihon, Tachiyomi, Aniyomi, CloudStream et LNReader. Les codes de dépôt CloudStream marchent aussi.</translation>
+        </message>
     </context>
     <context>
         <name>AddSectionSheet</name>
@@ -3798,6 +3802,10 @@
             <source>Music</source>
             <translation>Musique</translation>
         </message>
+        <message>
+            <source>Show all %1 sources</source>
+            <translation>Afficher les %1 sources</translation>
+        </message>
     </context>
     <context>
         <name>FilterSheet</name>
@@ -4208,6 +4216,21 @@
         <message>
             <source>Continue the story</source>
             <translation>Poursuivre l'histoire</translation>
+        </message>
+        <message>
+            <source>Your year in comics, novels, anime and music</source>
+            <translation>Votre année en BD, romans, anime et musique</translation>
+        </message>
+    </context>
+    <context>
+        <name>HomeWidget</name>
+        <message>
+            <source>Episode %1</source>
+            <translation>Épisode %1</translation>
+        </message>
+        <message>
+            <source>Chapter %1</source>
+            <translation>Chapitre %1</translation>
         </message>
     </context>
     <context>
@@ -6767,6 +6790,18 @@
             <source>All files (*)</source>
             <translation>Tous les fichiers (*)</translation>
         </message>
+        <message>
+            <source>Open a book file (EPUB, FB2, MOBI or PDF)</source>
+            <translation>Ouvrir un fichier de livre (EPUB, FB2, MOBI ou PDF)</translation>
+        </message>
+        <message>
+            <source>Choose the folders that hold your EPUB, FB2 and MOBI books in Settings → Sources.</source>
+            <translation>Choisissez les dossiers de vos livres EPUB, FB2 et MOBI dans Réglages → Sources.</translation>
+        </message>
+        <message>
+            <source>Books (*.epub *.fb2 *.fb2.zip *.mobi *.azw3 *.azw *.prc *.pdf)</source>
+            <translation>Livres (*.epub *.fb2 *.fb2.zip *.mobi *.azw3 *.azw *.prc *.pdf)</translation>
+        </message>
     </context>
     <context>
         <name>NowPlayingPage</name>
@@ -7512,6 +7547,14 @@
             <source>Download</source>
             <translation>Télécharger</translation>
         </message>
+        <message>
+            <source>Ready: pages in this language can be translated on this device.</source>
+            <translation>Prêt : les pages dans cette langue peuvent être traduites sur cet appareil.</translation>
+        </message>
+        <message>
+            <source>Translate on this device</source>
+            <translation>Traduire sur cet appareil</translation>
+        </message>
     </context>
     <context>
         <name>PageHeader</name>
@@ -7991,6 +8034,62 @@
         <message>
             <source>The image could not be saved.</source>
             <translation>L’image n’a pas pu être enregistrée.</translation>
+        </message>
+        <message>
+            <source>This is no longer on %1.</source>
+            <translation>Ce n’est plus sur %1.</translation>
+        </message>
+        <message>
+            <source>%1 cannot do that.</source>
+            <translation>%1 ne peut pas faire cela.</translation>
+        </message>
+        <message>
+            <source>%1 has no video file for this.</source>
+            <translation>%1 n’a pas de fichier vidéo pour ceci.</translation>
+        </message>
+        <message>
+            <source>Original</source>
+            <translation>Original</translation>
+        </message>
+        <message>
+            <source>Transcoded by the server (H.264)</source>
+            <translation>Converti par le serveur (H.264)</translation>
+        </message>
+        <message>
+            <source>%1 is not an OPDS catalogue (its address may be the server's page, not its OPDS feed).</source>
+            <translation>%1 n’est pas un catalogue OPDS (son adresse est peut-être la page du serveur, pas son flux OPDS).</translation>
+        </message>
+        <message>
+            <source>The book could not be saved.</source>
+            <translation>Le livre n’a pas pu être enregistré.</translation>
+        </message>
+        <message>
+            <source>%1 stopped sending the book.</source>
+            <translation>%1 a cessé d’envoyer le livre.</translation>
+        </message>
+        <message>
+            <source>The catalogue's start</source>
+            <translation>Début du catalogue</translation>
+        </message>
+        <message>
+            <source>Section</source>
+            <translation>Section</translation>
+        </message>
+        <message>
+            <source>This is a folder of series: pick it under Section in this source's filters to see them.</source>
+            <translation>C’est un dossier de séries : choisissez-le sous Section dans les filtres de cette source pour les voir.</translation>
+        </message>
+        <message>
+            <source>This folder has no comics SCANCORE can read (CBZ, CBR, CB7, PDF or streamed pages). Books in EPUB are under Novels.</source>
+            <translation>Ce dossier n’a pas de BD que SCANCORE peut lire (CBZ, CBR, CB7, PDF ou pages en streaming). Les livres EPUB sont dans Romans.</translation>
+        </message>
+        <message>
+            <source>This book is not in EPUB.</source>
+            <translation>Ce livre n’est pas au format EPUB.</translation>
+        </message>
+        <message>
+            <source>This folder has no books in EPUB here: it may be a folder of series (pick it under Section in this source's filters), or hold comics (under Comics).</source>
+            <translation>Ce dossier n’a pas de livres EPUB ici : c’est peut-être un dossier de séries (choisissez-le sous Section dans les filtres de cette source), ou il contient des BD (sous BD).</translation>
         </message>
     </context>
     <context>
@@ -8741,6 +8840,10 @@
             <source>Choose…</source>
             <translation>Choisir…</translation>
         </message>
+        <message>
+            <source>Translate on this device</source>
+            <translation>Traduire sur cet appareil</translation>
+        </message>
     </context>
     <context>
         <name>RecentSearches</name>
@@ -9253,10 +9356,37 @@
         </message>
     </context>
     <context>
+        <name>sc::HomeWidget</name>
+        <message>
+            <source>Continue</source>
+            <translation>Continuer</translation>
+        </message>
+        <message>
+            <source>Nothing yet: what you read and watch shows here.</source>
+            <translation>Rien pour l’instant : ce que vous lisez et regardez apparaît ici.</translation>
+        </message>
+        <message>
+            <source>Open SCANCORE</source>
+            <translation>Ouvrir SCANCORE</translation>
+        </message>
+        <message>
+            <source>1 new chapter</source>
+            <translation>1 nouveau chapitre</translation>
+        </message>
+        <message>
+            <source>%1 new chapters</source>
+            <translation>%1 nouveaux chapitres</translation>
+        </message>
+    </context>
+    <context>
         <name>sc::MediaControls</name>
         <message>
             <source>Reading aloud</source>
             <translation>Lecture à voix haute</translation>
+        </message>
+        <message>
+            <source>Music</source>
+            <translation>Musique</translation>
         </message>
     </context>
     <context>
@@ -9355,6 +9485,18 @@
         <message>
             <source>Downloaded once; nothing leaves the computer</source>
             <translation>Téléchargé une fois ; rien ne quitte l’ordinateur</translation>
+        </message>
+        <message>
+            <source>Downloaded languages</source>
+            <translation>Langues téléchargées</translation>
+        </message>
+        <message>
+            <source>Downloaded once; pages never leave the device</source>
+            <translation>Téléchargé une fois ; les pages ne quittent jamais l’appareil</translation>
+        </message>
+        <message>
+            <source>Downloaded once; nothing leaves the device</source>
+            <translation>Téléchargé une fois ; rien ne quitte l’appareil</translation>
         </message>
     </context>
     <context>
@@ -9741,6 +9883,26 @@
         <message>
             <source>Save and try</source>
             <translation>Enregistrer et tester</translation>
+        </message>
+        <message>
+            <source>Connected: 1 show or film found.</source>
+            <translation>Connecté : 1 série ou film trouvé.</translation>
+        </message>
+        <message>
+            <source>Connected: more than %1 shows and films found.</source>
+            <translation>Connecté : plus de %1 séries et films trouvés.</translation>
+        </message>
+        <message>
+            <source>Connected: %1 shows and films found.</source>
+            <translation>Connecté : %1 séries et films trouvés.</translation>
+        </message>
+        <message>
+            <source>Any OPDS catalogue (Calibre-web, Kavita, Komga, Ubooquity…): paste its OPDS address. Comics open under Comics, EPUB books under Novels. The login stays on this device.</source>
+            <translation>N’importe quel catalogue OPDS (Calibre-web, Kavita, Komga, Ubooquity…) : collez son adresse OPDS. Les BD s’ouvrent dans BD, les livres EPUB dans Romans. La connexion reste sur cet appareil.</translation>
+        </message>
+        <message>
+            <source>Watch the shows and films on your own Jellyfin server under Anime. Where you stop is kept on the server too, so its other apps carry on from there. The login stays on this device.</source>
+            <translation>Regardez les séries et films de votre propre serveur Jellyfin dans Anime. Le serveur garde aussi l’endroit où vous vous arrêtez, pour que ses autres applis reprennent là. La connexion reste sur cet appareil.</translation>
         </message>
     </context>
     <context>
@@ -10580,6 +10742,22 @@
         <message>
             <source>Whether the extensions runtime answers, a quick test of a source, and the sites each extension contacted.</source>
             <translation>Si l’environnement des extensions répond, un test rapide d’une source et les sites contactés par chaque extension.</translation>
+        </message>
+        <message>
+            <source>Komga, Kavita and Suwayomi servers you run, and OPDS catalogues: their comics and books are a source like the others, searched with them and saved to the library. A Jellyfin server's shows and films play under Anime.</source>
+            <translation>Les serveurs Komga, Kavita et Suwayomi que vous gérez, et les catalogues OPDS : leurs BD et livres sont une source comme les autres, cherchés avec elles et enregistrés dans la bibliothèque. Les séries et films d’un serveur Jellyfin se regardent dans Anime.</translation>
+        </message>
+        <message>
+            <source>Each folder or file in these folders is a series: folders of images, CBZ, CBR, 7z and PDF files for comics, and EPUB, FB2 and MOBI books for novels. </source>
+            <translation>Chaque dossier ou fichier de ces dossiers est une série : dossiers d’images, fichiers CBZ, CBR, 7z et PDF pour les BD, et livres EPUB, FB2 et MOBI pour les romans. </translation>
+        </message>
+        <message>
+            <source>Comics and books (*.cbz *.zip *.cbr *.rar *.cb7 *.7z *.pdf *.epub *.fb2 *.mobi *.azw3)</source>
+            <translation>BD et livres (*.cbz *.zip *.cbr *.rar *.cb7 *.7z *.pdf *.epub *.fb2 *.mobi *.azw3)</translation>
+        </message>
+        <message>
+            <source>SCANCORE runs Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader extensions from repositories you add. It has no repository of its own.</source>
+            <translation>SCANCORE exécute les extensions Mihon, Tachiyomi, Aniyomi, CloudStream et LNReader des dépôts que vous ajoutez. Il n'a pas de dépôt à lui.</translation>
         </message>
     </context>
     <context>
@@ -11644,6 +11822,10 @@
             <source>Save series to your library and check them for updates; their next chapters show here.</source>
             <translation>Enregistrez des séries dans votre bibliothèque et recherchez les mises à jour ; leurs prochains chapitres apparaîtront ici.</translation>
         </message>
+        <message>
+            <source>Show all %1</source>
+            <translation>Tout voir (%1)</translation>
+        </message>
     </context>
     <context>
         <name>UpdateBanner</name>
@@ -12362,6 +12544,293 @@
         <message>
             <source>Could not save the picture</source>
             <translation>Impossible d’enregistrer l’image</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>Monday</comment>
+            <translation>L</translation>
+        </message>
+        <message>
+            <source>T</source>
+            <comment>Tuesday</comment>
+            <translation>M</translation>
+        </message>
+        <message>
+            <source>W</source>
+            <comment>Wednesday</comment>
+            <translation>M</translation>
+        </message>
+        <message>
+            <source>T</source>
+            <comment>Thursday</comment>
+            <translation>J</translation>
+        </message>
+        <message>
+            <source>F</source>
+            <comment>Friday</comment>
+            <translation>V</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>Saturday</comment>
+            <translation>S</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>Sunday</comment>
+            <translation>D</translation>
+        </message>
+        <message>
+            <source>A comic</source>
+            <translation>Une BD</translation>
+        </message>
+        <message>
+            <source>A novel</source>
+            <translation>Un roman</translation>
+        </message>
+        <message>
+            <source>An anime</source>
+            <translation>Un anime</translation>
+        </message>
+        <message>
+            <source>A song</source>
+            <translation>Une chanson</translation>
+        </message>
+        <message>
+            <source>A series</source>
+            <translation>Une série</translation>
+        </message>
+        <message>
+            <source>Time spent</source>
+            <translation>Temps passé</translation>
+        </message>
+        <message>
+            <source>Chapters and episodes</source>
+            <translation>Chapitres et épisodes</translation>
+        </message>
+        <message>
+            <source>Number one of each</source>
+            <translation>Le numéro un de chaque</translation>
+        </message>
+        <message>
+            <source>Genres</source>
+            <translation>Genres</translation>
+        </message>
+        <message>
+            <source>Author</source>
+            <translation>Auteur</translation>
+        </message>
+        <message>
+            <source>Music</source>
+            <translation>Musique</translation>
+        </message>
+        <message>
+            <source>Streak</source>
+            <translation>Série</translation>
+        </message>
+        <message>
+            <source>Where it started</source>
+            <translation>Là où tout a commencé</translation>
+        </message>
+        <message>
+            <source>wrapped</source>
+            <translation>wrapped</translation>
+        </message>
+        <message>
+            <source>Customise</source>
+            <translation>Personnaliser</translation>
+        </message>
+        <message>
+            <source>Chapters you finish and time spent reading, watching and listening show up here.</source>
+            <translation>Les chapitres que vous terminez et le temps passé à lire, regarder et écouter apparaissent ici.</translation>
+        </message>
+        <message>
+            <source>Wrapped</source>
+            <translation>Wrapped</translation>
+        </message>
+        <message>
+            <source>Your year in comics, novels, anime and music</source>
+            <translation>Votre année en BD, romans, anime et musique</translation>
+        </message>
+        <message>
+            <source>hours</source>
+            <translation>heures</translation>
+        </message>
+        <message>
+            <source>minutes</source>
+            <translation>minutes</translation>
+        </message>
+        <message>
+            <source>That's %1 days without a break.</source>
+            <translation>Soit %1 jours sans pause.</translation>
+        </message>
+        <message>
+            <source>You listened for</source>
+            <translation>Vous avez écouté</translation>
+        </message>
+        <message>
+            <source>to %1 songs</source>
+            <translation>%1 chansons</translation>
+        </message>
+        <message>
+            <source>and the artist you played most: %1</source>
+            <translation>et l’artiste le plus écouté : %1</translation>
+        </message>
+        <message>
+            <source>day</source>
+            <translation>jour</translation>
+        </message>
+        <message>
+            <source>days</source>
+            <translation>jours</translation>
+        </message>
+        <message>
+            <source>Active days</source>
+            <translation>Jours actifs</translation>
+        </message>
+        <message>
+            <source>Top author</source>
+            <translation>Auteur préféré</translation>
+        </message>
+        <message>
+            <source>Wrapped %1</source>
+            <translation>Wrapped %1</translation>
+        </message>
+        <message>
+            <source>Top series: </source>
+            <translation>Série préférée : </translation>
+        </message>
+        <message>
+            <source>Customise Wrapped</source>
+            <translation>Personnaliser Wrapped</translation>
+        </message>
+        <message>
+            <source>Style</source>
+            <translation>Style</translation>
+        </message>
+        <message>
+            <source>Vivid</source>
+            <translation>Vif</translation>
+        </message>
+        <message>
+            <source>Your accent</source>
+            <translation>Votre couleur d’accent</translation>
+        </message>
+        <message>
+            <source>Midnight</source>
+            <translation>Minuit</translation>
+        </message>
+        <message>
+            <source>Paper</source>
+            <translation>Papier</translation>
+        </message>
+        <message>
+            <source>Hide titles and covers</source>
+            <translation>Masquer titres et couvertures</translation>
+        </message>
+        <message>
+            <source>For sharing: series show as “A comic”, “An anime”.</source>
+            <translation>Pour partager : les séries apparaissent comme « Une BD », « Un anime ».</translation>
+        </message>
+        <message>
+            <source>Slides</source>
+            <translation>Diapositives</translation>
+        </message>
+        <message>
+            <source>Card</source>
+            <translation>Carte</translation>
+        </message>
+        <message>
+            <source>Story</source>
+            <translation>Story</translation>
+        </message>
+        <message>
+            <source>Square</source>
+            <translation>Carré</translation>
+        </message>
+        <message>
+            <source>Wide</source>
+            <translation>Large</translation>
+        </message>
+        <message>
+            <source>What it shows: the first four you pick.</source>
+            <translation>Ce qu’elle montre : les quatre premiers que vous choisissez.</translation>
+        </message>
+        <message>
+            <source>What it shows: up to six.</source>
+            <translation>Ce qu’elle montre : jusqu’à six.</translation>
+        </message>
+        <message>
+            <source>Covers of the top series</source>
+            <translation>Couvertures des séries préférées</translation>
+        </message>
+        <message>
+            <source>My username</source>
+            <translation>Mon nom d’utilisateur</translation>
+        </message>
+        <message>
+            <source>See the card</source>
+            <translation>Voir la carte</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>January</comment>
+            <translation>J</translation>
+        </message>
+        <message>
+            <source>F</source>
+            <comment>February</comment>
+            <translation>F</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>March</comment>
+            <translation>M</translation>
+        </message>
+        <message>
+            <source>A</source>
+            <comment>April</comment>
+            <translation>A</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>May</comment>
+            <translation>M</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>June</comment>
+            <translation>J</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>July</comment>
+            <translation>J</translation>
+        </message>
+        <message>
+            <source>A</source>
+            <comment>August</comment>
+            <translation>A</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>September</comment>
+            <translation>S</translation>
+        </message>
+        <message>
+            <source>O</source>
+            <comment>October</comment>
+            <translation>O</translation>
+        </message>
+        <message>
+            <source>N</source>
+            <comment>November</comment>
+            <translation>N</translation>
+        </message>
+        <message>
+            <source>D</source>
+            <comment>December</comment>
+            <translation>D</translation>
         </message>
     </context>
     <context>

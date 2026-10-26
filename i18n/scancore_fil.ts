@@ -684,6 +684,10 @@
             <source>music extensions</source>
             <translation>mga music extension</translation>
         </message>
+        <message>
+            <source>Paste the link from the repository's page, or the link to its index, repo.json or plugin list; several at once work too. SCANCORE reads Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader repositories, and CloudStream repository codes.</source>
+            <translation>I-paste ang link mula sa pahina ng repository, o ang link sa index, repo.json o plugin list nito; gumagana rin ang ilan nang sabay. Nababasa ng SCANCORE ang mga repository ng Mihon, Tachiyomi, Aniyomi, CloudStream at LNReader. Gumagana rin ang mga code ng repository ng CloudStream.</translation>
+        </message>
     </context>
     <context>
         <name>AddSectionSheet</name>
@@ -3790,6 +3794,10 @@
             <source>Music</source>
             <translation>Musika</translation>
         </message>
+        <message>
+            <source>Show all %1 sources</source>
+            <translation>Ipakita ang lahat ng %1 source</translation>
+        </message>
     </context>
     <context>
         <name>FilterSheet</name>
@@ -4200,6 +4208,21 @@
         <message>
             <source>Continue the story</source>
             <translation>Ituloy ang kuwento</translation>
+        </message>
+        <message>
+            <source>Your year in comics, novels, anime and music</source>
+            <translation>Ang taon mo sa komiks, nobela, anime at musika</translation>
+        </message>
+    </context>
+    <context>
+        <name>HomeWidget</name>
+        <message>
+            <source>Episode %1</source>
+            <translation>Episode %1</translation>
+        </message>
+        <message>
+            <source>Chapter %1</source>
+            <translation>Kabanata %1</translation>
         </message>
     </context>
     <context>
@@ -6759,6 +6782,18 @@
             <source>All files (*)</source>
             <translation>Lahat ng file (*)</translation>
         </message>
+        <message>
+            <source>Open a book file (EPUB, FB2, MOBI or PDF)</source>
+            <translation>Magbukas ng file ng libro (EPUB, FB2, MOBI o PDF)</translation>
+        </message>
+        <message>
+            <source>Choose the folders that hold your EPUB, FB2 and MOBI books in Settings → Sources.</source>
+            <translation>Piliin ang mga folder ng iyong EPUB, FB2 at MOBI na libro sa Settings → Mga source.</translation>
+        </message>
+        <message>
+            <source>Books (*.epub *.fb2 *.fb2.zip *.mobi *.azw3 *.azw *.prc *.pdf)</source>
+            <translation>Mga libro (*.epub *.fb2 *.fb2.zip *.mobi *.azw3 *.azw *.prc *.pdf)</translation>
+        </message>
     </context>
     <context>
         <name>NowPlayingPage</name>
@@ -7504,6 +7539,14 @@
             <source>Download</source>
             <translation>I-download</translation>
         </message>
+        <message>
+            <source>Ready: pages in this language can be translated on this device.</source>
+            <translation>Handa na: maisasalin sa device na ito ang mga pahina sa wikang ito.</translation>
+        </message>
+        <message>
+            <source>Translate on this device</source>
+            <translation>Isalin sa device na ito</translation>
+        </message>
     </context>
     <context>
         <name>PageHeader</name>
@@ -7983,6 +8026,62 @@
         <message>
             <source>The image could not be saved.</source>
             <translation>Hindi ma-save ang larawan.</translation>
+        </message>
+        <message>
+            <source>This is no longer on %1.</source>
+            <translation>Wala na ito sa %1.</translation>
+        </message>
+        <message>
+            <source>%1 cannot do that.</source>
+            <translation>Hindi iyon kaya ng %1.</translation>
+        </message>
+        <message>
+            <source>%1 has no video file for this.</source>
+            <translation>Walang video file ang %1 para dito.</translation>
+        </message>
+        <message>
+            <source>Original</source>
+            <translation>Orihinal</translation>
+        </message>
+        <message>
+            <source>Transcoded by the server (H.264)</source>
+            <translation>Na-transcode ng server (H.264)</translation>
+        </message>
+        <message>
+            <source>%1 is not an OPDS catalogue (its address may be the server's page, not its OPDS feed).</source>
+            <translation>Hindi OPDS catalogue ang %1 (baka page ng server ang address, hindi ang OPDS feed nito).</translation>
+        </message>
+        <message>
+            <source>The book could not be saved.</source>
+            <translation>Hindi ma-save ang libro.</translation>
+        </message>
+        <message>
+            <source>%1 stopped sending the book.</source>
+            <translation>Tumigil ang %1 sa pagpapadala ng libro.</translation>
+        </message>
+        <message>
+            <source>The catalogue's start</source>
+            <translation>Simula ng catalogue</translation>
+        </message>
+        <message>
+            <source>Section</source>
+            <translation>Seksiyon</translation>
+        </message>
+        <message>
+            <source>This is a folder of series: pick it under Section in this source's filters to see them.</source>
+            <translation>Folder ito ng mga serye: piliin ito sa Seksiyon sa mga filter ng source na ito para makita sila.</translation>
+        </message>
+        <message>
+            <source>This folder has no comics SCANCORE can read (CBZ, CBR, CB7, PDF or streamed pages). Books in EPUB are under Novels.</source>
+            <translation>Walang komiks sa folder na ito na mababasa ng SCANCORE (CBZ, CBR, CB7, PDF o stream na pahina). Nasa Nobela ang mga EPUB na libro.</translation>
+        </message>
+        <message>
+            <source>This book is not in EPUB.</source>
+            <translation>Hindi EPUB ang librong ito.</translation>
+        </message>
+        <message>
+            <source>This folder has no books in EPUB here: it may be a folder of series (pick it under Section in this source's filters), or hold comics (under Comics).</source>
+            <translation>Walang EPUB na libro dito sa folder na ito: baka folder ito ng mga serye (piliin ito sa Seksiyon sa mga filter ng source na ito), o may laman itong komiks (sa Komiks).</translation>
         </message>
     </context>
     <context>
@@ -8733,6 +8832,10 @@
             <source>Choose…</source>
             <translation>Pumili…</translation>
         </message>
+        <message>
+            <source>Translate on this device</source>
+            <translation>Isalin sa device na ito</translation>
+        </message>
     </context>
     <context>
         <name>RecentSearches</name>
@@ -9238,10 +9341,37 @@
         </message>
     </context>
     <context>
+        <name>sc::HomeWidget</name>
+        <message>
+            <source>Continue</source>
+            <translation>Magpatuloy</translation>
+        </message>
+        <message>
+            <source>Nothing yet: what you read and watch shows here.</source>
+            <translation>Wala pa: lalabas dito ang binabasa at pinapanood mo.</translation>
+        </message>
+        <message>
+            <source>Open SCANCORE</source>
+            <translation>Buksan ang SCANCORE</translation>
+        </message>
+        <message>
+            <source>1 new chapter</source>
+            <translation>1 bagong kabanata</translation>
+        </message>
+        <message>
+            <source>%1 new chapters</source>
+            <translation>%1 bagong kabanata</translation>
+        </message>
+    </context>
+    <context>
         <name>sc::MediaControls</name>
         <message>
             <source>Reading aloud</source>
             <translation>Pagbasa nang malakas</translation>
+        </message>
+        <message>
+            <source>Music</source>
+            <translation>Musika</translation>
         </message>
     </context>
     <context>
@@ -9340,6 +9470,18 @@
         <message>
             <source>Downloaded once; nothing leaves the computer</source>
             <translation>Isang beses ida-download; walang lumalabas sa computer</translation>
+        </message>
+        <message>
+            <source>Downloaded languages</source>
+            <translation>Mga na-download na wika</translation>
+        </message>
+        <message>
+            <source>Downloaded once; pages never leave the device</source>
+            <translation>Isang beses i-download; hindi lumalabas sa device ang mga pahina</translation>
+        </message>
+        <message>
+            <source>Downloaded once; nothing leaves the device</source>
+            <translation>Isang beses i-download; walang lumalabas sa device</translation>
         </message>
     </context>
     <context>
@@ -9726,6 +9868,26 @@
         <message>
             <source>Save and try</source>
             <translation>I-save at subukan</translation>
+        </message>
+        <message>
+            <source>Connected: 1 show or film found.</source>
+            <translation>Konektado: 1 palabas o pelikula ang nakita.</translation>
+        </message>
+        <message>
+            <source>Connected: more than %1 shows and films found.</source>
+            <translation>Konektado: higit sa %1 palabas at pelikula ang nakita.</translation>
+        </message>
+        <message>
+            <source>Connected: %1 shows and films found.</source>
+            <translation>Konektado: %1 palabas at pelikula ang nakita.</translation>
+        </message>
+        <message>
+            <source>Any OPDS catalogue (Calibre-web, Kavita, Komga, Ubooquity…): paste its OPDS address. Comics open under Comics, EPUB books under Novels. The login stays on this device.</source>
+            <translation>Anumang OPDS catalogue (Calibre-web, Kavita, Komga, Ubooquity…): i-paste ang OPDS address nito. Bubukas ang mga komiks sa Komiks, ang mga EPUB na libro sa Nobela. Nananatili sa device na ito ang login.</translation>
+        </message>
+        <message>
+            <source>Watch the shows and films on your own Jellyfin server under Anime. Where you stop is kept on the server too, so its other apps carry on from there. The login stays on this device.</source>
+            <translation>Panoorin sa Anime ang mga palabas at pelikula ng sarili mong Jellyfin server. Tinatandaan din ng server kung saan ka huminto, kaya doon magpapatuloy ang iba nitong app. Nananatili sa device na ito ang login.</translation>
         </message>
     </context>
     <context>
@@ -10565,6 +10727,22 @@
         <message>
             <source>Whether the extensions runtime answers, a quick test of a source, and the sites each extension contacted.</source>
             <translation>Kung sumasagot ang extensions runtime, mabilis na test ng isang source, at ang mga site na kinontak ng bawat extension.</translation>
+        </message>
+        <message>
+            <source>Komga, Kavita and Suwayomi servers you run, and OPDS catalogues: their comics and books are a source like the others, searched with them and saved to the library. A Jellyfin server's shows and films play under Anime.</source>
+            <translation>Mga Komga, Kavita at Suwayomi server na pinapatakbo mo, at mga OPDS catalogue: source rin ang mga komiks at libro nila gaya ng iba, hinahanap kasama nila at nase-save sa library. Napapanood sa Anime ang mga palabas at pelikula ng Jellyfin server.</translation>
+        </message>
+        <message>
+            <source>Each folder or file in these folders is a series: folders of images, CBZ, CBR, 7z and PDF files for comics, and EPUB, FB2 and MOBI books for novels. </source>
+            <translation>Bawat folder o file sa mga folder na ito ay isang serye: mga folder ng larawan, CBZ, CBR, 7z at PDF para sa komiks, at EPUB, FB2 at MOBI na libro para sa nobela. </translation>
+        </message>
+        <message>
+            <source>Comics and books (*.cbz *.zip *.cbr *.rar *.cb7 *.7z *.pdf *.epub *.fb2 *.mobi *.azw3)</source>
+            <translation>Mga komiks at libro (*.cbz *.zip *.cbr *.rar *.cb7 *.7z *.pdf *.epub *.fb2 *.mobi *.azw3)</translation>
+        </message>
+        <message>
+            <source>SCANCORE runs Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader extensions from repositories you add. It has no repository of its own.</source>
+            <translation>Nagpapatakbo ang SCANCORE ng mga extension ng Mihon, Tachiyomi, Aniyomi, CloudStream at LNReader mula sa mga repository na idinagdag mo. Wala itong sariling repository.</translation>
         </message>
     </context>
     <context>
@@ -11629,6 +11807,10 @@
             <source>Save series to your library and check them for updates; their next chapters show here.</source>
             <translation>I-save ang mga serye sa iyong library at mag-check ng update; dito lalabas ang mga susunod nilang kabanata.</translation>
         </message>
+        <message>
+            <source>Show all %1</source>
+            <translation>Ipakita lahat (%1)</translation>
+        </message>
     </context>
     <context>
         <name>UpdateBanner</name>
@@ -12347,6 +12529,293 @@
         <message>
             <source>Could not save the picture</source>
             <translation>Hindi ma-save ang larawan</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>Monday</comment>
+            <translation>L</translation>
+        </message>
+        <message>
+            <source>T</source>
+            <comment>Tuesday</comment>
+            <translation>M</translation>
+        </message>
+        <message>
+            <source>W</source>
+            <comment>Wednesday</comment>
+            <translation>M</translation>
+        </message>
+        <message>
+            <source>T</source>
+            <comment>Thursday</comment>
+            <translation>H</translation>
+        </message>
+        <message>
+            <source>F</source>
+            <comment>Friday</comment>
+            <translation>B</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>Saturday</comment>
+            <translation>S</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>Sunday</comment>
+            <translation>L</translation>
+        </message>
+        <message>
+            <source>A comic</source>
+            <translation>Isang komiks</translation>
+        </message>
+        <message>
+            <source>A novel</source>
+            <translation>Isang nobela</translation>
+        </message>
+        <message>
+            <source>An anime</source>
+            <translation>Isang anime</translation>
+        </message>
+        <message>
+            <source>A song</source>
+            <translation>Isang kanta</translation>
+        </message>
+        <message>
+            <source>A series</source>
+            <translation>Isang serye</translation>
+        </message>
+        <message>
+            <source>Time spent</source>
+            <translation>Oras na ginugol</translation>
+        </message>
+        <message>
+            <source>Chapters and episodes</source>
+            <translation>Mga kabanata at episode</translation>
+        </message>
+        <message>
+            <source>Number one of each</source>
+            <translation>Numero uno ng bawat isa</translation>
+        </message>
+        <message>
+            <source>Genres</source>
+            <translation>Mga genre</translation>
+        </message>
+        <message>
+            <source>Author</source>
+            <translation>May-akda</translation>
+        </message>
+        <message>
+            <source>Music</source>
+            <translation>Musika</translation>
+        </message>
+        <message>
+            <source>Streak</source>
+            <translation>Sunod-sunod</translation>
+        </message>
+        <message>
+            <source>Where it started</source>
+            <translation>Kung saan nagsimula</translation>
+        </message>
+        <message>
+            <source>wrapped</source>
+            <translation>wrapped</translation>
+        </message>
+        <message>
+            <source>Customise</source>
+            <translation>I-customize</translation>
+        </message>
+        <message>
+            <source>Chapters you finish and time spent reading, watching and listening show up here.</source>
+            <translation>Lalabas dito ang mga kabanatang natapos mo at ang oras ng pagbasa, panonood at pakikinig.</translation>
+        </message>
+        <message>
+            <source>Wrapped</source>
+            <translation>Wrapped</translation>
+        </message>
+        <message>
+            <source>Your year in comics, novels, anime and music</source>
+            <translation>Ang taon mo sa komiks, nobela, anime at musika</translation>
+        </message>
+        <message>
+            <source>hours</source>
+            <translation>oras</translation>
+        </message>
+        <message>
+            <source>minutes</source>
+            <translation>minuto</translation>
+        </message>
+        <message>
+            <source>That's %1 days without a break.</source>
+            <translation>%1 araw iyan nang walang tigil.</translation>
+        </message>
+        <message>
+            <source>You listened for</source>
+            <translation>Nakinig ka nang</translation>
+        </message>
+        <message>
+            <source>to %1 songs</source>
+            <translation>sa %1 kanta</translation>
+        </message>
+        <message>
+            <source>and the artist you played most: %1</source>
+            <translation>at ang artist na pinakamadalas mong pinatugtog: %1</translation>
+        </message>
+        <message>
+            <source>day</source>
+            <translation>araw</translation>
+        </message>
+        <message>
+            <source>days</source>
+            <translation>araw</translation>
+        </message>
+        <message>
+            <source>Active days</source>
+            <translation>Mga aktibong araw</translation>
+        </message>
+        <message>
+            <source>Top author</source>
+            <translation>Nangungunang may-akda</translation>
+        </message>
+        <message>
+            <source>Wrapped %1</source>
+            <translation>Wrapped %1</translation>
+        </message>
+        <message>
+            <source>Top series: </source>
+            <translation>Nangungunang serye: </translation>
+        </message>
+        <message>
+            <source>Customise Wrapped</source>
+            <translation>I-customize ang Wrapped</translation>
+        </message>
+        <message>
+            <source>Style</source>
+            <translation>Istilo</translation>
+        </message>
+        <message>
+            <source>Vivid</source>
+            <translation>Matingkad</translation>
+        </message>
+        <message>
+            <source>Your accent</source>
+            <translation>Iyong accent</translation>
+        </message>
+        <message>
+            <source>Midnight</source>
+            <translation>Hatinggabi</translation>
+        </message>
+        <message>
+            <source>Paper</source>
+            <translation>Papel</translation>
+        </message>
+        <message>
+            <source>Hide titles and covers</source>
+            <translation>Itago ang mga pamagat at cover</translation>
+        </message>
+        <message>
+            <source>For sharing: series show as “A comic”, “An anime”.</source>
+            <translation>Para sa pag-share: lalabas ang mga serye bilang “Isang komiks”, “Isang anime”.</translation>
+        </message>
+        <message>
+            <source>Slides</source>
+            <translation>Mga slide</translation>
+        </message>
+        <message>
+            <source>Card</source>
+            <translation>Card</translation>
+        </message>
+        <message>
+            <source>Story</source>
+            <translation>Story</translation>
+        </message>
+        <message>
+            <source>Square</source>
+            <translation>Parisukat</translation>
+        </message>
+        <message>
+            <source>Wide</source>
+            <translation>Malapad</translation>
+        </message>
+        <message>
+            <source>What it shows: the first four you pick.</source>
+            <translation>Ipinapakita: ang unang apat na pipiliin mo.</translation>
+        </message>
+        <message>
+            <source>What it shows: up to six.</source>
+            <translation>Ipinapakita: hanggang anim.</translation>
+        </message>
+        <message>
+            <source>Covers of the top series</source>
+            <translation>Mga cover ng mga nangungunang serye</translation>
+        </message>
+        <message>
+            <source>My username</source>
+            <translation>Aking username</translation>
+        </message>
+        <message>
+            <source>See the card</source>
+            <translation>Tingnan ang card</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>January</comment>
+            <translation>E</translation>
+        </message>
+        <message>
+            <source>F</source>
+            <comment>February</comment>
+            <translation>P</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>March</comment>
+            <translation>M</translation>
+        </message>
+        <message>
+            <source>A</source>
+            <comment>April</comment>
+            <translation>A</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>May</comment>
+            <translation>M</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>June</comment>
+            <translation>H</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>July</comment>
+            <translation>H</translation>
+        </message>
+        <message>
+            <source>A</source>
+            <comment>August</comment>
+            <translation>A</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>September</comment>
+            <translation>S</translation>
+        </message>
+        <message>
+            <source>O</source>
+            <comment>October</comment>
+            <translation>O</translation>
+        </message>
+        <message>
+            <source>N</source>
+            <comment>November</comment>
+            <translation>N</translation>
+        </message>
+        <message>
+            <source>D</source>
+            <comment>December</comment>
+            <translation>D</translation>
         </message>
     </context>
     <context>

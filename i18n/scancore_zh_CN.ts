@@ -684,6 +684,10 @@
             <source>music extensions</source>
             <translation>音乐扩展</translation>
         </message>
+        <message>
+            <source>Paste the link from the repository's page, or the link to its index, repo.json or plugin list; several at once work too. SCANCORE reads Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader repositories, and CloudStream repository codes.</source>
+            <translation>粘贴仓库页面的链接，或其 index、repo.json、插件列表的链接；一次粘贴多个也可以。SCANCORE 可读取 Mihon、Tachiyomi、Aniyomi、CloudStream 和 LNReader 仓库。也可以使用 CloudStream 仓库代码。</translation>
+        </message>
     </context>
     <context>
         <name>AddSectionSheet</name>
@@ -3798,6 +3802,10 @@
             <source>Music</source>
             <translation>音乐</translation>
         </message>
+        <message>
+            <source>Show all %1 sources</source>
+            <translation>显示全部 %1 个来源</translation>
+        </message>
     </context>
     <context>
         <name>FilterSheet</name>
@@ -4208,6 +4216,21 @@
         <message>
             <source>Continue the story</source>
             <translation>继续这个故事</translation>
+        </message>
+        <message>
+            <source>Your year in comics, novels, anime and music</source>
+            <translation>你在漫画、小说、动画和音乐中的一年</translation>
+        </message>
+    </context>
+    <context>
+        <name>HomeWidget</name>
+        <message>
+            <source>Episode %1</source>
+            <translation>第%1集</translation>
+        </message>
+        <message>
+            <source>Chapter %1</source>
+            <translation>第%1章</translation>
         </message>
     </context>
     <context>
@@ -6767,6 +6790,18 @@
             <source>All files (*)</source>
             <translation>所有文件 (*)</translation>
         </message>
+        <message>
+            <source>Open a book file (EPUB, FB2, MOBI or PDF)</source>
+            <translation>打开书籍文件（EPUB、FB2、MOBI 或 PDF）</translation>
+        </message>
+        <message>
+            <source>Choose the folders that hold your EPUB, FB2 and MOBI books in Settings → Sources.</source>
+            <translation>在 设置 → 来源 中选择存放 EPUB、FB2 和 MOBI 书籍的文件夹。</translation>
+        </message>
+        <message>
+            <source>Books (*.epub *.fb2 *.fb2.zip *.mobi *.azw3 *.azw *.prc *.pdf)</source>
+            <translation>书籍 (*.epub *.fb2 *.fb2.zip *.mobi *.azw3 *.azw *.prc *.pdf)</translation>
+        </message>
     </context>
     <context>
         <name>NowPlayingPage</name>
@@ -7512,6 +7547,14 @@
             <source>Download</source>
             <translation>下载</translation>
         </message>
+        <message>
+            <source>Ready: pages in this language can be translated on this device.</source>
+            <translation>就绪：此语言的页面可以在本设备上翻译。</translation>
+        </message>
+        <message>
+            <source>Translate on this device</source>
+            <translation>在本设备上翻译</translation>
+        </message>
     </context>
     <context>
         <name>PageHeader</name>
@@ -7991,6 +8034,62 @@
         <message>
             <source>The image could not be saved.</source>
             <translation>无法保存图片。</translation>
+        </message>
+        <message>
+            <source>This is no longer on %1.</source>
+            <translation>%1 上已不再有此内容。</translation>
+        </message>
+        <message>
+            <source>%1 cannot do that.</source>
+            <translation>%1 无法执行此操作。</translation>
+        </message>
+        <message>
+            <source>%1 has no video file for this.</source>
+            <translation>%1 没有此内容的视频文件。</translation>
+        </message>
+        <message>
+            <source>Original</source>
+            <translation>原始文件</translation>
+        </message>
+        <message>
+            <source>Transcoded by the server (H.264)</source>
+            <translation>由服务器转码（H.264）</translation>
+        </message>
+        <message>
+            <source>%1 is not an OPDS catalogue (its address may be the server's page, not its OPDS feed).</source>
+            <translation>%1 不是 OPDS 目录（地址可能是服务器网页，而不是它的 OPDS 源）。</translation>
+        </message>
+        <message>
+            <source>The book could not be saved.</source>
+            <translation>无法保存这本书。</translation>
+        </message>
+        <message>
+            <source>%1 stopped sending the book.</source>
+            <translation>%1 停止发送这本书。</translation>
+        </message>
+        <message>
+            <source>The catalogue's start</source>
+            <translation>目录首页</translation>
+        </message>
+        <message>
+            <source>Section</source>
+            <translation>分区</translation>
+        </message>
+        <message>
+            <source>This is a folder of series: pick it under Section in this source's filters to see them.</source>
+            <translation>这是系列文件夹：在此来源的筛选器“分区”中选择它即可查看。</translation>
+        </message>
+        <message>
+            <source>This folder has no comics SCANCORE can read (CBZ, CBR, CB7, PDF or streamed pages). Books in EPUB are under Novels.</source>
+            <translation>此文件夹中没有 SCANCORE 能读取的漫画（CBZ、CBR、CB7、PDF 或流式页面）。EPUB 书籍在“小说”中。</translation>
+        </message>
+        <message>
+            <source>This book is not in EPUB.</source>
+            <translation>这本书不是 EPUB 格式。</translation>
+        </message>
+        <message>
+            <source>This folder has no books in EPUB here: it may be a folder of series (pick it under Section in this source's filters), or hold comics (under Comics).</source>
+            <translation>此文件夹中没有 EPUB 书籍：它可能是系列文件夹（在此来源的筛选器“分区”中选择），或者包含漫画（在“漫画”中）。</translation>
         </message>
     </context>
     <context>
@@ -8741,6 +8840,10 @@
             <source>Choose…</source>
             <translation>选择…</translation>
         </message>
+        <message>
+            <source>Translate on this device</source>
+            <translation>在本设备上翻译</translation>
+        </message>
     </context>
     <context>
         <name>RecentSearches</name>
@@ -9253,10 +9356,37 @@
         </message>
     </context>
     <context>
+        <name>sc::HomeWidget</name>
+        <message>
+            <source>Continue</source>
+            <translation>继续</translation>
+        </message>
+        <message>
+            <source>Nothing yet: what you read and watch shows here.</source>
+            <translation>还没有内容：你阅读和观看的内容会显示在这里。</translation>
+        </message>
+        <message>
+            <source>Open SCANCORE</source>
+            <translation>打开 SCANCORE</translation>
+        </message>
+        <message>
+            <source>1 new chapter</source>
+            <translation>1 个新章节</translation>
+        </message>
+        <message>
+            <source>%1 new chapters</source>
+            <translation>%1 个新章节</translation>
+        </message>
+    </context>
+    <context>
         <name>sc::MediaControls</name>
         <message>
             <source>Reading aloud</source>
             <translation>朗读</translation>
+        </message>
+        <message>
+            <source>Music</source>
+            <translation>音乐</translation>
         </message>
     </context>
     <context>
@@ -9355,6 +9485,18 @@
         <message>
             <source>Downloaded once; nothing leaves the computer</source>
             <translation>只需下载一次；任何内容都不会离开电脑</translation>
+        </message>
+        <message>
+            <source>Downloaded languages</source>
+            <translation>已下载的语言</translation>
+        </message>
+        <message>
+            <source>Downloaded once; pages never leave the device</source>
+            <translation>只需下载一次；页面不会离开设备</translation>
+        </message>
+        <message>
+            <source>Downloaded once; nothing leaves the device</source>
+            <translation>只需下载一次；任何内容都不会离开设备</translation>
         </message>
     </context>
     <context>
@@ -9741,6 +9883,26 @@
         <message>
             <source>Save and try</source>
             <translation>保存并测试</translation>
+        </message>
+        <message>
+            <source>Connected: 1 show or film found.</source>
+            <translation>已连接：找到 1 部剧集或电影。</translation>
+        </message>
+        <message>
+            <source>Connected: more than %1 shows and films found.</source>
+            <translation>已连接：找到超过 %1 部剧集和电影。</translation>
+        </message>
+        <message>
+            <source>Connected: %1 shows and films found.</source>
+            <translation>已连接：找到 %1 部剧集和电影。</translation>
+        </message>
+        <message>
+            <source>Any OPDS catalogue (Calibre-web, Kavita, Komga, Ubooquity…): paste its OPDS address. Comics open under Comics, EPUB books under Novels. The login stays on this device.</source>
+            <translation>任意 OPDS 目录（Calibre-web、Kavita、Komga、Ubooquity…）：粘贴它的 OPDS 地址。漫画在“漫画”中打开，EPUB 书在“小说”中打开。登录信息只保存在此设备。</translation>
+        </message>
+        <message>
+            <source>Watch the shows and films on your own Jellyfin server under Anime. Where you stop is kept on the server too, so its other apps carry on from there. The login stays on this device.</source>
+            <translation>在“动画”中观看你自己的 Jellyfin 服务器上的剧集和电影。服务器也会记住你停在哪里，让它的其他应用从那里继续。登录信息只保存在此设备。</translation>
         </message>
     </context>
     <context>
@@ -10580,6 +10742,22 @@
         <message>
             <source>Whether the extensions runtime answers, a quick test of a source, and the sites each extension contacted.</source>
             <translation>扩展运行环境是否响应、对某个来源的快速测试，以及每个扩展访问过的网站。</translation>
+        </message>
+        <message>
+            <source>Komga, Kavita and Suwayomi servers you run, and OPDS catalogues: their comics and books are a source like the others, searched with them and saved to the library. A Jellyfin server's shows and films play under Anime.</source>
+            <translation>你运行的 Komga、Kavita 和 Suwayomi 服务器以及 OPDS 目录：它们的漫画和书籍与其他来源一样，一起搜索并保存到书库。Jellyfin 服务器的剧集和电影在“动画”中播放。</translation>
+        </message>
+        <message>
+            <source>Each folder or file in these folders is a series: folders of images, CBZ, CBR, 7z and PDF files for comics, and EPUB, FB2 and MOBI books for novels. </source>
+            <translation>这些文件夹中的每个文件夹或文件都是一个系列：漫画是图片文件夹、CBZ、CBR、7z 和 PDF 文件，小说是 EPUB、FB2 和 MOBI 书籍。</translation>
+        </message>
+        <message>
+            <source>Comics and books (*.cbz *.zip *.cbr *.rar *.cb7 *.7z *.pdf *.epub *.fb2 *.mobi *.azw3)</source>
+            <translation>漫画和书籍 (*.cbz *.zip *.cbr *.rar *.cb7 *.7z *.pdf *.epub *.fb2 *.mobi *.azw3)</translation>
+        </message>
+        <message>
+            <source>SCANCORE runs Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader extensions from repositories you add. It has no repository of its own.</source>
+            <translation>SCANCORE 运行你添加的仓库中的 Mihon、Tachiyomi、Aniyomi、CloudStream 和 LNReader 扩展。它没有自己的仓库。</translation>
         </message>
     </context>
     <context>
@@ -11644,6 +11822,10 @@
             <source>Save series to your library and check them for updates; their next chapters show here.</source>
             <translation>把作品保存到书库并检查更新，它们的下一章会显示在这里。</translation>
         </message>
+        <message>
+            <source>Show all %1</source>
+            <translation>显示全部 %1</translation>
+        </message>
     </context>
     <context>
         <name>UpdateBanner</name>
@@ -12362,6 +12544,293 @@
         <message>
             <source>Could not save the picture</source>
             <translation>无法保存图片</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>Monday</comment>
+            <translation>一</translation>
+        </message>
+        <message>
+            <source>T</source>
+            <comment>Tuesday</comment>
+            <translation>二</translation>
+        </message>
+        <message>
+            <source>W</source>
+            <comment>Wednesday</comment>
+            <translation>三</translation>
+        </message>
+        <message>
+            <source>T</source>
+            <comment>Thursday</comment>
+            <translation>四</translation>
+        </message>
+        <message>
+            <source>F</source>
+            <comment>Friday</comment>
+            <translation>五</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>Saturday</comment>
+            <translation>六</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>Sunday</comment>
+            <translation>日</translation>
+        </message>
+        <message>
+            <source>A comic</source>
+            <translation>某部漫画</translation>
+        </message>
+        <message>
+            <source>A novel</source>
+            <translation>某部小说</translation>
+        </message>
+        <message>
+            <source>An anime</source>
+            <translation>某部动画</translation>
+        </message>
+        <message>
+            <source>A song</source>
+            <translation>某首歌</translation>
+        </message>
+        <message>
+            <source>A series</source>
+            <translation>某个系列</translation>
+        </message>
+        <message>
+            <source>Time spent</source>
+            <translation>使用时间</translation>
+        </message>
+        <message>
+            <source>Chapters and episodes</source>
+            <translation>章节和剧集</translation>
+        </message>
+        <message>
+            <source>Number one of each</source>
+            <translation>各类第一</translation>
+        </message>
+        <message>
+            <source>Genres</source>
+            <translation>类型</translation>
+        </message>
+        <message>
+            <source>Author</source>
+            <translation>作者</translation>
+        </message>
+        <message>
+            <source>Music</source>
+            <translation>音乐</translation>
+        </message>
+        <message>
+            <source>Streak</source>
+            <translation>连续天数</translation>
+        </message>
+        <message>
+            <source>Where it started</source>
+            <translation>一切的开始</translation>
+        </message>
+        <message>
+            <source>wrapped</source>
+            <translation>wrapped</translation>
+        </message>
+        <message>
+            <source>Customise</source>
+            <translation>自定义</translation>
+        </message>
+        <message>
+            <source>Chapters you finish and time spent reading, watching and listening show up here.</source>
+            <translation>你读完的章节以及阅读、观看和收听的时间会显示在这里。</translation>
+        </message>
+        <message>
+            <source>Wrapped</source>
+            <translation>Wrapped</translation>
+        </message>
+        <message>
+            <source>Your year in comics, novels, anime and music</source>
+            <translation>你在漫画、小说、动画和音乐中的一年</translation>
+        </message>
+        <message>
+            <source>hours</source>
+            <translation>小时</translation>
+        </message>
+        <message>
+            <source>minutes</source>
+            <translation>分钟</translation>
+        </message>
+        <message>
+            <source>That's %1 days without a break.</source>
+            <translation>连续 %1 天。</translation>
+        </message>
+        <message>
+            <source>You listened for</source>
+            <translation>你收听了</translation>
+        </message>
+        <message>
+            <source>to %1 songs</source>
+            <translation>共 %1 首歌</translation>
+        </message>
+        <message>
+            <source>and the artist you played most: %1</source>
+            <translation>以及你最常听的艺人：%1</translation>
+        </message>
+        <message>
+            <source>day</source>
+            <translation>天</translation>
+        </message>
+        <message>
+            <source>days</source>
+            <translation>天</translation>
+        </message>
+        <message>
+            <source>Active days</source>
+            <translation>活跃天数</translation>
+        </message>
+        <message>
+            <source>Top author</source>
+            <translation>最爱作者</translation>
+        </message>
+        <message>
+            <source>Wrapped %1</source>
+            <translation>Wrapped %1</translation>
+        </message>
+        <message>
+            <source>Top series: </source>
+            <translation>最爱系列：</translation>
+        </message>
+        <message>
+            <source>Customise Wrapped</source>
+            <translation>自定义 Wrapped</translation>
+        </message>
+        <message>
+            <source>Style</source>
+            <translation>风格</translation>
+        </message>
+        <message>
+            <source>Vivid</source>
+            <translation>鲜艳</translation>
+        </message>
+        <message>
+            <source>Your accent</source>
+            <translation>你的强调色</translation>
+        </message>
+        <message>
+            <source>Midnight</source>
+            <translation>午夜</translation>
+        </message>
+        <message>
+            <source>Paper</source>
+            <translation>纸张</translation>
+        </message>
+        <message>
+            <source>Hide titles and covers</source>
+            <translation>隐藏标题和封面</translation>
+        </message>
+        <message>
+            <source>For sharing: series show as “A comic”, “An anime”.</source>
+            <translation>用于分享：系列显示为“某部漫画”“某部动画”。</translation>
+        </message>
+        <message>
+            <source>Slides</source>
+            <translation>幻灯片</translation>
+        </message>
+        <message>
+            <source>Card</source>
+            <translation>卡片</translation>
+        </message>
+        <message>
+            <source>Story</source>
+            <translation>故事</translation>
+        </message>
+        <message>
+            <source>Square</source>
+            <translation>正方形</translation>
+        </message>
+        <message>
+            <source>Wide</source>
+            <translation>宽</translation>
+        </message>
+        <message>
+            <source>What it shows: the first four you pick.</source>
+            <translation>显示内容：你选的前四项。</translation>
+        </message>
+        <message>
+            <source>What it shows: up to six.</source>
+            <translation>显示内容：最多六项。</translation>
+        </message>
+        <message>
+            <source>Covers of the top series</source>
+            <translation>热门系列封面</translation>
+        </message>
+        <message>
+            <source>My username</source>
+            <translation>我的用户名</translation>
+        </message>
+        <message>
+            <source>See the card</source>
+            <translation>查看卡片</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>January</comment>
+            <translation>1</translation>
+        </message>
+        <message>
+            <source>F</source>
+            <comment>February</comment>
+            <translation>2</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>March</comment>
+            <translation>3</translation>
+        </message>
+        <message>
+            <source>A</source>
+            <comment>April</comment>
+            <translation>4</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>May</comment>
+            <translation>5</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>June</comment>
+            <translation>6</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>July</comment>
+            <translation>7</translation>
+        </message>
+        <message>
+            <source>A</source>
+            <comment>August</comment>
+            <translation>8</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>September</comment>
+            <translation>9</translation>
+        </message>
+        <message>
+            <source>O</source>
+            <comment>October</comment>
+            <translation>10</translation>
+        </message>
+        <message>
+            <source>N</source>
+            <comment>November</comment>
+            <translation>11</translation>
+        </message>
+        <message>
+            <source>D</source>
+            <comment>December</comment>
+            <translation>12</translation>
         </message>
     </context>
     <context>

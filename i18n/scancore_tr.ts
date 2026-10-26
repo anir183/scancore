@@ -684,6 +684,10 @@
             <source>music extensions</source>
             <translation>müzik uzantıları</translation>
         </message>
+        <message>
+            <source>Paste the link from the repository's page, or the link to its index, repo.json or plugin list; several at once work too. SCANCORE reads Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader repositories, and CloudStream repository codes.</source>
+            <translation>Deponun sayfasındaki bağlantıyı ya da index, repo.json veya eklenti listesi bağlantısını yapıştır; birkaçı birden de olur. SCANCORE; Mihon, Tachiyomi, Aniyomi, CloudStream ve LNReader depolarını okur. CloudStream depo kodları da olur.</translation>
+        </message>
     </context>
     <context>
         <name>AddSectionSheet</name>
@@ -3798,6 +3802,10 @@
             <source>Music</source>
             <translation>Müzik</translation>
         </message>
+        <message>
+            <source>Show all %1 sources</source>
+            <translation>%1 kaynağın tümünü göster</translation>
+        </message>
     </context>
     <context>
         <name>FilterSheet</name>
@@ -4208,6 +4216,21 @@
         <message>
             <source>Continue the story</source>
             <translation>Hikâyeye devam et</translation>
+        </message>
+        <message>
+            <source>Your year in comics, novels, anime and music</source>
+            <translation>Çizgi roman, roman, anime ve müzikle geçen yılın</translation>
+        </message>
+    </context>
+    <context>
+        <name>HomeWidget</name>
+        <message>
+            <source>Episode %1</source>
+            <translation>Bölüm %1</translation>
+        </message>
+        <message>
+            <source>Chapter %1</source>
+            <translation>Bölüm %1</translation>
         </message>
     </context>
     <context>
@@ -6767,6 +6790,18 @@
             <source>All files (*)</source>
             <translation>Tüm dosyalar (*)</translation>
         </message>
+        <message>
+            <source>Open a book file (EPUB, FB2, MOBI or PDF)</source>
+            <translation>Bir kitap dosyası aç (EPUB, FB2, MOBI veya PDF)</translation>
+        </message>
+        <message>
+            <source>Choose the folders that hold your EPUB, FB2 and MOBI books in Settings → Sources.</source>
+            <translation>EPUB, FB2 ve MOBI kitaplarının bulunduğu klasörleri Ayarlar → Kaynaklar'dan seç.</translation>
+        </message>
+        <message>
+            <source>Books (*.epub *.fb2 *.fb2.zip *.mobi *.azw3 *.azw *.prc *.pdf)</source>
+            <translation>Kitaplar (*.epub *.fb2 *.fb2.zip *.mobi *.azw3 *.azw *.prc *.pdf)</translation>
+        </message>
     </context>
     <context>
         <name>NowPlayingPage</name>
@@ -7512,6 +7547,14 @@
             <source>Download</source>
             <translation>İndir</translation>
         </message>
+        <message>
+            <source>Ready: pages in this language can be translated on this device.</source>
+            <translation>Hazır: bu dildeki sayfalar bu cihazda çevrilebilir.</translation>
+        </message>
+        <message>
+            <source>Translate on this device</source>
+            <translation>Bu cihazda çevir</translation>
+        </message>
     </context>
     <context>
         <name>PageHeader</name>
@@ -7991,6 +8034,62 @@
         <message>
             <source>The image could not be saved.</source>
             <translation>Görsel kaydedilemedi.</translation>
+        </message>
+        <message>
+            <source>This is no longer on %1.</source>
+            <translation>Bu artık %1 üzerinde değil.</translation>
+        </message>
+        <message>
+            <source>%1 cannot do that.</source>
+            <translation>%1 bunu yapamıyor.</translation>
+        </message>
+        <message>
+            <source>%1 has no video file for this.</source>
+            <translation>%1 bunun için bir video dosyasına sahip değil.</translation>
+        </message>
+        <message>
+            <source>Original</source>
+            <translation>Orijinal</translation>
+        </message>
+        <message>
+            <source>Transcoded by the server (H.264)</source>
+            <translation>Sunucu tarafından dönüştürüldü (H.264)</translation>
+        </message>
+        <message>
+            <source>%1 is not an OPDS catalogue (its address may be the server's page, not its OPDS feed).</source>
+            <translation>%1 bir OPDS kataloğu değil (adres, OPDS akışı yerine sunucunun sayfası olabilir).</translation>
+        </message>
+        <message>
+            <source>The book could not be saved.</source>
+            <translation>Kitap kaydedilemedi.</translation>
+        </message>
+        <message>
+            <source>%1 stopped sending the book.</source>
+            <translation>%1 kitabı göndermeyi bıraktı.</translation>
+        </message>
+        <message>
+            <source>The catalogue's start</source>
+            <translation>Kataloğun başı</translation>
+        </message>
+        <message>
+            <source>Section</source>
+            <translation>Bölüm</translation>
+        </message>
+        <message>
+            <source>This is a folder of series: pick it under Section in this source's filters to see them.</source>
+            <translation>Bu bir seri klasörü: görmek için bu kaynağın filtrelerinde Bölüm altından seç.</translation>
+        </message>
+        <message>
+            <source>This folder has no comics SCANCORE can read (CBZ, CBR, CB7, PDF or streamed pages). Books in EPUB are under Novels.</source>
+            <translation>Bu klasörde SCANCORE'un okuyabileceği çizgi roman yok (CBZ, CBR, CB7, PDF veya akışlı sayfalar). EPUB kitaplar Romanlar'da.</translation>
+        </message>
+        <message>
+            <source>This book is not in EPUB.</source>
+            <translation>Bu kitap EPUB değil.</translation>
+        </message>
+        <message>
+            <source>This folder has no books in EPUB here: it may be a folder of series (pick it under Section in this source's filters), or hold comics (under Comics).</source>
+            <translation>Bu klasörde burada EPUB kitap yok: bir seri klasörü olabilir (bu kaynağın filtrelerinde Bölüm altından seç) ya da çizgi roman içerebilir (Çizgi romanlar altında).</translation>
         </message>
     </context>
     <context>
@@ -8741,6 +8840,10 @@
             <source>Choose…</source>
             <translation>Seç…</translation>
         </message>
+        <message>
+            <source>Translate on this device</source>
+            <translation>Bu cihazda çevir</translation>
+        </message>
     </context>
     <context>
         <name>RecentSearches</name>
@@ -9253,10 +9356,37 @@
         </message>
     </context>
     <context>
+        <name>sc::HomeWidget</name>
+        <message>
+            <source>Continue</source>
+            <translation>Devam</translation>
+        </message>
+        <message>
+            <source>Nothing yet: what you read and watch shows here.</source>
+            <translation>Henüz bir şey yok: okuduğun ve izlediğin şeyler burada görünür.</translation>
+        </message>
+        <message>
+            <source>Open SCANCORE</source>
+            <translation>SCANCORE'u aç</translation>
+        </message>
+        <message>
+            <source>1 new chapter</source>
+            <translation>1 yeni bölüm</translation>
+        </message>
+        <message>
+            <source>%1 new chapters</source>
+            <translation>%1 yeni bölüm</translation>
+        </message>
+    </context>
+    <context>
         <name>sc::MediaControls</name>
         <message>
             <source>Reading aloud</source>
             <translation>Sesli okuma</translation>
+        </message>
+        <message>
+            <source>Music</source>
+            <translation>Müzik</translation>
         </message>
     </context>
     <context>
@@ -9355,6 +9485,18 @@
         <message>
             <source>Downloaded once; nothing leaves the computer</source>
             <translation>Bir kez indirilir; hiçbir şey bilgisayardan çıkmaz</translation>
+        </message>
+        <message>
+            <source>Downloaded languages</source>
+            <translation>İndirilen diller</translation>
+        </message>
+        <message>
+            <source>Downloaded once; pages never leave the device</source>
+            <translation>Bir kez indirilir; sayfalar cihazdan asla çıkmaz</translation>
+        </message>
+        <message>
+            <source>Downloaded once; nothing leaves the device</source>
+            <translation>Bir kez indirilir; hiçbir şey cihazdan çıkmaz</translation>
         </message>
     </context>
     <context>
@@ -9741,6 +9883,26 @@
         <message>
             <source>Save and try</source>
             <translation>Kaydet ve dene</translation>
+        </message>
+        <message>
+            <source>Connected: 1 show or film found.</source>
+            <translation>Bağlandı: 1 dizi veya film bulundu.</translation>
+        </message>
+        <message>
+            <source>Connected: more than %1 shows and films found.</source>
+            <translation>Bağlandı: %1'den fazla dizi ve film bulundu.</translation>
+        </message>
+        <message>
+            <source>Connected: %1 shows and films found.</source>
+            <translation>Bağlandı: %1 dizi ve film bulundu.</translation>
+        </message>
+        <message>
+            <source>Any OPDS catalogue (Calibre-web, Kavita, Komga, Ubooquity…): paste its OPDS address. Comics open under Comics, EPUB books under Novels. The login stays on this device.</source>
+            <translation>Herhangi bir OPDS kataloğu (Calibre-web, Kavita, Komga, Ubooquity…): OPDS adresini yapıştır. Çizgi romanlar Çizgi romanlar'da, EPUB kitaplar Romanlar'da açılır. Giriş bilgileri bu cihazda kalır.</translation>
+        </message>
+        <message>
+            <source>Watch the shows and films on your own Jellyfin server under Anime. Where you stop is kept on the server too, so its other apps carry on from there. The login stays on this device.</source>
+            <translation>Kendi Jellyfin sunucundaki dizi ve filmleri Anime'de izle. Nerede durduğunu sunucu da hatırlar, böylece diğer uygulamaları oradan devam eder. Giriş bilgileri bu cihazda kalır.</translation>
         </message>
     </context>
     <context>
@@ -10581,6 +10743,22 @@
             <source>Whether the extensions runtime answers, a quick test of a source, and the sites each extension contacted.</source>
             <translation>Uzantı ortamının yanıt verip vermediği, bir kaynağın hızlı testi ve her uzantının bağlandığı siteler.</translation>
         </message>
+        <message>
+            <source>Komga, Kavita and Suwayomi servers you run, and OPDS catalogues: their comics and books are a source like the others, searched with them and saved to the library. A Jellyfin server's shows and films play under Anime.</source>
+            <translation>Çalıştırdığın Komga, Kavita ve Suwayomi sunucuları ve OPDS katalogları: çizgi romanları ve kitapları diğerleri gibi bir kaynaktır, onlarla birlikte aranır ve kütüphaneye kaydedilir. Bir Jellyfin sunucusunun dizi ve filmleri Anime'de oynar.</translation>
+        </message>
+        <message>
+            <source>Each folder or file in these folders is a series: folders of images, CBZ, CBR, 7z and PDF files for comics, and EPUB, FB2 and MOBI books for novels. </source>
+            <translation>Bu klasörlerdeki her klasör veya dosya bir seridir: çizgi romanlar için resim klasörleri, CBZ, CBR, 7z ve PDF dosyaları, romanlar için EPUB, FB2 ve MOBI kitaplar. </translation>
+        </message>
+        <message>
+            <source>Comics and books (*.cbz *.zip *.cbr *.rar *.cb7 *.7z *.pdf *.epub *.fb2 *.mobi *.azw3)</source>
+            <translation>Çizgi romanlar ve kitaplar (*.cbz *.zip *.cbr *.rar *.cb7 *.7z *.pdf *.epub *.fb2 *.mobi *.azw3)</translation>
+        </message>
+        <message>
+            <source>SCANCORE runs Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader extensions from repositories you add. It has no repository of its own.</source>
+            <translation>SCANCORE, eklediğin depolardan Mihon, Tachiyomi, Aniyomi, CloudStream ve LNReader eklentilerini çalıştırır. Kendi deposu yoktur.</translation>
+        </message>
     </context>
     <context>
         <name>SplitPicker</name>
@@ -10945,7 +11123,7 @@
         </message>
         <message>
             <source>Comics</source>
-            <translation>Çizgi romanlar</translation>
+            <translation>Çizgi roman</translation>
         </message>
         <message>
             <source>Novels</source>
@@ -10961,7 +11139,7 @@
         </message>
         <message>
             <source>More</source>
-            <translation>Daha fazla</translation>
+            <translation>Diğer</translation>
         </message>
         <message>
             <source>Search</source>
@@ -11643,6 +11821,10 @@
         <message>
             <source>Save series to your library and check them for updates; their next chapters show here.</source>
             <translation>Serileri kitaplığına kaydet ve güncellemeleri denetle; sonraki bölümleri burada görünür.</translation>
+        </message>
+        <message>
+            <source>Show all %1</source>
+            <translation>Tümünü göster (%1)</translation>
         </message>
     </context>
     <context>
@@ -12362,6 +12544,293 @@
         <message>
             <source>Could not save the picture</source>
             <translation>Resim kaydedilemedi</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>Monday</comment>
+            <translation>P</translation>
+        </message>
+        <message>
+            <source>T</source>
+            <comment>Tuesday</comment>
+            <translation>S</translation>
+        </message>
+        <message>
+            <source>W</source>
+            <comment>Wednesday</comment>
+            <translation>Ç</translation>
+        </message>
+        <message>
+            <source>T</source>
+            <comment>Thursday</comment>
+            <translation>P</translation>
+        </message>
+        <message>
+            <source>F</source>
+            <comment>Friday</comment>
+            <translation>C</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>Saturday</comment>
+            <translation>C</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>Sunday</comment>
+            <translation>P</translation>
+        </message>
+        <message>
+            <source>A comic</source>
+            <translation>Bir çizgi roman</translation>
+        </message>
+        <message>
+            <source>A novel</source>
+            <translation>Bir roman</translation>
+        </message>
+        <message>
+            <source>An anime</source>
+            <translation>Bir anime</translation>
+        </message>
+        <message>
+            <source>A song</source>
+            <translation>Bir şarkı</translation>
+        </message>
+        <message>
+            <source>A series</source>
+            <translation>Bir seri</translation>
+        </message>
+        <message>
+            <source>Time spent</source>
+            <translation>Geçirilen süre</translation>
+        </message>
+        <message>
+            <source>Chapters and episodes</source>
+            <translation>Bölümler</translation>
+        </message>
+        <message>
+            <source>Number one of each</source>
+            <translation>Her birinin bir numarası</translation>
+        </message>
+        <message>
+            <source>Genres</source>
+            <translation>Türler</translation>
+        </message>
+        <message>
+            <source>Author</source>
+            <translation>Yazar</translation>
+        </message>
+        <message>
+            <source>Music</source>
+            <translation>Müzik</translation>
+        </message>
+        <message>
+            <source>Streak</source>
+            <translation>Seri</translation>
+        </message>
+        <message>
+            <source>Where it started</source>
+            <translation>Her şeyin başladığı yer</translation>
+        </message>
+        <message>
+            <source>wrapped</source>
+            <translation>wrapped</translation>
+        </message>
+        <message>
+            <source>Customise</source>
+            <translation>Özelleştir</translation>
+        </message>
+        <message>
+            <source>Chapters you finish and time spent reading, watching and listening show up here.</source>
+            <translation>Bitirdiğin bölümler ve okuma, izleme ve dinlemeye harcadığın süre burada görünür.</translation>
+        </message>
+        <message>
+            <source>Wrapped</source>
+            <translation>Wrapped</translation>
+        </message>
+        <message>
+            <source>Your year in comics, novels, anime and music</source>
+            <translation>Çizgi roman, roman, anime ve müzikle geçen yılın</translation>
+        </message>
+        <message>
+            <source>hours</source>
+            <translation>saat</translation>
+        </message>
+        <message>
+            <source>minutes</source>
+            <translation>dakika</translation>
+        </message>
+        <message>
+            <source>That's %1 days without a break.</source>
+            <translation>Arka arkaya %1 gün.</translation>
+        </message>
+        <message>
+            <source>You listened for</source>
+            <translation>Dinleme süren</translation>
+        </message>
+        <message>
+            <source>to %1 songs</source>
+            <translation>– %1 şarkı</translation>
+        </message>
+        <message>
+            <source>and the artist you played most: %1</source>
+            <translation>ve en çok dinlediğin sanatçı: %1</translation>
+        </message>
+        <message>
+            <source>day</source>
+            <translation>gün</translation>
+        </message>
+        <message>
+            <source>days</source>
+            <translation>gün</translation>
+        </message>
+        <message>
+            <source>Active days</source>
+            <translation>Aktif günler</translation>
+        </message>
+        <message>
+            <source>Top author</source>
+            <translation>En çok okunan yazar</translation>
+        </message>
+        <message>
+            <source>Wrapped %1</source>
+            <translation>Wrapped %1</translation>
+        </message>
+        <message>
+            <source>Top series: </source>
+            <translation>En iyi seri: </translation>
+        </message>
+        <message>
+            <source>Customise Wrapped</source>
+            <translation>Wrapped'i özelleştir</translation>
+        </message>
+        <message>
+            <source>Style</source>
+            <translation>Stil</translation>
+        </message>
+        <message>
+            <source>Vivid</source>
+            <translation>Canlı</translation>
+        </message>
+        <message>
+            <source>Your accent</source>
+            <translation>Vurgu rengin</translation>
+        </message>
+        <message>
+            <source>Midnight</source>
+            <translation>Gece yarısı</translation>
+        </message>
+        <message>
+            <source>Paper</source>
+            <translation>Kâğıt</translation>
+        </message>
+        <message>
+            <source>Hide titles and covers</source>
+            <translation>Başlıkları ve kapakları gizle</translation>
+        </message>
+        <message>
+            <source>For sharing: series show as “A comic”, “An anime”.</source>
+            <translation>Paylaşmak için: seriler “Bir çizgi roman”, “Bir anime” olarak görünür.</translation>
+        </message>
+        <message>
+            <source>Slides</source>
+            <translation>Slaytlar</translation>
+        </message>
+        <message>
+            <source>Card</source>
+            <translation>Kart</translation>
+        </message>
+        <message>
+            <source>Story</source>
+            <translation>Hikâye</translation>
+        </message>
+        <message>
+            <source>Square</source>
+            <translation>Kare</translation>
+        </message>
+        <message>
+            <source>Wide</source>
+            <translation>Geniş</translation>
+        </message>
+        <message>
+            <source>What it shows: the first four you pick.</source>
+            <translation>Gösterdikleri: seçtiğin ilk dört.</translation>
+        </message>
+        <message>
+            <source>What it shows: up to six.</source>
+            <translation>Gösterdikleri: en fazla altı.</translation>
+        </message>
+        <message>
+            <source>Covers of the top series</source>
+            <translation>En iyi serilerin kapakları</translation>
+        </message>
+        <message>
+            <source>My username</source>
+            <translation>Kullanıcı adım</translation>
+        </message>
+        <message>
+            <source>See the card</source>
+            <translation>Kartı gör</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>January</comment>
+            <translation>O</translation>
+        </message>
+        <message>
+            <source>F</source>
+            <comment>February</comment>
+            <translation>Ş</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>March</comment>
+            <translation>M</translation>
+        </message>
+        <message>
+            <source>A</source>
+            <comment>April</comment>
+            <translation>N</translation>
+        </message>
+        <message>
+            <source>M</source>
+            <comment>May</comment>
+            <translation>M</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>June</comment>
+            <translation>H</translation>
+        </message>
+        <message>
+            <source>J</source>
+            <comment>July</comment>
+            <translation>T</translation>
+        </message>
+        <message>
+            <source>A</source>
+            <comment>August</comment>
+            <translation>A</translation>
+        </message>
+        <message>
+            <source>S</source>
+            <comment>September</comment>
+            <translation>E</translation>
+        </message>
+        <message>
+            <source>O</source>
+            <comment>October</comment>
+            <translation>E</translation>
+        </message>
+        <message>
+            <source>N</source>
+            <comment>November</comment>
+            <translation>K</translation>
+        </message>
+        <message>
+            <source>D</source>
+            <comment>December</comment>
+            <translation>A</translation>
         </message>
     </context>
     <context>

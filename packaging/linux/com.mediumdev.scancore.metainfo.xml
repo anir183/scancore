@@ -52,6 +52,11 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="2.16.0" date="2026-10-27">
+      <description>
+        <p>CloudStream extensions under Anime, your own OPDS catalogues and Jellyfin server as sources, FB2 and MOBI books, a home-screen widget on Android, music in the system's media controls, a redone Wrapped and a steadier strip reader.</p>
+      </description>
+    </release>
     <release version="2.15.0" date="2026-10-26">
       <description>
         <p>Music: anime openings and endings from AnimeThemes, your own music files and music extensions, with synced lyrics you can tap to jump to, a queue, a mini player that keeps going while you read, and the song's video beside its words.</p>

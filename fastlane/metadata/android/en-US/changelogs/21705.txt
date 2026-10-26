@@ -1,0 +1,4 @@
+• CloudStream extensions under Anime (add a CloudStream repository)
+• Your OPDS catalogues and Jellyfin server as sources
+• FB2 and MOBI books, a home-screen widget, music on the lock screen
+• Wrapped redone; steadier strip reader; long translations fit
