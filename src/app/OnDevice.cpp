@@ -621,6 +621,9 @@ Task *OnDevice::installUpscaler() {
             checkSha(data, QLatin1String(kUpscaler.sha256));
             save(upscalerFile(), data);
         }
+        // Started once now: a runtime this device cannot load says so here,
+        // not later in every download.
+        upscalerNow();
         return true;
     });
     task->then(this, [this](const QVariant &) {

@@ -117,12 +117,17 @@ void jniError(JNIEnv *env, jclass, jint chunk, jstring message) {
 
 } // namespace
 
-Speech *Speech::instance() {
+Speech *Speech::object() {
     static auto *speech = [] {
         auto *created = new Speech;
         QJSEngine::setObjectOwnership(created, QJSEngine::CppOwnership);
         return created;
     }();
+    return speech;
+}
+
+Speech *Speech::instance() {
+    auto *speech = object();
     // Started once the singleton exists, outside its initialisation, so an
     // engine answering straight away finds it whole.
     speech->ensureEngine();

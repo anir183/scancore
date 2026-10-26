@@ -452,7 +452,14 @@ Task *Extensions::diagnostics() {
 
 QStringList Extensions::installing() const { return QStringList(m_installing.begin(), m_installing.end()); }
 
-int Extensions::updateCount() const { return int(ext::Manager::updates().size()); }
+int Extensions::updateCount() const {
+    // Read by many bindings at once: counted once per change.
+    if (m_updateCountAt != m_revision) {
+        m_updateCount = int(ext::Manager::updates().size());
+        m_updateCountAt = m_revision;
+    }
+    return m_updateCount;
+}
 
 qint64 Extensions::checkedAt() const { return Database::pref(QStringLiteral("extensions.checkedAt"), 0).toLongLong(); }
 
@@ -664,8 +671,9 @@ QVariantMap sourceMap(const ext::SourceEntry &s, const QString &language) {
 // many fail, and their names and sites as one text for searching, not the
 // list: 1,000 sources as JavaScript objects held Extensions' first frame
 // back on phones).
-QVariantList Extensions::installedRows(const QString &kind, bool brief) const {
+QVariantList Extensions::installedRows(const QString &kind, bool brief, const QString &query) const {
     const auto language = contentLanguage();
+    const auto q = query.trimmed().toLower();
     // The sources by their extension, in one pass.
     QHash<QString, QList<ext::SourceEntry>> byExtension;
     for (const auto &s : ext::Manager::sources(kindOf(kind)))
@@ -695,9 +703,12 @@ QVariantList Extensions::installedRows(const QString &kind, bool brief) const {
                 broken += ext::Manager::sourceError(s.key).isEmpty() ? 0 : 1;
                 text << s.name << s.baseUrl;
             }
+            const auto sourceText = text.join(QLatin1Char(' ')).toLower();
+            if (!q.isEmpty() && !i.package.name.toLower().contains(q) && !sourceText.contains(q))
+                continue;
             map.insert(QStringLiteral("sourceCount"), int(own.size()));
             map.insert(QStringLiteral("brokenCount"), broken);
-            map.insert(QStringLiteral("sourceText"), text.join(QLatin1Char(' ')).toLower());
+            map.insert(QStringLiteral("sourceText"), sourceText);
         } else {
             QVariantList sources;
             for (const auto &s : own)
@@ -710,7 +721,7 @@ QVariantList Extensions::installedRows(const QString &kind, bool brief) const {
 }
 
 QVariantList Extensions::installed(const QString &kind) const { return installedRows(kind, false); }
-QVariantList Extensions::installedBrief(const QString &kind) const { return installedRows(kind, true); }
+QVariantList Extensions::installedBrief(const QString &kind, const QString &query) const { return installedRows(kind, true, query); }
 
 QVariantList Extensions::installedSources(const QString &id) const {
     const auto language = contentLanguage();
@@ -761,6 +772,36 @@ QVariantList Extensions::available(const QString &kind) const {
         out.append(r.map);
     }
     return out;
+}
+
+QVariantList Extensions::availableRows(const QVariantMap &filter) const {
+    const auto q = filter.value(QStringLiteral("query")).toString().trimmed().toLower();
+    const auto language = filter.value(QStringLiteral("language")).toString();
+    const auto media = filter.value(QStringLiteral("media")).toString();
+    const auto repo = filter.value(QStringLiteral("repo")).toString();
+    QVariantList out;
+    QString last;
+    for (const auto &row : available()) {
+        auto map = row.toMap();
+        const auto rowLanguage = map.value(QStringLiteral("languageName")).toString();
+        if ((!language.isEmpty() && rowLanguage != language) || (!media.isEmpty() && map.value(QStringLiteral("media")).toString() != media) ||
+            (!repo.isEmpty() && map.value(QStringLiteral("repo")).toString() != repo) ||
+            (!q.isEmpty() && !map.value(QStringLiteral("name")).toString().toLower().contains(q)))
+            continue;
+        map.insert(QStringLiteral("heading"), out.isEmpty() || rowLanguage != last);
+        last = rowLanguage;
+        out.append(map);
+    }
+    return out;
+}
+
+QVariantMap Extensions::availableSummary() const {
+    const auto rows = available();
+    QStringList languages;
+    for (const auto &row : rows)
+        if (const auto name = row.toMap().value(QStringLiteral("languageName")).toString(); !languages.contains(name))
+            languages.append(name);
+    return {{QStringLiteral("count"), int(rows.size())}, {QStringLiteral("languages"), languages}};
 }
 
 Task *Extensions::install(const QString &kind, const QString &pkg) {

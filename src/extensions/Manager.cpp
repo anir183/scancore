@@ -837,17 +837,32 @@ void Manager::uninstall(Kind kind, const QString &pkg) {
 }
 
 QList<Installed> Manager::installed(std::optional<Kind> kind) {
-    const auto listed = available(kind);
     return reading([&](const State &s) {
+        // The newest version the repositories offer of each installed
+        // package, in one pass over them (hundreds installed, thousands
+        // offered: Extensions and Sources ask often).
+        QHash<QString, const Package *> newest;
+        for (const auto &i : s.installed)
+            if (!kind || i.package.kind == *kind)
+                newest.insert(id(i.package.kind, i.package.pkg), nullptr);
+        for (const auto &r : s.repos) {
+            if (kind && r.repo.kind != *kind)
+                continue;
+            for (const auto &p : r.packages) {
+                const auto it = newest.find(id(p.kind, p.pkg));
+                if (it != newest.end() && (!*it || p.versionCode > (*it)->versionCode))
+                    *it = &p;
+            }
+        }
         QList<Installed> out;
+        out.reserve(newest.size());
         for (auto i : s.installed) {
             if (kind && i.package.kind != *kind)
                 continue;
             i.trusted = isTrusted(s, i);
             i.lib = libSupport(i.package.kind, i.package.lib);
-            for (const auto &p : listed)
-                if (p.kind == i.package.kind && p.pkg == i.package.pkg && p.versionCode > i.package.versionCode)
-                    i.update = p;
+            if (const auto *p = newest.value(id(i.package.kind, i.package.pkg)); p && p->versionCode > i.package.versionCode)
+                i.update = *p;
             out.append(i);
         }
         std::sort(out.begin(), out.end(), [](const Installed &a, const Installed &b) {

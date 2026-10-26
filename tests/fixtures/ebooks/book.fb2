@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FictionBook xmlns="http://www.gribuser.ru/xml/fictionbook/2.0" xmlns:l="http://www.w3.org/1999/xlink">
+ <description>
+  <title-info>
+   <genre>sf</genre>
+   <author><first-name>Anna</first-name><middle-name>K.</middle-name><last-name>Writer</last-name></author>
+   <author><first-name>Second</first-name><last-name>Author</last-name></author>
+   <book-title>The Test Book</book-title>
+   <annotation><p>A book for the tests.</p><p>Second line.</p></annotation>
+   <coverpage><image l:href="#cover.png"/></coverpage>
+  </title-info>
+ </description>
+ <body>
+  <title><p>The Test Book</p></title>
+  <section>
+   <title><p>Chapter 1</p><p>The Start</p></title>
+   <epigraph><p>An epigraph.</p><text-author>Someone</text-author></epigraph>
+   <p>The first paragraph, with <emphasis>slanted</emphasis> and <strong>bold</strong>.</p>
+   <empty-line/>
+   <p>A second <a l:href="#n1" type="note">[1]</a> paragraph.</p>
+  </section>
+  <section>
+   <title><p>Part Two</p></title>
+   <section>
+    <title><p>Chapter 2</p></title>
+    <subtitle>A subtitle</subtitle>
+    <poem><stanza><v>Line one</v><v>Line two</v></stanza></poem>
+   </section>
+   <section>
+    <p>A section without a title.</p>
+   </section>
+  </section>
+ </body>
+ <body name="notes">
+  <section id="n1"><title><p>1</p></title><p>The footnote.</p></section>
+ </body>
+ <binary id="cover.png" content-type="image/png">iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAEElEQVR4nGP4z8AARAwQCgAf7gP9
+i18U1AAAAABJRU5ErkJggg==
+</binary>
+</FictionBook>

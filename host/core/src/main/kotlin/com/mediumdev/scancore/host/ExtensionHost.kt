@@ -277,12 +277,20 @@ class ExtensionHost(
         return job.result.await()
     }
 
+    // A series' title as its listing gave it. Mihon always knows it (from
+    // its library) and some extensions read it while fetching details or
+    // chapters (MangaDex's did: "lateinit property title has not been
+    // initialized"), so it is never left unset.
+    private val titles = ConcurrentHashMap<String, String>()
+
     private fun manga(
         source: Source,
         url: String,
+        title: String? = null,
     ): SManga =
         SManga.create().also {
             it.url = url
+            it.title = title?.takeIf { t -> t.isNotEmpty() } ?: titles["${source.id}|$url"].orEmpty()
             memos.manga(source.id, url)?.let { memo -> it.memo = memo }
         }
 
@@ -364,7 +372,12 @@ class ExtensionHost(
         source: Source,
         mangas: List<SManga>,
     ) {
-        for (m in mangas) if (m.memo.isNotEmpty()) memos.putManga(source.id, m.url, m.memo)
+        for (m in mangas) {
+            if (m.memo.isNotEmpty()) memos.putManga(source.id, m.url, m.memo)
+            // Either may be unset (details give no url back).
+            val url = runCatching { m.url }.getOrNull() ?: continue
+            runCatching { m.title }.getOrNull()?.takeIf { it.isNotEmpty() }?.let { titles["${source.id}|$url"] = it }
+        }
     }
 
     // Cookies from SCANCORE's browser-check window: {url, cookies: ["a=b; Path=/", ...]}.

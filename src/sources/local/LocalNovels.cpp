@@ -1,3 +1,4 @@
+#include "Ebooks.h"
 #include "Local.h"
 #include "LocalSources.h"
 
@@ -6,7 +7,9 @@
 #include <QDir>
 #include <QDirIterator>
 #include <QFileInfo>
+#include <QDateTime>
 #include <QHash>
+#include <QMutex>
 #include <QSaveFile>
 #include <QUrl>
 #include <QXmlStreamReader>
@@ -142,18 +145,73 @@ QString coverUrl(const QString &archive, const Epub &book) {
     return QUrl::fromLocalFile(file).toString();
 }
 
+// FB2 and MOBI books are read whole (a few MB at most), so the last ones
+// opened stay in memory while their chapters are read one by one.
+struct CachedEbook {
+    QString path;
+    QDateTime modified;
+    Ebook book;
+};
+QMutex g_ebooksLock;
+QList<CachedEbook> g_ebooks;
+
+Ebook ebookAt(const QString &path) {
+    if (!QFileInfo::exists(path))
+        throw Error(QStringLiteral("%1 is no longer on this device.").arg(QDir::toNativeSeparators(path)), 404);
+    const auto modified = QFileInfo(path).lastModified();
+    {
+        QMutexLocker lock(&g_ebooksLock);
+        for (int i = 0; i < g_ebooks.size(); ++i)
+            if (g_ebooks[i].path == path && g_ebooks[i].modified == modified) {
+                g_ebooks.move(i, 0);
+                return g_ebooks.first().book;
+            }
+    }
+    auto book = readEbook(path);
+    if (book.title.isEmpty())
+        book.title = titleFrom(path);
+    QMutexLocker lock(&g_ebooksLock);
+    g_ebooks.prepend({path, modified, book});
+    while (g_ebooks.size() > 3)
+        g_ebooks.removeLast();
+    return book;
+}
+
+QString ebookCover(const QString &path, const Ebook &book) {
+    if (book.cover.isEmpty())
+        return {};
+    const auto file = cacheFile(path, QStringLiteral("cover.") + book.coverSuffix);
+    if (!QFileInfo::exists(file)) {
+        QSaveFile out(file);
+        if (!out.open(QIODevice::WriteOnly) || out.write(book.cover) != book.cover.size() || !out.commit())
+            return {};
+    }
+    return QUrl::fromLocalFile(file).toString();
+}
+
+// The book files the novels list: EPUB, FB2 and MOBI.
+const QStringList &bookFilters() {
+    static const QStringList filters = [] {
+        QStringList out;
+        for (const auto ext : {"epub", "fb2", "fb2.zip", "mobi", "azw", "azw3", "prc"})
+            out << QStringLiteral("*.") + QLatin1String(ext) << QStringLiteral("*.") + QString::fromLatin1(ext).toUpper();
+        return out;
+    }();
+    return filters;
+}
+
 class LocalNovelSource : public novels::Source {
 public:
     using novels::Source::Source;
 
     bool owns(const QUrl &url) const override { return url.isLocalFile(); }
 
-    // EPUB books in the chosen folders and one folder below.
+    // Books in the chosen folders and one folder below.
     QList<novels::Book> search(const QString &query) override {
         const auto words = query.toLower().split(QLatin1Char(' '), Qt::SkipEmptyParts);
         QStringList files;
         for (const auto &root : folders()) {
-            QDirIterator it(root, {QStringLiteral("*.epub"), QStringLiteral("*.EPUB")}, QDir::Files, QDirIterator::Subdirectories);
+            QDirIterator it(root, bookFilters(), QDir::Files, QDirIterator::Subdirectories);
             while (it.hasNext()) {
                 const auto path = it.next();
                 if (QDir(root).relativeFilePath(path).count(QLatin1Char('/')) <= 1)
@@ -172,6 +230,15 @@ public:
             book.url = QUrl::fromLocalFile(path).toString();
             book.title = title;
             try {
+                if (isEbook(path)) {
+                    const auto ebook = readEbook(path, true);
+                    if (!ebook.title.isEmpty())
+                        book.title = ebook.title;
+                    book.author = ebook.author;
+                    book.cover = ebookCover(path, ebook);
+                    out.append(book);
+                    continue;
+                }
                 const auto epub = readEpub(path);
                 book.title = epub.title;
                 book.author = epub.author;
@@ -186,6 +253,25 @@ public:
 
     novels::Book book(const QString &url, QList<novels::ChapterRef> &chapters) override {
         const auto path = QUrl(url).toLocalFile();
+        if (isEbook(path)) {
+            const auto ebook = ebookAt(path);
+            for (int i = 0; i < ebook.chapters.size(); ++i) {
+                novels::ChapterRef ref;
+                ref.url = QUrl::fromLocalFile(path).toString() + QStringLiteral("#ch=%1").arg(i);
+                ref.title = ebook.chapters[i].title;
+                ref.number = QString::number(i + 1);
+                chapters.append(ref);
+            }
+            novels::Book book;
+            book.source = key();
+            book.url = url;
+            book.title = ebook.title;
+            book.author = ebook.author;
+            book.description = ebook.description;
+            book.cover = ebookCover(path, ebook);
+            book.chapterCount = int(chapters.size());
+            return book;
+        }
         const auto epub = readEpub(path);
         int untitled = 0;
         for (const auto &entry : epub.spine) {
@@ -212,7 +298,16 @@ public:
         const QUrl parsed(url);
         const auto path = parsed.toLocalFile();
         const auto entry = QUrl::fromPercentEncoding(parsed.fragment(QUrl::FullyEncoded).toUtf8());
-        const auto data = zipEntry(path, entry);
+        QByteArray data;
+        if (isEbook(path)) {
+            const auto ebook = ebookAt(path);
+            const int index = entry.startsWith(QLatin1String("ch=")) ? entry.mid(3).toInt() : -1;
+            if (index < 0 || index >= ebook.chapters.size())
+                throw Error(QStringLiteral("This part of %1 could not be read.").arg(QFileInfo(path).fileName()));
+            data = ebook.chapters[index].html;
+        } else {
+            data = zipEntry(path, entry);
+        }
         if (data.isEmpty())
             throw Error(QStringLiteral("This part of %1 could not be read.").arg(QFileInfo(path).fileName()));
         HtmlDocument doc(data);

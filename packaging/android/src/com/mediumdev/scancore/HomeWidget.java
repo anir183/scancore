@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -44,6 +45,22 @@ public final class HomeWidget extends AppWidgetProvider {
         draw(context, manager, ids);
     }
 
+    // Resized: as many rows as now fit.
+    @Override
+    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager manager, int id, Bundle options) {
+        draw(context, manager, new int[] {id});
+    }
+
+    // Rows the widget's height has room for: its padding and header take
+    // about 48 dp, a row (40 dp cover, padding, gap) 53 dp. Launchers give
+    // the portrait height as the largest; unknown sizes show all three.
+    static int rowsThatFit(AppWidgetManager manager, int id) {
+        Bundle options = manager.getAppWidgetOptions(id);
+        int height = options != null ? options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, 0) : 0;
+        if (height <= 0) return ROWS;
+        return Math.max(1, Math.min(ROWS, (height - 48) / 53));
+    }
+
     private static JSONObject data(Context context) {
         File file = new File(context.getFilesDir(), "widget/widget.json");
         try (FileInputStream in = new FileInputStream(file)) {
@@ -75,6 +92,10 @@ public final class HomeWidget extends AppWidgetProvider {
 
     private static void draw(Context context, AppWidgetManager manager, int[] ids) {
         JSONObject data = data(context);
+        for (int id : ids) manager.updateAppWidget(id, views(context, data, rowsThatFit(manager, id)));
+    }
+
+    private static RemoteViews views(Context context, JSONObject data, int fit) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.scancore_widget);
         views.setTextViewText(R.id.heading, data.optString("title", "SCANCORE"));
         views.setOnClickPendingIntent(R.id.widget, open(context, null, 100));
@@ -85,7 +106,7 @@ public final class HomeWidget extends AppWidgetProvider {
         JSONArray rows = data.optJSONArray("rows");
         int shown = 0;
         for (int i = 0; i < ROWS; ++i) {
-            JSONObject row = rows != null ? rows.optJSONObject(i) : null;
+            JSONObject row = rows != null && i < fit ? rows.optJSONObject(i) : null;
             if (row == null) {
                 views.setViewVisibility(ROW[i], View.GONE);
                 continue;
@@ -104,11 +125,11 @@ public final class HomeWidget extends AppWidgetProvider {
                 }
             }
             if (cover != null) views.setImageViewBitmap(COVER[i], cover);
-            else views.setImageViewResource(COVER[i], R.drawable.widget_row);
+            else views.setImageViewResource(COVER[i], R.drawable.widget_cover);
             views.setOnClickPendingIntent(ROW[i], open(context, Uri.parse("scancore://continue/" + Uri.encode(row.optString("id"))), 200 + i));
         }
         views.setViewVisibility(R.id.empty, shown == 0 ? View.VISIBLE : View.GONE);
         views.setTextViewText(R.id.empty, data.optString("empty", ""));
-        for (int id : ids) manager.updateAppWidget(id, views);
+        return views;
     }
 }

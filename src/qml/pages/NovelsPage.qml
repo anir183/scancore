@@ -72,11 +72,11 @@ Item {
     property var saved: []
     Connections {
         target: page.historyTask
-        function onFinished(result) { page.history = Router.keep(page.history, result) }
+        function onFinished(result) { page.history = Router.keep(page.history, result, page.historyTask.digest) }
     }
     Connections {
         target: page.libraryTask
-        function onFinished(result) { page.saved = Router.keep(page.saved, result) }
+        function onFinished(result) { page.saved = Router.keep(page.saved, result, page.libraryTask.digest) }
     }
 
     function search(text) {
@@ -126,11 +126,11 @@ Item {
                     active: page.editing
                     onClicked: page.editing = !page.editing
                 }
-                // A book of your own (issue #16): an EPUB opens in the
-                // novel reader, a PDF as pages.
+                // A book of your own (issue #16): an EPUB, FB2 or MOBI
+                // opens in the novel reader, a PDF as pages.
                 IconButton {
                     iconName: "folder-open"
-                    tip: qsTr("Open a book file (EPUB or PDF)")
+                    tip: qsTr("Open a book file (EPUB, FB2, MOBI or PDF)")
                     onClicked: bookFile.open()
                 }
                 // Plugins, beside comics' extensions.
@@ -235,7 +235,7 @@ Item {
                     empty: page.searchTask && page.searchTask.ok && page.found.books.length === 0
                     emptyTitle: page.browsingLocal ? qsTr("No books on this device yet") : qsTr("No novels found")
                     emptyText: page.browsingLocal
-                        ? qsTr("Choose the folders that hold your EPUB books in Settings → Sources.")
+                        ? qsTr("Choose the folders that hold your EPUB, FB2 and MOBI books in Settings → Sources.")
                         : qsTr("Try fewer words, another source, or paste the book's link.")
                     emptyIcon: page.browsingLocal ? "folder-open" : "search"
                     onRetry: page.run(page.query)
@@ -355,7 +355,7 @@ Item {
     FileDialog {
         id: bookFile
         fileMode: FileDialog.OpenFile
-        nameFilters: [qsTr("Books (*.epub *.pdf)"), qsTr("All files (*)")]
+        nameFilters: [qsTr("Books (*.epub *.fb2 *.fb2.zip *.mobi *.azw3 *.azw *.prc *.pdf)"), qsTr("All files (*)")]
         onAccepted: Router.openFile(selectedFile)
     }
 }

@@ -230,6 +230,9 @@ QStringList folders() {
 bool isImage(const QString &name) { return kImages.contains(suffix(name)); }
 
 bool isPagesFile(const QString &name) {
+    // A zipped FB2 is a book for the novels.
+    if (name.endsWith(QLatin1String(".fb2.zip"), Qt::CaseInsensitive))
+        return false;
     const auto s = suffix(name);
     return kZip.contains(s) || kOtherArchives.contains(s) || s == QLatin1String("pdf");
 }

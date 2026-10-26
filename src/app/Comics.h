@@ -86,7 +86,8 @@ public:
     // apiKey}; an empty password or key keeps the saved one). Returns its id.
     Q_INVOKABLE QString saveServer(const QVariantMap &server);
     Q_INVOKABLE void removeServer(const QString &id);
-    // Logs in and searches once: {ok, count} or fails with why.
+    // Logs in and searches once: {ok, count} or fails with why; Jellyfin
+    // also {video: true, more} (its first page of shows and films).
     Q_INVOKABLE sc::Task *testServer(const QString &id);
     // The series' page on its site, for "Open on the website".
     Q_INVOKABLE sc::Task *webUrl(const QString &url);

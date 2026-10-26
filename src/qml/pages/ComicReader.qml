@@ -98,8 +98,11 @@ Rectangle {
     // read changes as it scrolls past (Mihon's continuous webtoon). Off, a
     // chapter ends with the next-chapter card.
     readonly property bool continuous: mode === "strip" && opt("readerContinuous", true) !== false
-    // The strip's rows: {chapter, panel}; panel -1 is the line before a
-    // chapter. stripChapters: chapter index → {panels, referer, start row}.
+    // The strip's rows: {chapter, panel, ratio}; panel -1 is the line before
+    // a chapter; ratio is the page's height over its width once known (from
+    // the source, or measured when it loads), so a row built again (scrolled
+    // back to) has its height at once. stripChapters: chapter index →
+    // {panels, referer, start row}.
     ListModel { id: stripModel }
     property var stripChapters: ({})
     property var chapterTasks: ({})
@@ -112,12 +115,24 @@ Rectangle {
     function stripAppend(ci, result) {
         if (stripChapters[ci] || !result || !result.panels) return
         const chapters = Object.assign({}, stripChapters)
-        if (stripModel.count > 0) stripModel.append({ chapter: ci, panel: -1 })
+        if (stripModel.count > 0) stripModel.append({ chapter: ci, panel: -1, ratio: 0 })
         chapters[ci] = { panels: result.panels, referer: result.referer || "", start: stripModel.count }
         stripChapters = chapters
         const rows = []
-        for (let k = 0; k < result.panels.length; ++k) rows.push({ chapter: ci, panel: k })
+        for (let k = 0; k < result.panels.length; ++k) {
+            const p = result.panels[k]
+            rows.push({ chapter: ci, panel: k, ratio: p.width > 0 && p.height > 0 ? p.height / p.width : 0 })
+        }
         stripModel.append(rows)
+    }
+    // A page above the one being read changed height (it loaded, and its
+    // estimate was off): the strip moves with it, so what is on screen stays
+    // put instead of jumping (and showing the page that grew, still black
+    // while it fades in).
+    function keepStripPlace(item, delta, oldHeight) {
+        if (delta === 0 || !strip.visible) return
+        if (item.y + oldHeight <= strip.contentY + strip.height * 0.5 && item.y < strip.contentY)
+            strip.contentY += delta
     }
     function stripRow(p) {
         const c = stripChapters[index]
@@ -131,6 +146,7 @@ Rectangle {
         saveProgress(true)
         index = ci
         finished = false
+        prefetchFailures = 0
         task = chapterTasks[ci]
         nextTask = null
         currentPanel = panel
@@ -221,6 +237,7 @@ Rectangle {
 
     function load(i, fromEnd) {
         saveProgress(true)
+        prefetchFailures = 0
         index = i
         finished = false
         currentPanel = 0
@@ -305,10 +322,25 @@ Rectangle {
     Connections {
         target: reader.nextTask
         function onFinished(result) {
+            reader.prefetchFailures = 0
             Comics.prefetch(result.panels, result.referer, 6)
             // Only after the chapter it follows (not after one jumped away from).
             if (reader.continuous && reader.stripChapters[reader.nextFor - 1]) reader.stripAppend(reader.nextFor, result)
         }
+        // A moment offline or a site's hiccup: asked again a few times, so
+        // the strip still runs on (the card at its end offers it by hand).
+        function onFailed(error) {
+            if (reader.nextFor !== reader.index + 1 || reader.prefetchFailures >= 5) return
+            reader.prefetchFailures += 1
+            reader.nextFor = -1
+            prefetchRetry.interval = 2000 * reader.prefetchFailures
+            prefetchRetry.restart()
+        }
+    }
+    property int prefetchFailures: 0
+    Timer {
+        id: prefetchRetry
+        onTriggered: if (reader.panels.length > 0 && reader.currentPanel >= reader.panels.length * 0.7) reader.prefetchNext()
     }
 
     function markFinished() {
@@ -586,17 +618,24 @@ Rectangle {
 
         delegate: Item {
             id: panelItem
+            required property int index
             required property int chapter
             required property int panel
+            required property real ratio
             readonly property var source: reader.stripChapters[chapter] || null
             readonly property var modelData: source && panel >= 0 ? source.panels[panel] || ({}) : ({})
-            readonly property int index: panel
             readonly property bool line: panel < 0
             width: strip.width
             height: line ? 140
                 : image.status === PanelImage.Ready && image.sourceWidth > 0
                 ? reader.stripWidth * image.sourceHeight / image.sourceWidth
-                : (modelData.width > 0 && modelData.height > 0 ? reader.stripWidth * modelData.height / modelData.width : reader.stripWidth * 1.4)
+                : reader.stripWidth * (ratio > 0 ? ratio : 1.4)
+            property real lastHeight: 0
+            onHeightChanged: {
+                if (lastHeight > 0) reader.keepStripPlace(panelItem, height - lastHeight, lastHeight)
+                lastHeight = height
+            }
+            function onScreen() { return y < strip.contentY + strip.height && y + height > strip.contentY }
 
             // Between two chapters of the strip.
             Column {
@@ -638,8 +677,21 @@ Rectangle {
                 filter: reader.imageFilter
                 sharpen: reader.sharpen
                 maxDecodeWidth: 2400
-                opacity: status === PanelImage.Ready ? 1 : 0
-                Behavior on opacity { NumberAnimation { duration: Motion.normal } }
+                // Ready off screen: there at once. Loading in view: a short
+                // fade from the spinner.
+                opacity: 0
+                onStatusChanged: {
+                    if (status !== PanelImage.Ready) {
+                        fadeIn.stop()
+                        opacity = 0
+                        return
+                    }
+                    if (sourceWidth > 0 && panelItem.ratio <= 0)
+                        stripModel.setProperty(panelItem.index, "ratio", sourceHeight / sourceWidth)
+                    if (panelItem.onScreen()) fadeIn.restart()
+                    else opacity = 1
+                }
+                NumberAnimation { id: fadeIn; target: image; property: "opacity"; to: 1; duration: Motion.fast }
             }
             TranslationLayer {
                 anchors.fill: image
@@ -661,7 +713,7 @@ Rectangle {
                 Text {
                     anchors.horizontalCenter: parent.horizontalCenter
                     visible: image.status === PanelImage.Error
-                    text: qsTr("Page ") + (panelItem.index + 1) + qsTr(" did not load")
+                    text: qsTr("Page ") + (panelItem.panel + 1) + qsTr(" did not load")
                     color: "#a0a0a8"
                     font.family: Theme.fontSans
                     font.pixelSize: Theme.textSm

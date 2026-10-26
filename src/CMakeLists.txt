@@ -42,12 +42,14 @@ add_library(scancore_core STATIC
     sources/comics/ComicSource.cpp
     sources/comics/Registry.cpp
     sources/local/AudioTags.cpp
+    sources/local/Ebooks.cpp
     sources/local/Local.cpp
     sources/local/LocalComics.cpp
     sources/local/LocalNovels.cpp
     sources/local/MihonLayout.cpp
     sources/servers/Servers.cpp
     sources/servers/Opds.cpp
+    sources/servers/Jellyfin.cpp
     sources/novels/LnCrawl.cpp
     sources/novels/Registry.cpp
     sources/novels/TextBlocks.cpp

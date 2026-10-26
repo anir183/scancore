@@ -15,7 +15,7 @@ Item {
     property var all: []
     Connections {
         target: page.task
-        function onFinished(result) { page.all = Router.keep(page.all, result) }
+        function onFinished(result) { page.all = Router.keep(page.all, result, page.task.digest) }
     }
 
     // Library changes come every couple of seconds while reading (progress):

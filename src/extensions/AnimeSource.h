@@ -47,6 +47,8 @@ struct AnimeListing {
 // [{url, lang}], timestamps: [{start, end, name, type}], mpvArgs: {k: v}}.
 // Hoster and video ids live in the host; after it restarts they are
 // refused (410) and the episode's hosters are asked again.
+// The reader's own video servers (Jellyfin, servers::createAnimeSource)
+// answer the same calls themselves instead of the host.
 class AnimeSource {
 public:
     struct Config {
@@ -54,6 +56,7 @@ public:
     };
 
     explicit AnimeSource(const SourceEntry &entry);
+    virtual ~AnimeSource() = default;
 
     QString key() const { return m_entry.key; }
     QString label() const { return m_entry.name; }
@@ -79,14 +82,19 @@ public:
     void setPreference(const QString &key, const QJsonValue &value);
 
     // Covers go through the extension (ImageCache's "extsource:" writer).
-    QString imageReferer() const { return QStringLiteral("extsource:") + key(); }
+    virtual QString imageReferer() const { return QStringLiteral("extsource:") + key(); }
     void fetchImage(const QString &url, const QString &path);
     // An anime's page on its site.
-    QString webUrl(const QString &url) const;
+    virtual QString webUrl(const QString &url) const;
     QString unwrap(const QString &url) const;
+    // One of the reader's own servers, not an extension.
+    virtual bool isServer() const { return false; }
+
+protected:
+    // One host call: method and params as above, the answer as JSON.
+    virtual QJsonValue call(const QString &method, QJsonObject params);
 
 private:
-    QJsonValue call(const QString &method, QJsonObject params);
     AnimeItem item(const QJsonObject &o) const;
 
     SourceEntry m_entry;

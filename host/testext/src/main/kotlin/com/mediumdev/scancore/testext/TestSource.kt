@@ -147,7 +147,10 @@ class TestSource :
         }
     }
 
-    override fun chapterListRequest(manga: SManga) = GET("$baseUrl${manga.url}/chapters", headers)
+    // Reads the title, as MangaDex's extension does: the host must set it
+    // (Mihon always has one), or this throws "lateinit property title has
+    // not been initialized".
+    override fun chapterListRequest(manga: SManga) = GET("$baseUrl${manga.url}/chapters", headers).also { manga.title.length }
 
     override fun chapterListParse(response: Response): List<SChapter> =
         response.obj()["chapters"]!!.jsonArray.map {

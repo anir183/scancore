@@ -8,7 +8,8 @@
 
 namespace sc::anime {
 
-// The anime sources of installed Aniyomi extensions. Lookups return shared
+// The anime sources of installed Aniyomi extensions, and the reader's own
+// Jellyfin servers. Lookups return shared
 // pointers so a rebuild can swap the set while requests run.
 class Registry {
 public:

@@ -28,6 +28,10 @@ class Task : public QObject {
     Q_PROPERTY(QString verifyUrl READ verifyUrl NOTIFY changed)
     // What the work has so far, while it is still loading (see report()).
     Q_PROPERTY(QVariant partial READ partial NOTIFY progressed)
+    // For long lists (a library): a fingerprint of the result, made on the
+    // worker, so a page refreshing it can tell nothing changed without
+    // comparing it item by item (Router.keep). Empty for short results.
+    Q_PROPERTY(QString digest READ digest NOTIFY changed)
 
 public:
     using Work = std::function<QVariant()>;
@@ -37,6 +41,11 @@ public:
     static Task *run(Work work);
     // A task that has already finished with `value`.
     static Task *resolved(const QVariant &value);
+    // When the app quits: drops tasks not started yet and waits up to
+    // `msecs` for running ones, so none is left reading the database while
+    // it and the SQLite driver are torn down. Tasks asked for after this
+    // never start.
+    static void finishAll(int msecs);
 
     ~Task() override;
 
@@ -48,6 +57,7 @@ public:
     QVariant result() const { return m_result; }
     QString verifyUrl() const { return m_verifyUrl; }
     QVariant partial() const { return m_partial; }
+    QString digest() const { return m_digest; }
 
     // From inside a task's work: hands QML what is ready so far (a search
     // with some sources answered). Ignored outside a task.
@@ -65,7 +75,8 @@ signals:
 
 private:
     explicit Task(QObject *parent = nullptr);
-    void complete(const QVariant &value, const QString &error, int status, const QString &verifyUrl = QString());
+    void complete(const QVariant &value, const QString &error, int status, const QString &verifyUrl = QString(),
+                  const QString &digest = QString());
 
     bool m_loading = true;
     QString m_error;
@@ -73,6 +84,7 @@ private:
     QVariant m_result;
     QString m_verifyUrl;
     QVariant m_partial;
+    QString m_digest;
     CancelFlag m_cancel;
 };
 

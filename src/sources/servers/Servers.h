@@ -8,18 +8,23 @@
 #include <QString>
 #include <memory>
 
+namespace sc::ext {
+class AnimeSource;
+}
+
 namespace sc::servers {
 
-// The reader's own comic servers (Settings → Sources → Your servers):
-// Komga, Kavita, Suwayomi and OPDS catalogues (Opds.h), each a comic
-// source keyed "server-<id>" (OPDS also a novel source). Not
+// The reader's own servers (Settings → Sources → Your servers): Komga,
+// Kavita, Suwayomi and OPDS catalogues (Opds.h), each a comic source keyed
+// "server-<id>" (OPDS also a novel source), and Jellyfin (Jellyfin.cpp),
+// an anime source keyed "aniyomi:server-<id>". Not
 // part of the bundled sites: they are the reader's own libraries. Covers
 // and pages are plain links on the server with the referer
 // "server:<id>", so the image cache asks for them with the server's login
 // (registerImages) and no password is ever kept in a link.
 struct Server {
     QString id;
-    QString kind; // "komga", "kavita", "suwayomi" or "opds"
+    QString kind; // "komga", "kavita", "suwayomi", "opds" or "jellyfin"
     QString label;
     // Up to the server's root, no trailing slash; an OPDS catalogue's own
     // feed address.
@@ -36,13 +41,22 @@ void save(const QList<Server> &servers);
 std::optional<Server> byId(const QString &id);
 
 // The headers that log in to `server` (Basic for Komga and Suwayomi, a
-// token from logging in for Kavita, kept for its lifetime). Throws on a
-// refused login.
+// token from logging in for Kavita and Jellyfin, kept for its lifetime).
+// Throws on a refused login.
 Headers authHeaders(const Server &server, bool fresh = false);
 
 std::unique_ptr<comics::Source> createSource(const Server &server);
 // OPDS catalogues also hold books (EPUB): the novels' side of the server.
 std::unique_ptr<novels::Source> createNovelSource(const Server &server);
+// Jellyfin: its shows and films as an anime source; nothing for the others.
+std::unique_ptr<ext::AnimeSource> createAnimeSource(const Server &server);
+Headers jellyfinHeaders(const Server &server, bool fresh);
+void forgetJellyfinLogins();
+// Where an episode of a Jellyfin server got to (or that it was watched),
+// sent to the server so its other apps resume there. `episodeUrl` as the
+// source lists it; other sources are ignored. Blocks; failures are only
+// logged. Calls in quick succession are thinned out.
+void videoWatched(const QString &sourceKey, const QString &episodeUrl, double seconds, bool completed);
 
 // A chapter finished in SCANCORE is marked read on the server too (as
 // Mihon's Komga and Kavita trackers do). Blocks (call it in the

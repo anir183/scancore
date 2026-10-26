@@ -16,6 +16,8 @@
 #ifdef SCANCORE_BUNDLED_SOURCES
 #include "sources/bundled/comics/Engines.h"
 #endif
+#include "extensions/AnimeSource.h"
+#include "sources/anime/Registry.h"
 #include "sources/comics/Registry.h"
 #include "sources/novels/Registry.h"
 
@@ -805,7 +807,7 @@ QVariantList Comics::servers() const {
     for (const auto &s : servers::load())
         out.append(QVariantMap{{"id", s.id}, {"kind", s.kind}, {"label", s.label}, {"url", s.url}, {"username", s.username},
                                {"hasPassword", !s.password.isEmpty()}, {"hasKey", !s.apiKey.isEmpty()},
-                               {"source", QStringLiteral("server-") + s.id}});
+                               {"source", (s.kind == QLatin1String("jellyfin") ? QStringLiteral("aniyomi:server-") : QStringLiteral("server-")) + s.id}});
     return out;
 }
 
@@ -841,6 +843,7 @@ QString Comics::saveServer(const QVariantMap &map) {
     servers::save(list);
     comics::Registry::rebuild();
     novels::Registry::rebuild();
+    anime::Registry::rebuild();
     emit App::instance()->manifestChanged();
     return server.id;
 }
@@ -851,11 +854,18 @@ void Comics::removeServer(const QString &id) {
     servers::save(list);
     comics::Registry::rebuild();
     novels::Registry::rebuild();
+    anime::Registry::rebuild();
     emit App::instance()->manifestChanged();
 }
 
 Task *Comics::testServer(const QString &id) {
     return Task::run([id]() -> QVariant {
+        // Jellyfin: its shows and films.
+        if (auto video = anime::Registry::byKey(QStringLiteral("aniyomi:server-") + id)) {
+            servers::authHeaders(*servers::byId(id), true);
+            const auto page = video->browse(QStringLiteral("latest"), 1);
+            return QVariantMap{{"ok", true}, {"count", int(page.items.size())}, {"more", page.hasNextPage}, {"video", true}};
+        }
         auto source = comics::Registry::byKey(QStringLiteral("server-") + id);
         if (!source)
             throw Error(tr("That server is not saved."));

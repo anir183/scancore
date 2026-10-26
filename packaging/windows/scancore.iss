@@ -45,6 +45,9 @@ Root: HKA; Subkey: "Software\Classes\SCANCORE.Theme\shell\open\command"; ValueTy
 Root: HKA; Subkey: "Software\Classes\Applications\scancore.exe\SupportedTypes"; ValueType: string; ValueName: ".sct"; ValueData: ""
 Root: HKA; Subkey: "Software\Classes\Applications\scancore.exe\SupportedTypes"; ValueType: string; ValueName: ".cbz"; ValueData: ""
 Root: HKA; Subkey: "Software\Classes\Applications\scancore.exe\SupportedTypes"; ValueType: string; ValueName: ".epub"; ValueData: ""
+Root: HKA; Subkey: "Software\Classes\Applications\scancore.exe\SupportedTypes"; ValueType: string; ValueName: ".fb2"; ValueData: ""
+Root: HKA; Subkey: "Software\Classes\Applications\scancore.exe\SupportedTypes"; ValueType: string; ValueName: ".mobi"; ValueData: ""
+Root: HKA; Subkey: "Software\Classes\Applications\scancore.exe\SupportedTypes"; ValueType: string; ValueName: ".azw3"; ValueData: ""
 
 ; Links SCANCORE answers: its own and the one-tap "add repository" links
 ; repository pages publish for Mihon, Tachiyomi, Aniyomi and LNReader.

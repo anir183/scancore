@@ -1,7 +1,7 @@
 #include "Ebooks.h"
 
 #include "Local.h"
-#include "core/Error.h"
+#include "core/Http.h"
 #include "core/Html.h"
 
 #include <QFile>
@@ -120,13 +120,17 @@ Ebook readFb2(const QByteArray &raw, bool metaOnly) {
     QStringList author;
     bool inTitleInfo = false, inAuthor = false, inAnnotation = false, authorDone = false;
     // The body: chapters, one per section that has text of its own.
-    bool inBody = false, bodySeen = false;
-    int sections = 0, titleDepth = 0;
+    // Later bodies (footnotes, comments) are one chapter each.
+    bool inBody = false, bodySeen = false, inNotes = false;
+    int titleDepth = 0;
     EbookChapter chapter;
     bool chapterHasText = false;
     QString titleText;
-    QStringList open; // the HTML elements open in the chapter
-    QString notesTitle;
+    QStringList open; // how each element open in the chapter is closed
+    const auto start = [&](const QString &html, const QString &close) {
+        chapter.html += html.toUtf8();
+        open.append(close);
+    };
     const auto flush = [&] {
         if (chapterHasText)
             book.chapters.append(chapter);
@@ -164,56 +168,52 @@ Ebook readFb2(const QByteArray &raw, bool metaOnly) {
                 // Footnotes and comments: a chapter of their own, at the end.
                 if (bodySeen) {
                     flush();
-                    notesTitle = bodyName == QLatin1String("notes") ? QStringLiteral("Notes") : bodyName;
-                    chapter.title = notesTitle;
+                    inNotes = true;
+                    chapter.title = bodyName.isEmpty() || bodyName == QLatin1String("notes") ? QStringLiteral("Notes") : bodyName;
                 }
                 bodySeen = true;
             } else if (inBody) {
                 if (name == QLatin1String("section")) {
-                    ++sections;
                     // A section with text of its own before this one: that
-                    // text is a chapter.
-                    if (chapterHasText)
-                        flush();
+                    // text is a chapter. Titles with no text after them (the
+                    // book's, a part's) are left out.
+                    if (!inNotes) {
+                        if (chapterHasText)
+                            flush();
+                        else
+                            chapter = EbookChapter();
+                    }
                 } else if (name == QLatin1String("title")) {
                     ++titleDepth;
                     titleText.clear();
-                    put(QStringLiteral("<h2>"));
-                    open.append(QStringLiteral("h2"));
-                } else if (name == QLatin1String("p") || name == QLatin1String("v") || name == QLatin1String("text-author")) {
-                    if (titleDepth) {
-                        if (!titleText.isEmpty()) put(QStringLiteral(" "));
-                    } else {
-                        put(QStringLiteral("<p>"));
-                        open.append(QStringLiteral("p"));
+                    start(QString::fromLatin1(inNotes ? "<p><b>" : "<h2>"), QString::fromLatin1(inNotes ? "</b></p>" : "</h2>"));
+                } else if (titleDepth && (name == QLatin1String("p") || name == QLatin1String("v"))) {
+                    // Lines of a title: one heading.
+                    if (!titleText.isEmpty()) {
+                        put(QStringLiteral(" "));
+                        titleText += QLatin1Char(' ');
                     }
-                    if (name == QLatin1String("text-author")) {
-                        put(QStringLiteral("<i>"));
-                        open.append(QStringLiteral("i"));
-                    }
+                    open.append(QString());
+                } else if (name == QLatin1String("p") || name == QLatin1String("v")) {
+                    start(QStringLiteral("<p>"), QStringLiteral("</p>"));
+                } else if (name == QLatin1String("text-author")) {
+                    start(QStringLiteral("<p><i>"), QStringLiteral("</i></p>"));
                 } else if (name == QLatin1String("subtitle")) {
-                    put(QStringLiteral("<h3>"));
-                    open.append(QStringLiteral("h3"));
+                    start(QStringLiteral("<h3>"), QStringLiteral("</h3>"));
                 } else if (name == QLatin1String("epigraph") || name == QLatin1String("cite")) {
-                    put(QStringLiteral("<blockquote>"));
-                    open.append(QStringLiteral("blockquote"));
+                    start(QStringLiteral("<blockquote>"), QStringLiteral("</blockquote>"));
                 } else if (name == QLatin1String("stanza")) {
-                    put(QStringLiteral("<div>"));
-                    open.append(QStringLiteral("div"));
+                    start(QStringLiteral("<div>"), QStringLiteral("</div>"));
                 } else if (name == QLatin1String("empty-line")) {
                     put(QStringLiteral("<br>"));
                 } else if (name == QLatin1String("emphasis")) {
-                    put(QStringLiteral("<i>"));
-                    open.append(QStringLiteral("i"));
+                    start(QStringLiteral("<i>"), QStringLiteral("</i>"));
                 } else if (name == QLatin1String("strong")) {
-                    put(QStringLiteral("<b>"));
-                    open.append(QStringLiteral("b"));
+                    start(QStringLiteral("<b>"), QStringLiteral("</b>"));
                 } else if (name == QLatin1String("strikethrough")) {
-                    put(QStringLiteral("<s>"));
-                    open.append(QStringLiteral("s"));
+                    start(QStringLiteral("<s>"), QStringLiteral("</s>"));
                 } else if (name == QLatin1String("sup") || name == QLatin1String("sub") || name == QLatin1String("code")) {
-                    put(QLatin1Char('<') + name.toString() + QLatin1Char('>'));
-                    open.append(name.toString());
+                    start(QLatin1Char('<') + name.toString() + QLatin1Char('>'), QStringLiteral("</") + name.toString() + QLatin1Char('>'));
                 } else {
                     open.append(QString()); // poem, a, style, image…: their text only
                 }
@@ -229,27 +229,19 @@ Ebook readFb2(const QByteArray &raw, bool metaOnly) {
                 inAnnotation = false;
             } else if (name == QLatin1String("body")) {
                 inBody = false;
-            } else if (inBody) {
-                if (name == QLatin1String("section")) {
-                    --sections;
-                } else if (name == QLatin1String("title")) {
+            } else if (inBody && name != QLatin1String("section") && name != QLatin1String("empty-line")) {
+                if (name == QLatin1String("title")) {
                     --titleDepth;
                     if (chapter.title.isEmpty())
                         chapter.title = titleText.simplified();
                 }
-                if (name != QLatin1String("section") && name != QLatin1String("empty-line") && !open.isEmpty()) {
-                    // In a title, a <p> opened nothing.
-                    if (!(titleDepth && (name == QLatin1String("p") || name == QLatin1String("v")))) {
-                        const auto tag = open.takeLast();
-                        if (!tag.isEmpty())
-                            put(QStringLiteral("</") + tag + QLatin1Char('>'));
-                    }
-                }
+                if (!open.isEmpty())
+                    put(open.takeLast());
             }
         } else if (xml.isCharacters() && inBody && !xml.isWhitespace()) {
             const auto text = xml.text().toString();
             put(esc(text));
-            if (titleDepth)
+            if (titleDepth && !inNotes)
                 titleText += text;
             else
                 chapterHasText = true;
@@ -443,7 +435,10 @@ Ebook readMobi(const QByteArray &data, bool metaOnly) {
         }
         EbookChapter chapter;
         chapter.html = pending.toUtf8();
-        const auto m = heading.match(pending);
+        // Its heading: the piece's own, not that of a title page before it.
+        auto m = heading.match(parts[i]);
+        if (!m.hasMatch())
+            m = heading.match(pending);
         chapter.title = m.hasMatch() ? textOf(m.captured(1).toUtf8()).simplified() : QString();
         if (chapter.title.isEmpty() || chapter.title.size() > 120)
             chapter.title = QStringLiteral("Part %1").arg(book.chapters.size() + 1);

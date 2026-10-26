@@ -111,12 +111,12 @@ SettingsPane {
         }
     }
 
-    // The reader's own Komga, Kavita, Suwayomi and OPDS servers.
+    // The reader's own Komga, Kavita, Suwayomi, OPDS and Jellyfin servers.
     ServerDialog { id: serverDialog; onClosed: pane.serversChanged() }
     signal serversChanged()
     SettingsGroup {
         title: qsTr("Your servers")
-        note: qsTr("Komga, Kavita and Suwayomi servers you run, and OPDS catalogues: their comics and books are a source like the others, searched with them and saved to the library.")
+        note: qsTr("Komga, Kavita and Suwayomi servers you run, and OPDS catalogues: their comics and books are a source like the others, searched with them and saved to the library. A Jellyfin server's shows and films play under Anime.")
         Repeater {
             // A handful, as many as the reader runs.
             model: { App.dependOn(pane.serversChanged); return Comics.servers() }
@@ -195,7 +195,7 @@ SettingsPane {
     readonly property string hostLog: { App.dependOn(Extensions.revision); return Extensions.hostLog() }
     SettingsGroup {
         title: qsTr("On this device")
-        note: qsTr("Each folder or file in these folders is a series: folders of images, CBZ, CBR, 7z and PDF files for comics, and EPUB books for novels. ")
+        note: qsTr("Each folder or file in these folders is a series: folders of images, CBZ, CBR, 7z and PDF files for comics, and EPUB, FB2 and MOBI books for novels. ")
             + qsTr("Comics and Novels list them under On this device. CBR and 7z files need 7-Zip, unrar or bsdtar installed.")
             + " " + qsTr("Mihon's storage folder works too: the chapters it downloaded open from your library.")
         Repeater {
@@ -236,7 +236,7 @@ SettingsPane {
     FileDialog {
         id: localFileDialog
         fileMode: FileDialog.OpenFile
-        nameFilters: [qsTr("Comics and books (*.cbz *.zip *.cbr *.rar *.cb7 *.7z *.pdf *.epub)"), qsTr("All files (*)")]
+        nameFilters: [qsTr("Comics and books (*.cbz *.zip *.cbr *.rar *.cb7 *.7z *.pdf *.epub *.fb2 *.mobi *.azw3)"), qsTr("All files (*)")]
         onAccepted: Router.openFile(selectedFile)
     }
 

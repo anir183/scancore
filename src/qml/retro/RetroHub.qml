@@ -16,11 +16,11 @@ Item {
     readonly property var updates: library.filter(e => e.newUnits > 0)
     Connections {
         target: hub.historyTask
-        function onFinished(result) { hub.history = Router.keep(hub.history, result) }
+        function onFinished(result) { hub.history = Router.keep(hub.history, result, hub.historyTask.digest) }
     }
     Connections {
         target: hub.libraryTask
-        function onFinished(result) { hub.library = Router.keep(hub.library, result) }
+        function onFinished(result) { hub.library = Router.keep(hub.library, result, hub.libraryTask.digest) }
     }
     // As on Home: out of sight, library changes are only noted.
     property bool libraryStale: false

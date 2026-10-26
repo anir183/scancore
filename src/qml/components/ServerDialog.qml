@@ -3,8 +3,8 @@ import QtQuick.Controls.Basic
 import Scancore
 
 // Adding or changing one of the reader's own servers (Komga, Kavita,
-// Suwayomi, or any OPDS catalogue): its kind, address and login, saved and
-// tried at once.
+// Suwayomi, any OPDS catalogue, or Jellyfin for video): its kind, address
+// and login, saved and tried at once.
 Dialog {
     id: dialog
     property var server: ({})
@@ -34,7 +34,12 @@ Dialog {
     Connections {
         target: dialog.testTask
         function onFinished(r) {
-            dialog.outcome = r.count === 1 ? qsTr("Connected: 1 series found.") : qsTr("Connected: %1 series found.").arg(r.count)
+            if (r.video)
+                dialog.outcome = r.count === 1 ? qsTr("Connected: 1 show or film found.")
+                    : r.more ? qsTr("Connected: more than %1 shows and films found.").arg(r.count)
+                    : qsTr("Connected: %1 shows and films found.").arg(r.count)
+            else
+                dialog.outcome = r.count === 1 ? qsTr("Connected: 1 series found.") : qsTr("Connected: %1 series found.").arg(r.count)
         }
         function onFailed(error) { dialog.outcome = error }
     }
@@ -67,19 +72,21 @@ Dialog {
             width: parent.width
             text: dialog.kind === "opds"
                   ? qsTr("Any OPDS catalogue (Calibre-web, Kavita, Komga, Ubooquity…): paste its OPDS address. Comics open under Comics, EPUB books under Novels. The login stays on this device.")
+                  : dialog.kind === "jellyfin"
+                  ? qsTr("Watch the shows and films on your own Jellyfin server under Anime. Where you stop is kept on the server too, so its other apps carry on from there. The login stays on this device.")
                   : qsTr("Read the comics on your own Komga, Kavita or Suwayomi server. The login stays on this device.")
             color: Theme.textMuted
             font.family: Theme.fontSans
             font.pixelSize: Theme.textSm
             wrapMode: Text.Wrap
         }
-        // Chips, not a segmented row: four kinds do not fit one at 360 px.
+        // Chips, not a segmented row: five kinds do not fit one at 360 px.
         Flow {
             width: parent.width
             spacing: 8
             Repeater {
                 model: [{ value: "komga", label: "Komga" }, { value: "kavita", label: "Kavita" }, { value: "suwayomi", label: "Suwayomi" },
-                        { value: "opds", label: "OPDS" }]
+                        { value: "opds", label: "OPDS" }, { value: "jellyfin", label: "Jellyfin" }]
                 Chip {
                     required property var modelData
                     text: modelData.label
@@ -93,7 +100,8 @@ Dialog {
             id: urlField
             width: parent.width
             placeholderText: dialog.kind === "suwayomi" ? "http://192.168.1.20:4567" : dialog.kind === "kavita" ? "http://192.168.1.20:5000"
-                           : dialog.kind === "opds" ? "http://192.168.1.20:8083/opds" : "http://192.168.1.20:25600"
+                           : dialog.kind === "opds" ? "http://192.168.1.20:8083/opds" : dialog.kind === "jellyfin" ? "http://192.168.1.20:8096"
+                           : "http://192.168.1.20:25600"
             inputMethodHints: Qt.ImhUrlCharactersOnly | Qt.ImhNoAutoUppercase
         }
         InlineField {

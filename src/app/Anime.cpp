@@ -920,7 +920,7 @@ QVariantList Anime::sources() const {
                                {"base", source->baseUrl()},
                                {"canBrowse", true},
                                {"browseLatest", true},
-                               {"extension", true}});
+                               {"extension", !source->isServer()}});
     return out;
 }
 
@@ -1016,7 +1016,8 @@ Task *Anime::watchFrom(const QVariantMap &media, const QStringList &only) {
         QList<std::shared_ptr<ext::AnimeSource>> sources;
         QStringList keys;
         for (const auto &source : anime::Registry::all())
-            if (source->enabled() && (only.isEmpty() ? language.isEmpty() || baseLanguage(source->config().language) == language
+            if (source->enabled() && (only.isEmpty() ? language.isEmpty() || source->config().language == QLatin1String("*") ||
+                                                           baseLanguage(source->config().language) == language
                                                      : only.contains(source->key()))) {
                 sources.append(source);
                 keys.append(source->key());

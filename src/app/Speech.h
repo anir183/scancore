@@ -28,6 +28,9 @@ class Speech : public QObject {
 
 public:
     static Speech *instance();
+    // The same without starting the engine (the system's text to speech
+    // takes a moment to start): for connecting to it at start-up.
+    static Speech *object();
     static Speech *create(QQmlEngine *, QJSEngine *) { return instance(); }
     ~Speech() override;
 

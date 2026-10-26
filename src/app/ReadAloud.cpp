@@ -67,7 +67,8 @@ ReadAloud::ReadAloud(QObject *parent) : QObject(parent) {
         emit slept();
     });
 
-    auto *speech = Speech::instance();
+    // Its engine starts when something is read, not with the app.
+    auto *speech = Speech::object();
     connect(speech, &Speech::started, this, &ReadAloud::began);
     connect(speech, &Speech::finished, this, &ReadAloud::spoken);
     connect(speech, &Speech::failed, this, [this](const QString &message) {

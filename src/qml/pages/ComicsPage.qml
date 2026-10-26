@@ -38,7 +38,7 @@ Item {
     property var history: []
     Connections {
         target: page.historyTask
-        function onFinished(result) { page.history = Router.keep(page.history, result) }
+        function onFinished(result) { page.history = Router.keep(page.history, result, page.historyTask.digest) }
     }
     // Library changes come every couple of seconds while reading (progress):
     // a page out of sight (another section, under a reader or the player)

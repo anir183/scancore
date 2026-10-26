@@ -1,7 +1,10 @@
 #include "Task.h"
 
 #include <QCoreApplication>
+#include <QCryptographicHash>
 #include <QDebug>
+#include <QJsonArray>
+#include <QJsonDocument>
 #include <QThreadPool>
 
 namespace sc {
@@ -24,6 +27,18 @@ thread_local QPointer<Task> *t_current = nullptr;
 
 } // namespace
 
+// Lists this long get a digest (Task::digest).
+constexpr qsizetype kDigestFrom = 50;
+
+// Set once the app quits: work asked for after that never starts.
+static std::atomic_bool g_finished = false;
+
+void Task::finishAll(int msecs) {
+    g_finished = true;
+    pool().clear();
+    pool().waitForDone(msecs);
+}
+
 Task::Task(QObject *parent) : QObject(parent), m_cancel(std::make_shared<std::atomic_bool>(false)) {}
 
 Task::~Task() { m_cancel->store(true); }
@@ -33,6 +48,10 @@ Task *Task::run(Work work) {
     QQmlEngine::setObjectOwnership(task, QQmlEngine::JavaScriptOwnership);
     QPointer<Task> guard(task);
     auto cancel = task->m_cancel;
+    if (g_finished) {
+        cancel->store(true);
+        return task;
+    }
     pool().start([guard, cancel, work = std::move(work)] {
         if (cancel->load())
             return;
@@ -57,11 +76,20 @@ Task *Task::run(Work work) {
             return;
         if (!error.isEmpty() && status != 499)
             qWarning().noquote() << "task failed:" << error;
+        QString digest;
+        if (value.metaType() == QMetaType::fromType<QVariantList>()) {
+            const auto list = value.toList();
+            if (list.size() >= kDigestFrom)
+                digest = QString::fromLatin1(
+                    QCryptographicHash::hash(QJsonDocument(QJsonArray::fromVariantList(list)).toJson(QJsonDocument::Compact),
+                                             QCryptographicHash::Sha1)
+                        .toHex());
+        }
         QMetaObject::invokeMethod(
             QCoreApplication::instance(),
-            [guard, value, error, status, verifyUrl] {
+            [guard, value, error, status, verifyUrl, digest] {
                 if (guard)
-                    guard->complete(value, error, status, verifyUrl);
+                    guard->complete(value, error, status, verifyUrl, digest);
             },
             Qt::QueuedConnection);
     });
@@ -106,11 +134,12 @@ void Task::then(QObject *context, std::function<void(const QVariant &)> fn) {
     connect(this, &Task::finished, context, [fn](const QVariant &value) { fn(value); });
 }
 
-void Task::complete(const QVariant &value, const QString &error, int status, const QString &verifyUrl) {
+void Task::complete(const QVariant &value, const QString &error, int status, const QString &verifyUrl, const QString &digest) {
     if (!m_loading)
         return;
     m_loading = false;
     m_verifyUrl = verifyUrl;
+    m_digest = digest;
     m_result = value;
     m_error = error;
     m_status = status;

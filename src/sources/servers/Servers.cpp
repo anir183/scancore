@@ -361,6 +361,7 @@ void save(const QList<Server> &servers) {
     Database::setPref(QStringLiteral("servers"), QString::fromUtf8(QJsonDocument(list).toJson(QJsonDocument::Compact)));
     QMutexLocker lock(&g_tokens);
     g_kavitaTokens.clear();
+    forgetJellyfinLogins();
 }
 
 std::optional<Server> byId(const QString &id) {
@@ -371,6 +372,8 @@ std::optional<Server> byId(const QString &id) {
 }
 
 Headers authHeaders(const Server &server, bool fresh) {
+    if (server.kind == QLatin1String("jellyfin"))
+        return jellyfinHeaders(server, fresh);
     if (server.kind != QLatin1String("kavita")) {
         if (server.username.isEmpty())
             return {};

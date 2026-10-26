@@ -322,6 +322,9 @@ Rectangle {
         if (!stream) return
         currentId = stream.id
         playError = ""
+        // Jellyfin: where the server says the episode was left (in another
+        // of its apps, say), unless it already plays here.
+        if (position <= 5 && (stream.video.resume || 0) > 5) resumeAt = stream.video.resume
         App.setSetting("animeHoster", stream.hoster || "")
         // Only the video that plays asks for its final address.
         if (stream.video.initialized === false || !stream.url) {

@@ -460,7 +460,7 @@ Task *Library::entries(const QString &media, bool brief) {
             GROUP BY s.id
             ORDER BY l.new_units > 0 DESC, COALESCE(p.updated_at, l.added_at) DESC
         )"),
-                                          {media, media});
+                                          {media.isNull() ? QStringLiteral("") : media, media.isNull() ? QStringLiteral("") : media});
         if (brief)
             return rows;
         QVariantList out;
@@ -488,7 +488,9 @@ QVariantList historyRows(const QString &media, int limit) {
         WHERE p.rank = 1
         ORDER BY p.updated_at DESC LIMIT ?
     )"),
-                                      {media, media, limit});
+                                      // A null QString binds as NULL, which no
+                                      // "? = ''" matches: "" for every media.
+                                      {media.isNull() ? QStringLiteral("") : media, media.isNull() ? QStringLiteral("") : media, limit});
     QVariantList out;
     for (const auto &row : rows)
         out.append(shapeEntry(row.toMap()));
@@ -538,7 +540,8 @@ void Library::forget(const QString &seriesId) {
 }
 
 void Library::clearHistory(const QString &media) {
-    Database::exec(QStringLiteral("DELETE FROM progress WHERE (? = '' OR series_id LIKE ? || ':%')"), {media, media});
+    const auto m = media.isNull() ? QStringLiteral("") : media; // a null QString would bind as NULL
+    Database::exec(QStringLiteral("DELETE FROM progress WHERE (? = '' OR series_id LIKE ? || ':%')"), {m, m});
     notifyChanged();
 }
 
@@ -582,6 +585,13 @@ void Library::saveProgress(const QVariantMap &series, const QVariantMap &unit, c
                    {seriesId, key, unit.value(QStringLiteral("title")).toString(),
                     unit.value(QStringLiteral("number")).toString(), unit.value(QStringLiteral("url")).toString(),
                     json(position), std::clamp(percent, 0.0, 1.0), completed ? 1 : 0, Database::now()});
+    // An episode from the reader's Jellyfin: the server keeps the position
+    // too, so its other apps resume there.
+    if (const auto source = series.value(QStringLiteral("source")).toString();
+        source.startsWith(QLatin1String("aniyomi:server-")) && position.value(QStringLiteral("type")).toString() == QLatin1String("video"))
+        runInBackground([source, key, seconds = position.value(QStringLiteral("seconds")).toDouble(), completed] {
+            servers::videoWatched(source, key, seconds, completed);
+        });
     // Started: a series planned in the library is being read or watched now.
     Database::exec(QStringLiteral("UPDATE library SET category = 'reading', changed_at = ? WHERE series_id = ? AND category = 'planned'"),
                    {Database::now(), seriesId});

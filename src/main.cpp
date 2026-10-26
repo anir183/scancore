@@ -16,6 +16,7 @@
 #include "core/Database.h"
 #include "core/Http.h"
 #include "core/ImageCache.h"
+#include "core/Task.h"
 #include "extensions/Manager.h"
 #include "sources/Manifest.h"
 #include "sources/anime/Registry.h"
@@ -467,6 +468,7 @@ int main(int argc, char *argv[]) {
     QObject::connect(&app, &Application::aboutToQuit, [] {
         Extensions::instance()->stopHost();
         CancelScope::cancelAll();
+        Task::finishAll(3000);
         CookieJar::shared().save();
     });
     // A hang (the interface not answering) leaves a report like a crash.

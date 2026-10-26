@@ -68,12 +68,13 @@ QtObject {
         }
         return component.createObject(null, { page: path, props: props || {} })
     }
-    // A comic or book file: an archive, folder or PDF of pages, or an EPUB.
+    // A comic or book file: an archive, folder or PDF of pages, or a book
+    // (EPUB, FB2, MOBI).
     function openFile(url) {
         const address = String(url)
         const name = decodeURIComponent(address.replace(/[?#].*$/, "").replace(/\/$/, "").replace(/^.*\//, ""))
-        const media = /\.epub$/i.test(name) ? "novel" : "comic"
-        openSeries({ media: media, sourceUrl: address, source: "local", title: name.replace(/\.[^.]+$/, "").replace(/_/g, " ") }, null)
+        const media = /\.(epub|fb2|fb2\.zip|mobi|azw|azw3|prc)$/i.test(name) ? "novel" : "comic"
+        openSeries({ media: media, sourceUrl: address, source: "local", title: name.replace(/(\.fb2)?\.[^.]+$/i, "").replace(/_/g, " ") }, null)
     }
     // Settings, at one category.
     function openSettings(category) {
@@ -225,10 +226,12 @@ QtObject {
     // the new one holds the same, so views keep their items (and scroll
     // position) instead of rebuilding them.
     // Each list remembers its own text, so a refresh writes only the new one
-    // (a 2000-series library took a noticeable moment on phones).
-    function keep(old, fresh) {
+    // (a 2000-series library took a noticeable moment on phones). Long
+    // lists come with their task's digest, made off the interface's thread,
+    // which stands in for the text.
+    function keep(old, fresh, digest) {
         if (!fresh || typeof fresh !== "object") return fresh
-        const text = JSON.stringify(fresh)
+        const text = digest || JSON.stringify(fresh)
         if (old && typeof old === "object" && (old.__keepText || JSON.stringify(old)) === text) return old
         try { Object.defineProperty(fresh, "__keepText", { value: text, enumerable: false, writable: true }) } catch (e) {}
         return fresh

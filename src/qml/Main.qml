@@ -180,7 +180,7 @@ ApplicationWindow {
             if (lower.endsWith(".sct")) {
                 window.pendingTheme = target
                 themeConfirm.open()
-            } else if (/\.(cbz|zip|cbr|rar|cb7|7z|cbt|pdf|epub)$/.test(lower)) {
+            } else if (/\.(cbz|zip|cbr|rar|cb7|7z|cbt|pdf|epub|fb2|mobi|azw|azw3|prc)$/.test(lower)) {
                 Router.openFile(target)
             } else if (Extensions.repositoryLink(target).url && !/^https?:/.test(lower)) {
                 // A one-tap "add repository" link from a repository's page.

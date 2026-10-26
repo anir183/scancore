@@ -75,6 +75,17 @@ target_link_libraries(scancore_opds_tests PRIVATE scancore_core Qt6::Test)
 target_compile_definitions(scancore_opds_tests PRIVATE SCANCORE_SOURCE_DIR="${PROJECT_SOURCE_DIR}")
 add_test(NAME opds COMMAND scancore_opds_tests)
 
+# Jellyfin as an anime server: listings, episodes, videos, positions.
+qt_add_executable(scancore_jellyfin_tests tst_jellyfin.cpp)
+target_link_libraries(scancore_jellyfin_tests PRIVATE scancore_core Qt6::Test)
+add_test(NAME jellyfin COMMAND scancore_jellyfin_tests)
+
+# FB2 and MOBI books for the novel reader.
+qt_add_executable(scancore_ebooks_tests tst_ebooks.cpp)
+target_link_libraries(scancore_ebooks_tests PRIVATE scancore_core Qt6::Test)
+target_compile_definitions(scancore_ebooks_tests PRIVATE SCANCORE_SOURCE_DIR="${PROJECT_SOURCE_DIR}")
+add_test(NAME ebooks COMMAND scancore_ebooks_tests)
+
 # Text helpers (sentences for reading aloud).
 qt_add_executable(scancore_text_tests tst_text.cpp)
 target_link_libraries(scancore_text_tests PRIVATE scancore_core Qt6::Test)

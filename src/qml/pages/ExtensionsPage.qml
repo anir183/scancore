@@ -19,20 +19,14 @@ Item {
     property var refreshTask: null
 
     readonly property var repositories: { App.dependOn(Extensions.revision); return Extensions.repositories() }
-    // Without each one's sources (an opened row asks for its own).
-    readonly property var installedList: { App.dependOn(Extensions.revision); return Extensions.installedBrief() }
-    readonly property var availableAll: { App.dependOn(Extensions.revision, App.settings.showNsfwSources); return page.tab === "available" ? Extensions.available() : [] }
-    readonly property var availableLanguages: {
-        const seen = {}
-        const out = [{ value: "", label: qsTr("All languages") }]
-        for (const p of availableAll) if (!seen[p.languageName]) { seen[p.languageName] = true; out.push({ value: p.languageName, label: p.languageName }) }
-        return out
+    readonly property int installedCount: { App.dependOn(Extensions.revision); return Extensions.installedCount() }
+    // Available: how many and in which languages (the rows come from rows()).
+    readonly property var availableInfo: {
+        App.dependOn(Extensions.revision, App.settings.showNsfwSources)
+        return page.tab === "available" ? Extensions.availableSummary() : ({ count: 0, languages: [] })
     }
-    readonly property var availableList: {
-        const q = query.trim().toLowerCase()
-        return availableAll.filter(p => (!language || p.languageName === language) && (!media || p.media === media)
-            && (!repo || p.repo === repo) && (!q || p.name.toLowerCase().indexOf(q) >= 0))
-    }
+    readonly property var availableLanguages: [{ value: "", label: qsTr("All languages") }]
+        .concat(Array.from(availableInfo.languages).map(l => ({ value: l, label: l })))
     // The kinds the added repositories offer, for the kind chips.
     readonly property var repoMedia: {
         const seen = []
@@ -47,28 +41,27 @@ Item {
         language = ""
         tab = "available"
     }
-    // Installed ones by the extension's name, its sources' names or their sites.
-    readonly property var installedShown: {
-        const q = query.trim().toLowerCase()
-        if (!q) return installedList
-        return installedList.filter(e => e.name.toLowerCase().indexOf(q) >= 0 || (e.sourceText || "").indexOf(q) >= 0)
+    // The list's rows, straight from Extensions to the ListView: hundreds
+    // of them (installed, or what the repositories offer), and kept in a
+    // property they would be converted at every step. Installed ones are
+    // found by the extension's name, its sources' names or their sites.
+    function rows() {
+        if (tab === "installed") return Extensions.installedBrief("", query)
+        if (tab === "available") return Extensions.availableRows({ query: query, language: language, media: media, repo: repo })
+        return Extensions.repositories()
     }
-    readonly property var rows: tab === "installed" ? installedShown : tab === "available" ? availableList : repositories
-    // The list gets its rows from here: a new list (an extension installed
-    // or updated) would otherwise send it back to the top; on the same tab
-    // it stays where it was.
-    property var shownRows: []
+    // New rows (an extension installed or updated, a search) on the same
+    // tab keep the list where it was; another tab starts at the top.
     property string shownTab: ""
+    readonly property var rowsWanted: [tab, query, language, media, repo, Extensions.revision, App.settings.showNsfwSources]
     function showRows() {
-        // Once: the rows' first change and Component.onCompleted both ask.
-        if (shownRows === rows && shownTab === tab) return
         const keep = shownTab === tab
         const y = list.contentY
         shownTab = tab
-        shownRows = rows
+        list.model = rows()
         if (keep) Qt.callLater(() => list.contentY = Math.max(list.originY, Math.min(y, list.originY + list.contentHeight - list.height)))
     }
-    onRowsChanged: showRows()
+    onRowsWantedChanged: Qt.callLater(showRows)
     Component.onCompleted: showRows()
     readonly property bool needsRuntime: App.platform !== "android" && Extensions.runtimeAvailable && !Extensions.runtimeInstalled
 
@@ -129,7 +122,6 @@ Item {
         WheelScroll {}
         id: list
         anchors.fill: parent
-        model: page.shownRows
         clip: true
         bottomMargin: 40
         boundsBehavior: Flickable.StopAtBounds
@@ -142,7 +134,7 @@ Item {
             PageHeader {
                 title: qsTr("Extensions")
                 showBack: true
-                subtitle: page.installedList.length + (page.installedList.length === 1 ? qsTr(" installed") : qsTr(" installed"))
+                subtitle: page.installedCount + (page.installedCount === 1 ? qsTr(" installed") : qsTr(" installed"))
                     + " · " + page.repositories.length + (page.repositories.length === 1 ? qsTr(" repository") : qsTr(" repositories"))
                 ScButton { text: qsTr("Add repository"); iconName: "plus"; variant: "primary"; onClicked: Router.addRepository("") }
                 IconButton { iconName: "gauge"; filled: true; tip: qsTr("Diagnostics"); onClicked: Router.openExtensionsDiagnostics() }
@@ -151,7 +143,7 @@ Item {
             // Updates, where they are looked for: what is ready, or when
             // the repositories were last checked, and a labelled button.
             Rectangle {
-                visible: page.tab === "installed" && page.installedList.length > 0
+                visible: page.tab === "installed" && page.installedCount > 0
                 x: Theme.gutter
                 width: list.width - 2 * Theme.gutter
                 height: visible ? updatesRow.implicitHeight + 24 : 0
@@ -256,7 +248,7 @@ Item {
 
             Segmented {
                 x: Theme.gutter
-                visible: page.repositories.length > 0 || page.installedList.length > 0
+                visible: page.repositories.length > 0 || page.installedCount > 0
                 options: [
                     { value: "installed", label: qsTr("Installed") + (Extensions.updateCount ? " · " + Extensions.updateCount : "") },
                     { value: "available", label: qsTr("Available") },
@@ -272,7 +264,7 @@ Item {
                 x: Theme.gutter
                 width: list.width - 2 * Theme.gutter
                 height: 40
-                visible: (page.tab === "available" && page.availableAll.length > 0) || (page.tab === "installed" && page.installedList.length > 0)
+                visible: (page.tab === "available" && page.availableInfo.count > 0) || (page.tab === "installed" && page.installedCount > 0)
                 Row {
                     width: parent.width
                     spacing: 10
@@ -378,7 +370,7 @@ Item {
 
             // Nothing added yet: a place to paste a link, and nothing else.
             Column {
-                visible: page.repositories.length === 0 && page.installedList.length === 0
+                visible: page.repositories.length === 0 && page.installedCount === 0
                 x: Theme.gutter
                 width: list.width - 2 * Theme.gutter
                 spacing: 14
@@ -419,12 +411,12 @@ Item {
             }
 
             Text {
-                visible: page.rows.length === 0 && (page.repositories.length > 0 || page.installedList.length > 0)
+                visible: list.count === 0 && (page.repositories.length > 0 || page.installedCount > 0)
                 x: Theme.gutter
                 width: list.width - 2 * Theme.gutter
                 topPadding: 20
                 text: page.tab === "installed" ? qsTr("Nothing installed yet. Pick extensions under Available.")
-                    : page.tab === "available" ? (page.availableAll.length ? qsTr("No extension matches.") : qsTr("Every extension the repositories list is installed."))
+                    : page.tab === "available" ? (page.availableInfo.count ? qsTr("No extension matches.") : qsTr("Every extension the repositories list is installed."))
                     : ""
                 color: Theme.textMuted
                 font.family: Theme.fontSans
@@ -674,9 +666,8 @@ Item {
         Item {
             id: row
             readonly property var item: parent ? parent.modelData : ({})
-            readonly property int at: parent ? parent.index : 0
             // A language heading above the first extension in each language.
-            readonly property bool heading: at === 0 || (page.availableList[at - 1] || {}).languageName !== item.languageName
+            readonly property bool heading: item.heading === true
             readonly property int headingSpace: heading ? 40 : 0
             width: parent ? parent.width : 0
             height: 60 + headingSpace

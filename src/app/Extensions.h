@@ -107,13 +107,21 @@ public:
     // The same without each one's sources: their count (sourceCount), how
     // many fail (brokenCount) and their names and sites (sourceText, lower
     // case); one's sources by its id ("mihon:<pkg>") when it is opened.
-    Q_INVOKABLE QVariantList installedBrief(const QString &kind = QString()) const;
+    // With `query`: those whose name, sources' names or sites hold it. Pages
+    // hand the list to a ListView as it comes: kept in a QML property, its
+    // hundreds of rows are converted at every step.
+    Q_INVOKABLE QVariantList installedBrief(const QString &kind = QString(), const QString &query = QString()) const;
     Q_INVOKABLE QVariantList installedSources(const QString &id) const;
     Q_INVOKABLE int installedCount(const QString &kind = QString()) const;
     // Extensions the repositories list that are not installed, content
     // language first: [{id, kind, media, pkg, name, version, lang,
     // languageName, icon, nsfw, problem, preferred}]
     Q_INVOKABLE QVariantList available(const QString &kind = QString()) const;
+    // The same chosen by {query, language (its name), media, repo}; each
+    // row says whether it starts its language (heading).
+    Q_INVOKABLE QVariantList availableRows(const QVariantMap &filter) const;
+    // How many are available and their languages: {count, languages}.
+    Q_INVOKABLE QVariantMap availableSummary() const;
     Q_INVOKABLE sc::Task *install(const QString &kind, const QString &pkg);
     Q_INVOKABLE void uninstall(const QString &kind, const QString &pkg);
     Q_INVOKABLE void trust(const QString &kind, const QString &pkg);
@@ -143,7 +151,7 @@ signals:
     void installsFinished(int installed, int failed, const QString &firstError);
 
 private:
-    QVariantList installedRows(const QString &kind, bool brief) const;
+    QVariantList installedRows(const QString &kind, bool brief, const QString &query = QString()) const;
     // Private so QML uses create(): Qt builds its own instance of a
     // singleton it can default-construct, and C++ and QML would then
     // work on different objects.
@@ -160,6 +168,8 @@ private:
     std::atomic<bool> m_stopQueue{false};
     std::atomic<bool> m_progressPending{false};
     int m_revision = 0;
+    mutable int m_updateCount = 0;
+    mutable int m_updateCountAt = -1;
     bool m_busy = false;
     QString m_busyWith;
     QString m_status;
