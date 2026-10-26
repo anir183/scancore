@@ -10,11 +10,11 @@ Item {
     property var historyTask: Library.continueItems("", 24)
     property var libraryTask: Library.entries("")
     // A section removed in Edit page loads nothing.
-    readonly property bool comicsOn: (PageLayout.revision, !PageLayout.isRemoved("home", "comics"))
-    readonly property bool animeOn: (PageLayout.revision, !PageLayout.isRemoved("home", "anime"))
-    readonly property bool novelsOn: (PageLayout.revision, !PageLayout.isRemoved("home", "novels"))
+    readonly property bool comicsOn: { App.dependOn(PageLayout.revision); return !PageLayout.isRemoved("home", "comics") }
+    readonly property bool animeOn: { App.dependOn(PageLayout.revision); return !PageLayout.isRemoved("home", "anime") }
+    readonly property bool novelsOn: { App.dependOn(PageLayout.revision); return !PageLayout.isRemoved("home", "novels") }
     // Only a change to the added shelves rebuilds them (not moving one).
-    readonly property string extrasJson: (PageLayout.revision, JSON.stringify(PageLayout.extras("home")))
+    readonly property string extrasJson: { App.dependOn(PageLayout.revision); return JSON.stringify(PageLayout.extras("home")) }
     property var latestTask: comicsOn ? Comics.latest(30) : null
     property var animeTask: animeOn ? Anime.home() : null
     property var novelsTask: novelsOn ? Novels.discover() : null
@@ -166,19 +166,22 @@ Item {
                         radius: Theme.radiusXl
                         gradient: Gradient {
                             orientation: Gradient.Horizontal
-                            GradientStop { position: 0; color: "#3b1d8f" }
-                            GradientStop { position: 0.6; color: "#7a1f5c" }
-                            GradientStop { position: 1; color: "#b4361f" }
+                            // Wrapped's own opening colours.
+                            GradientStop { position: 0; color: "#4b1fd1" }
+                            GradientStop { position: 0.6; color: "#c0267a" }
+                            GradientStop { position: 1; color: "#e2471f" }
                         }
                         TapHandler { onTapped: Router.openWrapped(wrappedBanner.year) }
                         Image {
                             id: bannerMark
                             x: 18
                             anchors.verticalCenter: parent.verticalCenter
-                            source: App.icon("sparkles", "#ffffff")
-                            sourceSize: Qt.size(26, 26)
-                            width: 26
-                            height: 26
+                            // The mark, twice as wide as it is high.
+                            source: App.icon("scancore-mark", "#ffffff")
+                            sourceSize: Qt.size(80 * Screen.devicePixelRatio, 40 * Screen.devicePixelRatio)
+                            width: 40
+                            height: 20
+                            fillMode: Image.PreserveAspectFit
                         }
                         Column {
                             id: bannerText
@@ -200,7 +203,7 @@ Item {
                             Text {
                                 width: parent.width
                                 wrapMode: Text.Wrap
-                                text: qsTr("Your year in comics, novels and anime")
+                                text: qsTr("Your year in comics, novels, anime and music")
                                 color: Qt.rgba(1, 1, 1, 0.8)
                                 font.family: Theme.fontSans
                                 font.pixelSize: Theme.textSm

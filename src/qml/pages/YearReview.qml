@@ -132,8 +132,8 @@ Item {
                         Image {
                             anchors.verticalCenter: parent.verticalCenter
                             source: App.icon("scancore-mark", Theme.text)
-                            sourceSize: Qt.size(30, 30)
-                            width: 30
+                            sourceSize: Qt.size(60 * Screen.devicePixelRatio, 30 * Screen.devicePixelRatio)
+                            width: 60
                             height: 30
                             fillMode: Image.PreserveAspectFit
                         }

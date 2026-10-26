@@ -56,9 +56,12 @@ public:
     Q_INVOKABLE void stop();
     void setVolume(double volume);
     void setMuted(bool muted);
-    // The system's controls (lock screen, media keys, MPRIS) for the song
-    // playing; none once `title` is empty.
-    Q_INVOKABLE void showControls(const QString &title, const QString &subtitle, const QString &cover);
+    // The system's controls (lock screen, media controls, MPRIS, Windows'
+    // and macOS' now playing) for the song playing: its title, artists,
+    // cover and album (or anime), with the time and seeking; none once
+    // `title` is empty.
+    Q_INVOKABLE void showControls(const QString &title, const QString &subtitle, const QString &cover,
+                                  const QString &album = QString());
 
 signals:
     void sourceChanged();
@@ -92,7 +95,8 @@ private:
     double m_volume = 100;
     bool m_muted = false;
     QString m_error;
-    QString m_title, m_subtitle, m_cover;
+    QString m_title, m_subtitle, m_cover, m_album;
+    void updateControls();
 };
 
 } // namespace sc

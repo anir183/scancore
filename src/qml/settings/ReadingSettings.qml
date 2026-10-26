@@ -739,8 +739,11 @@ SettingsPane {
                     model: [{ value: "", label: qsTr("The voice above") }].concat(Speech.voices
                         .filter(v => String(v.language).split(/[-_]/)[0] === perLanguage.base)
                         .map(v => ({ value: v.id, label: v.name + " · " + v.language })))
-                    value: (App.settings.ttsVoices, ReadAloud.voiceFor(perLanguage.language) === (App.settings.ttsVoice || "")
-                        ? "" : ReadAloud.voiceFor(perLanguage.language))
+                    value: {
+                        App.dependOn(App.settings.ttsVoices)
+                        const voice = ReadAloud.voiceFor(perLanguage.language)
+                        return voice === (App.settings.ttsVoice || "") ? "" : voice
+                    }
                     onPicked: (v) => ReadAloud.setVoiceFor(perLanguage.language, v)
                 }
             }

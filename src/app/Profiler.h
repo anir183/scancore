@@ -5,6 +5,8 @@
 #include <QObject>
 #include <QString>
 #include <QTimer>
+#include <QVariantMap>
+#include <QVector>
 
 class QQuickWindow;
 
@@ -30,6 +32,11 @@ public:
     void attach(QQuickWindow *window);
     // The page now on screen ("comics", "pages/SourcePage.qml", ...).
     void setPlace(const QString &place);
+    // Frame times while an animation runs (tests/app/FrameTimes.qml): from
+    // start to stop, the time between frames shown and each frame's
+    // rendering, in ms.
+    void startFrameTimes();
+    QVariantMap stopFrameTimes();
 
 private:
     explicit Profiler(QObject *parent = nullptr);
@@ -52,6 +59,10 @@ private:
     qint64 m_worst = 0;
     int m_stalls = 0;
     qint64 m_worstStall = 0;
+    bool m_recording = false;
+    QElapsedTimer m_swapClock;
+    QVector<double> m_intervals;
+    QVector<double> m_renders;
 };
 
 } // namespace sc

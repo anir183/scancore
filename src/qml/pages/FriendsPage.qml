@@ -210,7 +210,7 @@ Item {
                 title: qsTr("What friends read")
                 note: page.events.length === 0 ? qsTr("Nothing yet: friends show here once they share what they read.") : ""
                 Repeater {
-                    model: page.events
+                    model: page.events.slice(0, 100)
                     delegate: SettingRow {
                         required property var modelData
                         iconName: modelData.type === "watched" ? "tv" : modelData.type === "shared" ? "share-2" : "book-open"

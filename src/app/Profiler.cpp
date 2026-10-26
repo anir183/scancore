@@ -72,6 +72,25 @@ void Profiler::syncing() {
     m_renderClock.start();
 }
 
+void Profiler::startFrameTimes() {
+    QMutexLocker lock(&m_mutex);
+    m_intervals.clear();
+    m_renders.clear();
+    m_swapClock.invalidate();
+    m_recording = true;
+}
+
+QVariantMap Profiler::stopFrameTimes() {
+    QMutexLocker lock(&m_mutex);
+    m_recording = false;
+    QVariantList intervals, renders;
+    for (double v : std::as_const(m_intervals))
+        intervals.append(v);
+    for (double v : std::as_const(m_renders))
+        renders.append(v);
+    return {{QStringLiteral("intervals"), intervals}, {QStringLiteral("renders"), renders}};
+}
+
 void Profiler::frame() {
     QMutexLocker lock(&m_mutex);
     const qint64 now = m_placeClock.elapsed();
@@ -81,6 +100,14 @@ void Profiler::frame() {
     }
     ++m_frames;
     const qint64 render = m_renderClock.isValid() ? m_renderClock.elapsed() : 0;
+    if (m_recording) {
+        // The first frame's interval would be the idle time before it.
+        if (m_swapClock.isValid())
+            m_intervals.append(m_swapClock.nsecsElapsed() / 1e6);
+        m_swapClock.start();
+        if (m_renderClock.isValid())
+            m_renders.append(m_renderClock.nsecsElapsed() / 1e6);
+    }
     bool slow = false;
     if (render > 24) {
         slow = true;

@@ -215,6 +215,19 @@ const char *const kMigrations[] = {
         problem TEXT
     );
     )",
+    // 10: songs listened to (2.16), per day, for Wrapped's music slide.
+    // This device's only; not synced.
+    R"(
+    CREATE TABLE music_plays (
+        day TEXT NOT NULL,
+        song TEXT NOT NULL,
+        title TEXT,
+        artist TEXT,
+        cover TEXT,
+        seconds INTEGER NOT NULL DEFAULT 0,
+        PRIMARY KEY (day, song)
+    );
+    )",
 };
 
 QSqlDatabase connection() {

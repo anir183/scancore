@@ -289,6 +289,18 @@ if(ANDROID)
 else()
     target_link_libraries(scancore PRIVATE Qt6::Widgets)
 endif()
+# What plays, on the system's own now playing (app/MediaControls.cpp):
+# Windows' media controls and macOS' Now Playing; Linux has MPRIS (D-Bus,
+# below) and Android its media session.
+if(WIN32)
+    target_sources(scancore PRIVATE app/MediaControls_win.cpp)
+    target_link_libraries(scancore PRIVATE windowsapp)
+elseif(APPLE AND NOT IOS)
+    enable_language(OBJCXX)
+    target_sources(scancore PRIVATE app/MediaControls_mac.mm)
+    set_source_files_properties(app/MediaControls_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc")
+    target_link_libraries(scancore PRIVATE "-framework MediaPlayer" "-framework AppKit")
+endif()
 # Keeping the screen on while a video plays (app/KeepAwake.cpp).
 if(APPLE)
     target_link_libraries(scancore PRIVATE "-framework IOKit" "-framework CoreFoundation")

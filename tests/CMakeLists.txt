@@ -7,10 +7,47 @@ find_program(SCANCORE_QMLTESTRUNNER qmltestrunner
     NO_DEFAULT_PATH)
 find_program(SCANCORE_QMLTESTRUNNER qmltestrunner)
 if(SCANCORE_QMLTESTRUNNER)
-    add_test(NAME inline_catalogue COMMAND ${CMAKE_COMMAND}
+    add_test(NAME qml COMMAND ${CMAKE_COMMAND}
         -DSOURCE_DIR=${PROJECT_SOURCE_DIR} -DBINARY_DIR=${CMAKE_CURRENT_BINARY_DIR}
         -DQMLTESTRUNNER=${SCANCORE_QMLTESTRUNNER}
         -P ${CMAKE_CURRENT_SOURCE_DIR}/qml/run.cmake)
+    # Again in the phone layout: touch-only paths (Theme.touch) run nowhere
+    # else on a computer.
+    add_test(NAME qml_touch COMMAND ${CMAKE_COMMAND}
+        -DSOURCE_DIR=${PROJECT_SOURCE_DIR} -DBINARY_DIR=${CMAKE_CURRENT_BINARY_DIR}
+        -DQMLTESTRUNNER=${SCANCORE_QMLTESTRUNNER} -DLOOK_AS=android
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/qml/run.cmake)
+endif()
+# The app itself: every page opened and closed in both looks, on a computer
+# and in the phone layout, must end up shown (2.12.1 and 2.12.3 left pages
+# hidden). Linux only: the other systems' builds need deploying to start.
+if(UNIX AND NOT APPLE AND NOT ANDROID)
+    foreach(look desktop android)
+        add_test(NAME pages_shown_${look} COMMAND ${CMAKE_COMMAND}
+            -DAPP=$<TARGET_FILE:scancore> -DPROBE=${CMAKE_CURRENT_SOURCE_DIR}/app/PagesShown.qml
+            -DWORK=${CMAKE_CURRENT_BINARY_DIR}/pages-shown-${look}
+            $<$<STREQUAL:${look},android>:-DLOOK_AS=android>
+            -P ${CMAKE_CURRENT_SOURCE_DIR}/app/run.cmake)
+        set_tests_properties(pages_shown_${look} PROPERTIES TIMEOUT 900)
+    endforeach()
+    # Frame times of Retro's page turns and the welcome's steps against a
+    # budget (FrameTimes.qml). Timings need a quiet machine with a GPU, so
+    # only with SCANCORE_FRAME_BUDGET=1; tools/frame-times.sh also runs it
+    # on an Android emulator.
+    add_test(NAME frame_times COMMAND ${CMAKE_COMMAND}
+        -DAPP=$<TARGET_FILE:scancore> -DPROBE=${CMAKE_CURRENT_SOURCE_DIR}/app/FrameTimes.qml
+        -DWORK=${CMAKE_CURRENT_BINARY_DIR}/frame-times -DPROFILE=ON -DGL=ON -DSIZE=412,880
+        -DOPT_IN=SCANCORE_FRAME_BUDGET
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/app/run.cmake)
+    set_tests_properties(frame_times PROPERTIES TIMEOUT 900 SKIP_REGULAR_EXPRESSION "Skipped: set")
+    # A comic and a book from tests/fixtures open in their readers (the
+    # release workflow's smoke run also plays a video on Windows and macOS).
+    add_test(NAME smoke COMMAND ${CMAKE_COMMAND}
+        -DAPP=$<TARGET_FILE:scancore> -DPROBE=${CMAKE_CURRENT_SOURCE_DIR}/app/Smoke.qml
+        -DWORK=${CMAKE_CURRENT_BINARY_DIR}/smoke
+        "-DSTART=\"fixtures\":\"${CMAKE_CURRENT_SOURCE_DIR}/fixtures\",\"noPlayer\":true"
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/app/run.cmake)
+    set_tests_properties(smoke PROPERTIES TIMEOUT 300)
 endif()
 # Parsers of the bundled sources, and "Read from" over them.
 if(SCANCORE_WITH_BUNDLED_SOURCES)

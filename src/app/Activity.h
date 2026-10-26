@@ -37,6 +37,9 @@ public:
     Q_INVOKABLE void setMedia(const QString &media);
     // The player calls this while an episode plays.
     Q_INVOKABLE void playing();
+    // Music calls this while a song plays: `seconds` more of `song`
+    // ({id, title, artists, cover}), for Wrapped.
+    Q_INVOKABLE void listened(const QVariantMap &song, int seconds);
 
     // Totals for today, this week, this month and all time, the streak, and
     // every day of the last 53 weeks: {today, week, month, all, streak,

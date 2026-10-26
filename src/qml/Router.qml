@@ -159,6 +159,8 @@ QtObject {
     // The year Wrapped is in season for: December and the first week of
     // January show the year just ending; any other time -1.
     function wrappedYear(now) {
+        // Development hook: SCANCORE_START {"wrappedSeason": year}.
+        if (!now && App.startAction.wrappedSeason) return App.startAction.wrappedSeason
         const d = now || new Date()
         if (d.getMonth() === 11) return d.getFullYear()
         if (d.getMonth() === 0 && d.getDate() <= 7) return d.getFullYear() - 1

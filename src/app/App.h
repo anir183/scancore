@@ -107,6 +107,9 @@ public:
     Q_PROPERTY(bool profiling READ profiling CONSTANT)
     bool profiling() const;
     Q_INVOKABLE void profilePlace(const QString &place) const;
+    // With SCANCORE_PROFILE: frame times from start to stop (Profiler).
+    Q_INVOKABLE void startFrameTimes() const;
+    Q_INVOKABLE QVariantMap stopFrameTimes() const;
     Q_INVOKABLE void openFolder(const QString &path) const;
     // A file dialog's address as a path to show or store.
     Q_INVOKABLE QString localPath(const QUrl &url) const { return url.isLocalFile() ? url.toLocalFile() : url.toString(); }

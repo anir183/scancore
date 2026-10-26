@@ -106,6 +106,13 @@ ApplicationWindow {
         if (start.retroBar === "more") retroBar.moreOpen = true
         if (start.shortcuts) Qt.callLater(() => shortcutsSheet.open())
         if (start.push) Qt.callLater(() => shell.push(start.push.path, start.push.props || {}))
+        // {"probe": url}: a test object over the window, made here so it
+        // outlives any page (tests/app).
+        if (start.probe) Qt.callLater(() => {
+            const probe = Qt.createComponent(start.probe)
+            if (probe.status === Component.Ready) probe.createObject(window.contentItem)
+            else console.warn("probe:", probe.errorString())
+        })
         if (start.installNovelPack) {
             const task = Extensions.installNovelPack()
             task.finished.connect((r) => console.log("novel pack installed:", JSON.stringify(r)))
@@ -527,7 +534,7 @@ ApplicationWindow {
     }
 
     // Readers and the player cover the whole window.
-    StackView {
+    ImmersiveStack {
         id: immersive
         // Readers that set edgeToEdge draw under the system bars and pad
         // their own controls; everything else stays inside the safe area.
@@ -554,26 +561,6 @@ ApplicationWindow {
         onCurrentItemChanged: if (currentItem) currentItem.forceActiveFocus()
         // The reader beside goes with the last one here.
         onDepthChanged: if (depth === 0) shell.closeSplit()
-        // NumberAnimations, not Animators: the first reader pushed onto the
-        // empty stack gets the starting opacity without the animation
-        // running, and an Animator never puts the end value back, so it
-        // opened invisible (2.12.1).
-        pushEnter: Transition {
-            ParallelAnimation {
-                NumberAnimation { property: "opacity"; from: 0; to: 1; duration: Motion.slow; easing.type: Easing.OutCubic }
-                NumberAnimation { property: "scale"; from: 1.03; to: 1; duration: Motion.page; easing.type: Easing.BezierSpline; easing.bezierCurve: Motion.decelerate }
-            }
-        }
-        pushExit: Transition { NumberAnimation { property: "opacity"; to: 0; duration: Motion.fast } }
-        popEnter: Transition { NumberAnimation { property: "opacity"; from: 0; to: 1; duration: Motion.normal } }
-        popExit: Transition {
-            ParallelAnimation {
-                NumberAnimation { property: "opacity"; to: 0; duration: Motion.normal }
-                NumberAnimation { property: "scale"; to: 1.02; duration: Motion.normal }
-            }
-        }
-        replaceEnter: pushEnter
-        replaceExit: pushExit
     }
 
     // Side by side (wide windows): a second reader on the right half, opened

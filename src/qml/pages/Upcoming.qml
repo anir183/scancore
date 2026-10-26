@@ -9,6 +9,9 @@ Item {
     id: page
     property string media: "all"
     property var task: Upkeep.radar(14)
+    // A big library has dozens due some days: eight, then all (by day).
+    readonly property int firstItems: 8
+    property var opened: ({})
     readonly property var days: {
         const all = task && task.ok ? task.result : []
         if (media === "all") return all
@@ -79,7 +82,7 @@ Item {
                         bottomPadding: 4
                     }
                     Repeater {
-                        model: dayColumn.modelData.items
+                        model: page.opened[dayColumn.modelData.day] ? dayColumn.modelData.items : dayColumn.modelData.items.slice(0, page.firstItems)
                         delegate: AbstractButton {
                             id: row
                             required property var modelData
@@ -136,6 +139,12 @@ Item {
                                 }
                             }
                         }
+                    }
+                    ScButton {
+                        visible: dayColumn.modelData.items.length > page.firstItems && !page.opened[dayColumn.modelData.day]
+                        variant: "ghost"
+                        text: qsTr("Show all %1").arg(dayColumn.modelData.items.length)
+                        onClicked: page.opened = Object.assign({}, page.opened, { [dayColumn.modelData.day]: true })
                     }
                 }
             }

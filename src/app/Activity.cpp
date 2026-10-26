@@ -3,6 +3,7 @@
 #include "App.h"
 
 #include "core/Database.h"
+#include "core/Task.h"
 
 #include <QCoreApplication>
 #include <QDate>
@@ -196,6 +197,30 @@ void Activity::setMedia(const QString &media) {
 }
 
 void Activity::playing() { m_lastPlaying = QDateTime::currentMSecsSinceEpoch(); }
+
+void Activity::listened(const QVariantMap &song, int seconds) {
+    if (seconds <= 0 || seconds > 600)
+        return;
+    const auto title = song.value(QStringLiteral("title")).toString().trimmed();
+    if (title.isEmpty())
+        return;
+    const auto artist = song.value(QStringLiteral("artists")).toStringList().join(QStringLiteral(", "));
+    auto key = song.value(QStringLiteral("id")).toString();
+    if (key.isEmpty())
+        key = title.toLower() + QLatin1Char('|') + artist.toLower();
+    const auto cover = song.value(QStringLiteral("cover")).toString();
+    const auto day = today();
+    // Off the interface's thread: a write every few seconds while music plays.
+    runInBackground([day, key, title, artist, cover, seconds] {
+        try {
+            Database::exec(QStringLiteral("INSERT INTO music_plays(day, song, title, artist, cover, seconds) VALUES(?, ?, ?, ?, ?, ?) "
+                                          "ON CONFLICT(day, song) DO UPDATE SET seconds = seconds + excluded.seconds, "
+                                          "title = excluded.title, artist = excluded.artist, cover = excluded.cover"),
+                           {day, key, title, artist, cover, seconds});
+        } catch (const Error &) {
+        }
+    });
+}
 
 void Activity::tick() {
     const qint64 now = QDateTime::currentMSecsSinceEpoch();
@@ -444,7 +469,31 @@ Task *Activity::year(int year) {
                 first = row;
             }
         }
+        // Music: time listened, the songs and the artist played most.
+        const auto songs = Database::query(QStringLiteral(R"(
+            SELECT song, MAX(title) AS title, MAX(artist) AS artist, MAX(cover) AS cover, SUM(seconds) AS seconds,
+                   COUNT(*) AS days
+            FROM music_plays WHERE day LIKE ? GROUP BY song ORDER BY seconds DESC
+        )"),
+                                           {QStringLiteral("%1-%").arg(year)});
+        qint64 musicSeconds = 0;
+        QVariantList topSongs;
+        QHash<QString, QPair<QString, qint64>> artists;
+        for (const auto &value : songs) {
+            const auto row = value.toMap();
+            const auto s = row.value("seconds").toLongLong();
+            musicSeconds += s;
+            if (topSongs.size() < 5)
+                topSongs.append(row);
+            // Each artist of a song gets its time.
+            for (const auto &name : row.value("artist").toString().split(QStringLiteral(", "), Qt::SkipEmptyParts))
+                weigh(artists, name, s);
+        }
+        const QVariantMap music{{"seconds", musicSeconds}, {"songs", int(songs.size())}, {"top", topSongs},
+                                {"artist", ranked(artists, 1).value(0)}};
+
         return QVariantMap{{"year", year},
+                           {"music", music},
                            {"total", totals(days, from.toString(Qt::ISODate), to.toString(Qt::ISODate))},
                            {"months", months},
                            {"weekdays", weekdays},

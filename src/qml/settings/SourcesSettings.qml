@@ -116,7 +116,7 @@ SettingsPane {
         note: qsTr("Komga, Kavita and Suwayomi servers you run: their comics are a source like the others, searched with them and saved to the library.")
         Repeater {
             // A handful, as many as the reader runs.
-            model: (pane.serversChanged, Comics.servers())
+            model: { App.dependOn(pane.serversChanged); return Comics.servers() }
             SettingRow {
                 required property var modelData
                 iconName: "server"

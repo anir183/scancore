@@ -36,7 +36,6 @@ Rectangle {
     // ------------------------------------------------------------ steps
     function go(next) {
         if (next < 0 || next >= steps || next === step) return
-        if (step === 0) applyMedia()
         step = next
     }
     // Back (Android's Back, Alt+Left): the previous step; false on the first.
@@ -46,6 +45,8 @@ Rectangle {
         go(step - 1)
         return true
     }
+    // The tabs and Home rebuild for the media chosen (~60 ms on a laptop):
+    // once, as the welcome goes, never while a step slides (FrameTimes).
     function finish() {
         applyMedia()
         App.setSetting("onboarded", true)
@@ -282,6 +283,10 @@ Rectangle {
                 width: stage.width
                 height: stage.height
                 active: Math.abs(root.step - index) <= 1
+                // A step made ready beside the current one is built a bit
+                // at a time; going back to the first step made the start
+                // step at once and held a swipe for ~60 ms (FrameTimes).
+                asynchronous: !current
                 visible: active && (Motion.reduced ? opacity > 0.01 : Math.abs(x) < stage.width)
                 enabled: current
                 sourceComponent: ({ start: startStep, coming: comingStep, look: lookStep, reader: readerStep,

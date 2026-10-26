@@ -82,7 +82,7 @@ Item {
 
             // ---------------------------------------------- whole sources
             Repeater {
-                model: page.report.sources
+                model: page.capped(page.report.sources, "sources")
                 Rectangle {
                     id: sourceCard
                     required property var modelData
@@ -137,6 +137,7 @@ Item {
                     }
                 }
             }
+            ShowAll { listKey: "sources"; total: page.report.sources.length }
 
             // ---------------------------------------------- single series
             Component {

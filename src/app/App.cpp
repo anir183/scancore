@@ -498,6 +498,8 @@ void App::setVolumeKeys(bool on) const { platform::setVolumeKeys(on); }
 bool App::profiling() const { return Profiler::enabled(); }
 
 void App::profilePlace(const QString &place) const { Profiler::instance()->setPlace(place); }
+void App::startFrameTimes() const { Profiler::instance()->startFrameTimes(); }
+QVariantMap App::stopFrameTimes() const { return Profiler::instance()->stopFrameTimes(); }
 
 void App::openFolder(const QString &path) const {
     QDir().mkpath(path);

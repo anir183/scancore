@@ -474,6 +474,8 @@ Item {
             id: row
             readonly property var item: parent ? parent.modelData : ({})
             readonly property bool open: page.expanded[item.id] === true
+            readonly property int firstSources: 12
+            property bool allSources: false
             readonly property int broken: (item.sources || []).filter(s => s.error).length
             width: parent ? parent.width : 0
             bottomPadding: 6
@@ -572,7 +574,7 @@ Item {
 
             // Its sources: on/off, settings, health.
             Repeater {
-                model: row.open ? row.item.sources : []
+                model: row.open ? (row.allSources ? row.item.sources : (row.item.sources || []).slice(0, row.firstSources)) : []
                 delegate: Item {
                     id: sourceRow
                     required property var modelData
@@ -652,6 +654,14 @@ Item {
                         }
                     }
                 }
+            }
+            // A multi-language extension has dozens: twelve, then all.
+            ScButton {
+                visible: row.open && (row.item.sources || []).length > row.firstSources && !row.allSources
+                x: Theme.gutter + 54
+                variant: "ghost"
+                text: qsTr("Show all %1 sources").arg((row.item.sources || []).length)
+                onClicked: row.allSources = true
             }
         }
     }

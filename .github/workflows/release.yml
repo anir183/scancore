@@ -327,6 +327,67 @@ jobs:
             dist/*.dmg
           if-no-files-found: error
 
+  # The packages just built, started once on their own system: a comic, a
+  # book and a video open (tests/app/Smoke.qml), with a picture of each in
+  # the run's artifacts (scancore-smoke-<system>). 2.13.0 nearly shipped a
+  # macOS build that did not start.
+  smoke:
+    name: Smoke run (${{ matrix.name }})
+    needs: [version, build]
+    if: ${{ !cancelled() && needs.build.result == 'success' }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: Windows, os: windows-2022 }
+          - { name: macOS, os: macos-14 }
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+          sparse-checkout: |
+            tests/app
+            tests/fixtures/smoke
+            tests/fixtures/video
+          sparse-checkout-cone-mode: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: scancore-${{ matrix.name }}
+          path: package
+      - name: Start the portable package (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Expand-Archive -Path (Get-ChildItem package\*-portable.zip).FullName -DestinationPath app
+          $repo = (Get-Location).Path -replace '\\', '/'
+          New-Item -ItemType Directory -Force smoke | Out-Null
+          $env:QT_FORCE_STDERR_LOGGING = '1'
+          $env:SCANCORE_START = '{"probe":"file:///' + $repo + '/tests/app/Smoke.qml","size":[1280,800],"fixtures":"' + $repo + '/tests/fixtures","out":"' + $repo + '/smoke"}'
+          $exe = (Get-ChildItem app -Recurse -Filter scancore.exe | Select-Object -First 1).FullName
+          $p = Start-Process -FilePath $exe -PassThru -Wait -RedirectStandardError smoke\log.txt -RedirectStandardOutput smoke\out.txt
+          Get-Content smoke\log.txt | Select-String -Pattern 'SMOKE|Smoke.qml|rror'
+          if ($p.ExitCode -ne 0) { throw "Smoke run failed ($($p.ExitCode))" }
+      - name: Start the disk image (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          hdiutil attach package/*.dmg -mountpoint /Volumes/SCANCORE -nobrowse
+          mkdir -p smoke
+          exe=$(ls /Volumes/SCANCORE/SCANCORE.app/Contents/MacOS/* | head -1)
+          QT_FORCE_STDERR_LOGGING=1 \
+          SCANCORE_START="{\"probe\":\"file://$PWD/tests/app/Smoke.qml\",\"size\":[1280,800],\"fixtures\":\"$PWD/tests/fixtures\",\"out\":\"$PWD/smoke\"}" \
+            "$exe" > smoke/log.txt 2>&1 && status=0 || status=$?
+          grep -E 'SMOKE|Smoke.qml|rror' smoke/log.txt || true
+          hdiutil detach /Volumes/SCANCORE || true
+          exit $status
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: scancore-smoke-${{ matrix.name }}
+          path: smoke
+          if-no-files-found: warn
+
   # Built beside the other packages (it used to wait for publish, and with
   # it for every other job); only its upload to the release waits
   # (appimage-release).

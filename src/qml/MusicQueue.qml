@@ -105,7 +105,29 @@ QtObject {
             task.finished.connect(r => { if (queue.streamTask === task && queue.current === song) AudioPlayer.load(r.url, 0, r.headers) })
             task.failed.connect(e => { if (queue.streamTask === task) Router.toast(e, "error") })
         }
-        AudioPlayer.showControls(song.title, artistsOf(song) || song.anime || song.album || "", song.cover || "")
+        AudioPlayer.showControls(song.title, artistsOf(song) || song.anime || song.album || "", song.cover || "", song.album || song.anime || "")
+    }
+
+    // Time listened, for Wrapped (Activity.listened): written every 15 s
+    // while a song plays, the rest when it stops or changes.
+    property real listenedFrom: 0
+    property var listenedSong: null
+    function countListening() {
+        if (listenedFrom > 0 && listenedSong) {
+            const seconds = Math.round((Date.now() - listenedFrom) / 1000)
+            if (seconds > 0) Activity.listened(listenedSong, seconds)
+        }
+        const on = AudioPlayer.playing && current !== null
+        listenedFrom = on ? Date.now() : 0
+        listenedSong = on ? current : null
+    }
+    onCurrentChanged: countListening()
+    property Timer listening: Timer {
+        interval: 15000
+        repeat: true
+        running: AudioPlayer.playing && queue.current !== null
+        onRunningChanged: queue.countListening()
+        onTriggered: queue.countListening()
     }
 
     property Connections player: Connections {

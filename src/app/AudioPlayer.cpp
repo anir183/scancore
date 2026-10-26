@@ -108,17 +108,35 @@ AudioPlayer::AudioPlayer(QObject *parent) : QObject(parent), m_core(std::make_sh
     connect(controls, &MediaControls::nextRequested, this, [this, ours] { if (ours()) emit nextRequested(); });
     connect(controls, &MediaControls::previousRequested, this, [this, ours] { if (ours()) emit previousRequested(); });
     connect(controls, &MediaControls::stopRequested, this, [this, ours] { if (ours()) { stop(); showControls({}, {}, {}); } });
-    // Playing or paused shows on the controls.
-    connect(this, &AudioPlayer::pausedChanged, this, [this] {
-        if (!m_title.isEmpty()) MediaControls::instance()->show(true, playing() || m_loading, m_title, m_subtitle, m_cover);
-    });
+    connect(controls, &MediaControls::seekRequested, this, [this, ours](double seconds) { if (ours()) seek(seconds); });
+    // Playing or paused, the length once known and seeks show on the
+    // controls (they move the time on by themselves in between).
+    connect(this, &AudioPlayer::pausedChanged, this, &AudioPlayer::updateControls);
+    connect(this, &AudioPlayer::durationChanged, this, &AudioPlayer::updateControls);
+    connect(this, &AudioPlayer::loadingChanged, this, &AudioPlayer::updateControls);
 }
 
-void AudioPlayer::showControls(const QString &title, const QString &subtitle, const QString &cover) {
+void AudioPlayer::showControls(const QString &title, const QString &subtitle, const QString &cover, const QString &album) {
     m_title = title;
     m_subtitle = subtitle;
     m_cover = cover;
-    MediaControls::instance()->show(!title.isEmpty(), playing() || m_loading, title, subtitle, cover);
+    m_album = album;
+    updateControls();
+}
+
+void AudioPlayer::updateControls() {
+    NowPlaying now;
+    now.active = !m_title.isEmpty();
+    now.playing = playing() || m_loading;
+    now.kind = QStringLiteral("music");
+    now.title = m_title;
+    now.artist = m_subtitle;
+    now.album = m_album;
+    now.cover = m_cover;
+    now.duration = duration();
+    now.position = position();
+    now.seekable = duration() > 0;
+    MediaControls::instance()->show(now);
 }
 
 AudioPlayer::~AudioPlayer() {
@@ -228,6 +246,7 @@ void AudioPlayer::seek(double seconds) {
     m_reported = m_position;
     emit positionChanged();
     command(m_core->mpv, {QStringLiteral("seek"), QString::number(m_position), QStringLiteral("absolute")});
+    updateControls();
 #endif
 }
 
