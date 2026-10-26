@@ -2,7 +2,8 @@ name: Extensions runtime
 
 # The Extensions runtime the desktop app downloads to run Mihon extensions:
 # a Java trimmed with jlink and the extension host (host/), one zip per
-# system with a .sha256 beside it, kept as assets of an
+# system with a .sha256 beside it, and CloudStream's runtime for Android
+# (one dex in a jar), kept as assets of an
 # "extensions-runtime-<host version>" pre-release (pre-releases are never
 # offered as app updates). The app asks for the version it was built with
 # (HOST_VERSION in host/desktop/.../Main.kt and hostVersion in
@@ -51,8 +52,34 @@ jobs:
           name: runtime-${{ matrix.os }}
           path: host/desktop/build/distributions/*
 
+  # CloudStream's runtime for Android: one dex, which the app downloads
+  # when the first CloudStream plugin is installed (host/cloudstream).
+  android:
+    name: CloudStream for Android
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Android SDK
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install "platforms;android-37.0" "build-tools;37.0.0" > /dev/null
+      - name: Build it
+        working-directory: host
+        run: |
+          ./gradlew --console=plain :cloudstream:androidRuntime
+          version=$(sed -n 's/^val hostVersion = "\(.*\)"$/\1/p' desktop/build.gradle.kts)
+          mkdir -p dist
+          cp cloudstream/build/android/cloudstream-runtime-android.jar "dist/SCANCORE-cloudstream-runtime-$version-android.jar"
+          (cd dist && sha256sum "SCANCORE-cloudstream-runtime-$version-android.jar" > "SCANCORE-cloudstream-runtime-$version-android.jar.sha256")
+      - uses: actions/upload-artifact@v4
+        with:
+          name: runtime-android-cloudstream
+          path: host/dist/*
+
   publish:
-    needs: build
+    needs: [build, android]
     # What did build is still worth publishing.
     if: ${{ !cancelled() }}
     runs-on: ubuntu-24.04

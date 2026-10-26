@@ -3,6 +3,7 @@
 #include "Apk.h"
 #include "Host.h"
 #include "Index.h"
+#include "Runtime.h"
 #include "core/Database.h"
 #include "core/Http.h"
 #include "core/Parallel.h"
@@ -181,7 +182,7 @@ void changed() {
 
 // Signed with a repository's key, or trusted by hand at this version and key.
 bool isTrusted(const State &state, const Installed &i) {
-    if (isPluginKind(i.package.kind))
+    if (isUnsignedKind(i.package.kind))
         return std::any_of(state.repos.begin(), state.repos.end(),
                            [&](const RepoState &r) { return r.repo.kind == i.package.kind && r.repo.url == i.repoUrl; });
     if (i.signers.isEmpty())
@@ -395,11 +396,12 @@ RepoState read(const QUrl &start, std::optional<Kind> hint) {
     }
     if (!repo || !packages)
         throw Error(QStringLiteral("The repository's files could not be read."));
-    if (!isPluginKind(repo->kind) && repo->signingKey.isEmpty())
+    if (!isUnsignedKind(repo->kind) && repo->signingKey.isEmpty())
         throw Error(QStringLiteral("The repository has no signing key, so its extensions cannot be checked."));
     // One kind per repository: the hint, else what most extensions are.
-    Kind kind = hint.value_or(repo->kind);
-    if (!hint && !isPluginKind(repo->kind)) {
+    // CloudStream's files say what they are, whatever link led there.
+    Kind kind = repo->kind == Kind::CloudStream ? Kind::CloudStream : hint.value_or(repo->kind);
+    if (!hint && !isUnsignedKind(repo->kind)) {
         int anime = 0;
         for (const auto &p : *packages)
             anime += p.kind == Kind::Aniyomi;
@@ -463,7 +465,32 @@ void Manager::reload() {
 
 // ---------------------------------------------------------------- repositories
 
-RepositoryPreview Manager::preview(const QString &text, std::optional<Kind> hint) {
+// CloudStream's ways of naming a repository: cloudstreamrepo://<address>,
+// https://cs.repo/<address>, and short codes (a word, or "!word"), which
+// cutt.ly or py.md redirect to its repo.json.
+static QString cloudStreamAddress(const QString &text) {
+    auto t = text.trimmed();
+    static const QRegularExpression prefix(QStringLiteral(R"(^(cloudstreamrepo://|https?://cs\.repo/\??))"), QRegularExpression::CaseInsensitiveOption);
+    if (const auto m = prefix.match(t); m.hasMatch()) {
+        t = t.mid(m.capturedLength());
+        return t.contains(QLatin1String("://")) ? t : QStringLiteral("https://") + t;
+    }
+    static const QRegularExpression code(QStringLiteral(R"(^!?[A-Za-z0-9_-]+$)"));
+    if (!code.match(t).hasMatch())
+        return text;
+    Request request;
+    request.url = t.startsWith(QLatin1Char('!')) ? QUrl(QStringLiteral("https://py.md/") + t.mid(1)) : QUrl(QStringLiteral("https://cutt.ly/") + t);
+    request.method = "HEAD";
+    request.timeoutMs = 15000;
+    const auto response = Http::send(request);
+    const auto target = response.finalUrl.toString();
+    if (response.finalUrl.host() == request.url.host() || target.isEmpty())
+        throw Error(QStringLiteral("No repository has the code %1.").arg(t), 404);
+    return target;
+}
+
+RepositoryPreview Manager::preview(const QString &original, std::optional<Kind> hint) {
+    const auto text = cloudStreamAddress(original);
     const auto first = normalized(text);
     if (!first.isValid() || first.host().isEmpty())
         throw Error(QStringLiteral("That is not a link."));
@@ -508,7 +535,7 @@ RepositoryPreview Manager::preview(const QString &text, std::optional<Kind> hint
     if (!found)
         throw Error(lastError.isEmpty() ? QStringLiteral("That link is not an extension or plugin repository.") : lastError);
     // A plugin list names no repository: its GitHub owner and name do.
-    if (isPluginKind(state.repo.kind) && (state.repo.name.isEmpty() || state.repo.name.contains(QLatin1Char('.')))) {
+    if (isUnsignedKind(state.repo.kind) && (state.repo.name.isEmpty() || state.repo.name.contains(QLatin1Char('.')))) {
         const QUrl list(state.repo.url);
         const auto path = list.path().split(QLatin1Char('/'), Qt::SkipEmptyParts);
         const auto host = list.host().toLower();
@@ -583,6 +610,9 @@ std::optional<RepositoryLink> Manager::parseLink(const QString &link) {
         kind = Kind::Aniyomi;
     else if (scheme == QLatin1String("lnreader"))
         kind = Kind::LNReader;
+    else if (scheme == QLatin1String("cloudstreamrepo"))
+        // The whole link is the repository's address.
+        return RepositoryLink{link.trimmed(), Kind::CloudStream};
     else if (scheme != QLatin1String("scancore"))
         return std::nullopt;
     const bool adds = action == QLatin1String("add-repo") || action == QLatin1String("addrepo") ||
@@ -619,7 +649,7 @@ bool Manager::refresh(const QString &url) {
         if (!doc.hasPackages)
             throw Error(QStringLiteral("The repository's list could not be read."));
         // A store whose key changed is not taken at its word.
-        if (doc.repo && !isPluginKind(current->repo.kind) && !doc.repo->signingKey.isEmpty() &&
+        if (doc.repo && !isUnsignedKind(current->repo.kind) && !doc.repo->signingKey.isEmpty() &&
             doc.repo->signingKey != current->repo.signingKey)
             throw Error(QStringLiteral("The repository's signing key changed. Remove it and add it again if you trust the new key."));
         next.packages = doc.packages;
@@ -740,6 +770,10 @@ Installed Manager::install(Kind kind, const QString &pkg) {
     if (g_storage.isEmpty())
         throw Error(QStringLiteral("Extensions have nowhere to be stored."));
 
+    // CloudStream plugins run on a runtime phones download separately.
+    if (kind == Kind::CloudStream)
+        Runtime::installCloudStream();
+
     const QUrl fileUrl(package.fileUrl);
     if (!allowedHost(fileUrl))
         throw Error(QStringLiteral("%1 is not offered over https.").arg(package.name));
@@ -752,7 +786,7 @@ Installed Manager::install(Kind kind, const QString &pkg) {
         throw Error(QStringLiteral("%1 could not be downloaded (HTTP %2).").arg(package.name).arg(response.status), response.status);
 
     QStringList signers;
-    if (!isPluginKind(kind)) {
+    if (!isUnsignedKind(kind)) {
         signers = apkSigners(response.body);
         if (signers.isEmpty())
             throw Error(QStringLiteral("%1 is not signed, so SCANCORE will not install it.").arg(package.name));
@@ -767,7 +801,7 @@ Installed Manager::install(Kind kind, const QString &pkg) {
 
     const auto folder = QStringLiteral("%1/%2/%3").arg(g_storage, kindName(kind), pkg);
     QDir().mkpath(folder);
-    const auto path = QStringLiteral("%1/%2.%3").arg(folder).arg(package.versionCode).arg(isPluginKind(kind) ? "js" : "apk");
+    const auto path = QStringLiteral("%1/%2.%3").arg(folder).arg(package.versionCode).arg(kind == Kind::CloudStream ? "cs3" : isPluginKind(kind) ? "js" : "apk");
     {
         QFile::setPermissions(path, QFile::ReadOwner | QFile::WriteOwner);
         QSaveFile file(path);

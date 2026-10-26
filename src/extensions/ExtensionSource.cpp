@@ -200,6 +200,7 @@ QString ExtensionSource::checkAgent(const QString &url) {
     const auto host = QUrl(url).host();
     auto entries = Manager::sources(Kind::Mihon);
     entries += Manager::sources(Kind::Aniyomi);
+    entries += Manager::sources(Kind::CloudStream);
     const bool extensionSite = std::any_of(entries.begin(), entries.end(), [&](const SourceEntry &e) {
         const auto base = QUrl(e.baseUrl).host();
         return !base.isEmpty() && (hostMatches(host, base) || hostMatches(base, host));

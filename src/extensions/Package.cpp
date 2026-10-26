@@ -1,5 +1,6 @@
 #include "Package.h"
 
+#include <QCryptographicHash>
 #include <QJsonArray>
 #include <QRegularExpression>
 #include <QVersionNumber>
@@ -12,6 +13,7 @@ QString kindName(Kind kind) {
     case Kind::Aniyomi: return QStringLiteral("aniyomi");
     case Kind::LNReader: return QStringLiteral("lnreader");
     case Kind::Music: return QStringLiteral("music");
+    case Kind::CloudStream: return QStringLiteral("cloudstream");
     }
     return {};
 }
@@ -25,6 +27,8 @@ std::optional<Kind> kindFrom(const QString &name) {
         return Kind::LNReader;
     if (name == QLatin1String("music"))
         return Kind::Music;
+    if (name == QLatin1String("cloudstream"))
+        return Kind::CloudStream;
     return std::nullopt;
 }
 
@@ -34,8 +38,17 @@ QString kindMedia(Kind kind) {
     case Kind::Aniyomi: return QStringLiteral("anime");
     case Kind::LNReader: return QStringLiteral("novel");
     case Kind::Music: return QStringLiteral("music");
+    case Kind::CloudStream: return QStringLiteral("anime");
     }
     return {};
+}
+
+QString cloudStreamSourceId(const QString &pkg) {
+    const auto hash = QCryptographicHash::hash(QStringLiteral("cloudstream/%1").arg(pkg).toUtf8(), QCryptographicHash::Md5);
+    quint64 id = 0;
+    for (int i = 0; i < 8; ++i)
+        id = (id << 8) | quint8(hash[i]);
+    return QString::number(id & 0x7fffffffffffffffULL);
 }
 
 QJsonObject Package::toJson() const {
@@ -113,6 +126,7 @@ QStringList supportedLibs(Kind kind) {
     switch (kind) {
     case Kind::Mihon: return {QStringLiteral("1.4"), QStringLiteral("1.5"), QStringLiteral("1.6")};
     case Kind::Aniyomi: return {QStringLiteral("14"), QStringLiteral("16"), QStringLiteral("17")};
+    case Kind::CloudStream: return {QStringLiteral("1")};
     case Kind::LNReader:
     case Kind::Music: return {};
     }

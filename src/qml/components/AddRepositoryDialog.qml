@@ -139,7 +139,7 @@ Dialog {
             visible: !dialog.task
             Text {
                 width: parent.width
-                text: qsTr("Paste the link from the repository's page, or the link to its index, repo.json or plugin list; several at once work too. SCANCORE reads Mihon, Tachiyomi, Aniyomi and LNReader repositories.")
+                text: qsTr("Paste the link from the repository's page, or the link to its index, repo.json or plugin list; several at once work too. SCANCORE reads Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader repositories, and CloudStream repository codes.")
                 color: Theme.textMuted
                 font.family: Theme.fontSans
                 font.pixelSize: Theme.textSm

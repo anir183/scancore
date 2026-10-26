@@ -43,7 +43,7 @@ Item {
     function runTest() {
         const option = sourceOptions.find(o => o.value === testKey)
         if (!option) return
-        const service = option.kind === "aniyomi" ? Anime : option.kind === "lnreader" ? Novels : Comics
+        const service = option.kind === "aniyomi" || option.kind === "cloudstream" ? Anime : option.kind === "lnreader" ? Novels : Comics
         testResult = ""
         testStarted = Date.now()
         testTask = service.browse(testKey, "popular", 1)

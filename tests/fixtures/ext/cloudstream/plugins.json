@@ -1,0 +1,6 @@
+[
+  {"internalName": "DailymotionProvider", "name": "Dailymotion", "url": "https://repo.test/cloudstream/DailymotionProvider.cs3", "version": 4, "apiVersion": 1, "language": "en", "tvTypes": ["Others"], "iconUrl": "https://icons.test/x.png?sz=%size%", "status": 1},
+  {"internalName": "AdultProvider", "name": "Adult", "url": "Adult.cs3", "version": 2, "apiVersion": 1, "language": "pt-br", "tvTypes": ["NSFW"], "status": 3},
+  {"internalName": "DownProvider", "name": "Down", "url": "Down.cs3", "version": 1, "apiVersion": 1, "language": "en", "status": 0},
+  {"internalName": "TorrentProvider", "name": "Torrents", "url": "Torrents.cs3", "version": 1, "apiVersion": 1, "tvTypes": ["Torrent"], "status": 1}
+]

@@ -10,13 +10,21 @@
 namespace sc::ext {
 
 // The extension ecosystems SCANCORE runs: Mihon/Tachiyomi extensions
-// (comics), Aniyomi extensions (anime), LNReader plugins (novels) and
+// (comics), Aniyomi extensions (anime), LNReader plugins (novels),
 // SCANCORE's own music plugins (JavaScript like LNReader's; see
-// docs/music-plugins.md).
-enum class Kind { Mihon, Aniyomi, LNReader, Music };
+// docs/music-plugins.md) and CloudStream plugins (.cs3 files, shown as
+// anime; run by the host's CloudStream runtime).
+enum class Kind { Mihon, Aniyomi, LNReader, Music, CloudStream };
 
 // JavaScript plugins (no APK, no signing key): LNReader and music.
 inline bool isPluginKind(Kind kind) { return kind == Kind::LNReader || kind == Kind::Music; }
+// Files without a signature, trusted for the repository the reader added:
+// the JavaScript plugins and CloudStream's.
+inline bool isUnsignedKind(Kind kind) { return isPluginKind(kind) || kind == Kind::CloudStream; }
+
+// A CloudStream plugin's source id, as the host gives it (core's
+// CloudStream.sourceId): the first 8 bytes of MD5 of "cloudstream/<pkg>".
+QString cloudStreamSourceId(const QString &pkg);
 
 QString kindName(Kind kind);           // "mihon", "aniyomi", "lnreader", "music"
 std::optional<Kind> kindFrom(const QString &name);

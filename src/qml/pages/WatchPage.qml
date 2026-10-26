@@ -35,7 +35,7 @@ Rectangle {
     // An extension's own anime (opened from its source) plays from there;
     // an AniList anime from the source picked for it, else the built-in
     // servers ({builtIn: true}).
-    readonly property bool fromSource: String(media.source || "").startsWith("aniyomi:")
+    readonly property bool fromSource: Router.extensionAnime(media.source)
     property var provider: fromSource ? { source: media.source, url: media.sourceUrl, sourceLabel: Anime.sourceLabel(media.source) }
                                       : Anime.provider(media.anilistId || 0)
     // A downloaded episode plays from its file, with SCANCORE's player.

@@ -1,0 +1,6 @@
+{
+    "name": "Test CloudStream repository",
+    "description": "For SCANCORE's tests",
+    "manifestVersion": 1,
+    "pluginLists": ["plugins.json"]
+}

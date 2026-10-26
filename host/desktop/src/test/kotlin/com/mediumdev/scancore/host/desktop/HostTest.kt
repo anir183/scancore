@@ -42,6 +42,7 @@ class HostTest {
         private val animeApk = File(System.getProperty("scancore.testanime.apk", ""))
         private val animeSigner = File(animeApk.parentFile, "signer.txt").takeIf { it.exists() }?.readText()?.trim()
         private val fixtures = File(System.getProperty("scancore.fixtures", ""))
+        private val cs3 = File(System.getProperty("scancore.testcs.cs3", ""))
         private lateinit var server: HttpServer
         private lateinit var host: ExtensionHost
         private val requests = Collections.synchronizedList(mutableListOf<String>())
@@ -74,6 +75,9 @@ class HostTest {
                         path == "/resolve" -> 200 to "anime/resolve.json"
                         path == "/episode/1/videos" -> 200 to "anime/videos-classic.json"
                         path == "/videopage/1" -> 200 to "anime/videopage-1.json"
+                        // The CloudStream test plugin (host/testext/src/cloudstream).
+                        path == "/cs/poster.png" -> 200 to "image.png"
+                        path.startsWith("/cs/") && File(fixtures, path.drop(1)).isFile -> 200 to path.drop(1)
                         // Only the extension's own client sends this header.
                         path.startsWith("/img/") && exchange.requestHeaders.getFirst("X-Test-Source") == "1" -> 200 to "image.png"
                         else -> 404 to null
@@ -439,5 +443,67 @@ class HostTest {
         animeCall("Test Anime", "hosters", mapOf("url" to "/episode/1"))
         assertTrue(requests.last { it.startsWith("/episode/1/hosters") }.contains("dub=true"))
         animeCall("Test Anime", "setPreference", mapOf("key" to "dub", "value" to false))
+    }
+
+    // ------------------------------------------------------------ CloudStream
+
+    private fun csCall(
+        method: String,
+        extra: Map<String, String> = emptyMap(),
+        page: String? = null,
+    ) = runBlocking {
+        host.handle(
+            method,
+            buildJsonObject {
+                put("pkg", "TestCloudStream")
+                put("apk", cs3.path)
+                put("source", com.mediumdev.scancore.host.CloudStream.sourceId("TestCloudStream").toString())
+                for ((k, v) in extra) put(k, v)
+                page?.let { put("page", buildJsonObject { put("imageUrl", it) }) }
+            },
+        )
+    }
+
+    @Test
+    fun cloudStreamPlugin() {
+        assumeTrue("No test CloudStream plugin (no Android SDK)", cs3.isFile)
+        val source = csCall("load").jsonArray.single().jsonObject
+        assertEquals(com.mediumdev.scancore.host.CloudStream.sourceId("TestCloudStream").toString(), source.text("id"))
+        assertEquals("Test CloudStream", source.text("name"))
+        assertEquals(true, source["anime"]!!.jsonPrimitive.content.toBoolean())
+
+        // The main page's first section is the popular list.
+        val popular = csCall("popular", mapOf("page" to "1")).jsonObject
+        assertEquals(listOf("First Show", "Second Show"), popular["items"]!!.jsonArray.map { it.jsonObject.text("title") })
+        assertEquals(true, popular["hasNextPage"]!!.jsonPrimitive.content.toBoolean())
+        val first = popular["items"]!!.jsonArray[0].jsonObject
+        // Its sections are a filter; an empty search shows the one chosen.
+        val filters = csCall("filters").jsonArray
+        assertTrue(filters.toString().contains("New"))
+        val search = csCall("search", mapOf("query" to "found")).jsonObject
+        assertEquals("Found Show", search["items"]!!.jsonArray.single().jsonObject.text("title"))
+
+        val details = csCall("details", mapOf("url" to first.text("url"))).jsonObject
+        assertEquals("First Show", details.text("title"))
+        assertEquals("A test show.", details.text("description"))
+        // Two seasons: numbered on, newest first, "S2 E1" in the name.
+        val episodes = csCall("episodes", mapOf("url" to first.text("url"))).jsonArray.map { it.jsonObject }
+        assertEquals(listOf("S2 E1 · Return", "S1 E2", "S1 E1 · Pilot"), episodes.map { it.text("name") })
+        assertTrue(episodes.last().text("url").endsWith("/s1e1"))
+
+        // One hoster per extractor, best first; torrents left out.
+        val hosters = csCall("hosters", mapOf("url" to "s1e1", "name" to "Pilot")).jsonArray.map { it.jsonObject }
+        assertEquals(listOf("Alpha"), hosters.map { it.text("name") })
+        val videos = hosters.single()["videos"]!!.jsonArray.map { it.jsonObject }
+        assertEquals(listOf(1080, 720), videos.map { it["resolution"]!!.jsonPrimitive.int })
+        assertTrue(videos[0].text("url").endsWith("/cs/s1e1-1080.m3u8"))
+        assertTrue(videos[0]["headers"].toString().contains("referer"))
+        assertTrue(videos[0]["subtitles"].toString().contains("s1e1.vtt"))
+
+        // Covers through the plugin's headers.
+        val target = File.createTempFile("cover", ".png")
+        val cover = csCall("fetchImage", mapOf("target" to target.path), page = first.text("cover")).toString()
+        target.delete()
+        assertTrue(cover, cover.isNotEmpty())
     }
 }

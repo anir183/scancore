@@ -12,7 +12,8 @@ AbstractButton {
     default property alias picture: art.data
 
     implicitWidth: 168
-    implicitHeight: 92 + 54
+    // Long names (Vertikaler Streifen) take a second line.
+    implicitHeight: 92 + 22 + Math.max(32, words.implicitHeight)
     hoverEnabled: true
     focusPolicy: Qt.TabFocus
 
@@ -61,10 +62,13 @@ AbstractButton {
                 }
             }
             Column {
+                id: words
                 anchors.verticalCenter: parent.verticalCenter
                 width: tile.width - 48
                 Text {
                     width: parent.width
+                    wrapMode: Text.Wrap
+                    maximumLineCount: 2
                     elide: Text.ElideRight
                     text: tile.label
                     color: Theme.text
@@ -74,6 +78,8 @@ AbstractButton {
                 }
                 Text {
                     width: parent.width
+                    wrapMode: Text.Wrap
+                    maximumLineCount: 2
                     elide: Text.ElideRight
                     visible: text.length > 0
                     text: tile.detail

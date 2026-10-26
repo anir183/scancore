@@ -1,7 +1,9 @@
 // SCANCORE's test extensions, packaged as real signed APKs with the Android
 // SDK's tools (d8, aapt2, zipalign, apksigner) by `./gradlew :testext:apk`:
 // a Mihon one (src/main, build/apk/testext.apk) and an Aniyomi one
-// (src/anime, build/animeapk/testanime.apk). Without an SDK
+// (src/anime, build/animeapk/testanime.apk), and a CloudStream plugin
+// (src/cloudstream, build/cs3/testcs.cs3, by `./gradlew :testext:cs3`).
+// Without an SDK
 // (ANDROID_SDK_ROOT, ANDROID_HOME or ~/Android/Sdk) no APK is made and the
 // tests that need one skip.
 import java.security.KeyStore
@@ -15,11 +17,14 @@ plugins {
 }
 
 val anime by sourceSets.creating
+val cloudstream by sourceSets.creating
 
 dependencies {
     // As in real extensions: the API comes from the app, not the APK.
     compileOnly(project(":api"))
     "animeCompileOnly"(project(":api"))
+    "cloudstreamCompileOnly"(project(":api"))
+    "cloudstreamCompileOnly"(project(":cloudstream"))
 }
 
 fun sdkDir(): File? =
@@ -105,4 +110,47 @@ val animeApk = apkTask("animeApk", anime, "animeapk", "testanime.apk")
 
 val apk by tasks.registering {
     dependsOn(mangaApk, animeApk)
+}
+
+// The CloudStream plugin: its classes as classes.dex beside a manifest.json,
+// zipped, as CloudStream's gradle plugin makes them.
+val cs3 by tasks.registering {
+    val compile = tasks.named<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>(cloudstream.getCompileTaskName("kotlin"))
+    val classes = compile.flatMap { it.destinationDirectory }
+    val outDir = layout.buildDirectory.dir("cs3")
+    val classpath = configurations.named(cloudstream.compileClasspathConfigurationName)
+    dependsOn(compile)
+    inputs.dir(classes)
+    outputs.dir(outDir)
+    doLast {
+        val sdk = sdkDir() ?: run {
+            logger.warn("No Android SDK: the test CloudStream plugin is not built.")
+            return@doLast
+        }
+        val tools = newest(File(sdk, "build-tools"))!!
+        val platform = File(newest(File(sdk, "platforms"))!!, "android.jar")
+        val exe = if (System.getProperty("os.name").startsWith("Windows")) ".bat" else ""
+        val work = outDir.get().asFile.apply { deleteRecursively(); mkdirs() }
+        val classFiles = classes.get().asFile.walkTopDown().filter { it.extension == "class" }.map { it.path }.toList()
+        val dexDir = File(work, "dex").apply { mkdirs() }
+        // The arguments in a file: on Windows the class path alone is longer
+        // than a command line may be.
+        val args = File(work, "d8.args")
+        args.writeText(
+            (listOf("--release", "--min-api", "26", "--lib", platform.path) +
+                classpath.get().files.filter { it.exists() }.flatMap { listOf("--classpath", it.path) } +
+                listOf("--output", dexDir.path) + classFiles).joinToString("\n"),
+        )
+        val process = ProcessBuilder(File(tools, "d8$exe").path, "@" + args.path).redirectErrorStream(true).start()
+        val output = process.inputStream.bufferedReader().readText()
+        check(process.waitFor() == 0) { "d8 failed:\n$output" }
+        ZipOutputStream(File(work, "testcs.cs3").outputStream()).use { out ->
+            out.putNextEntry(ZipEntry("manifest.json"))
+            out.write("""{"name":"Test CloudStream","pluginClassName":"com.mediumdev.scancore.testcs.TestPlugin","version":1,"requiresResources":false}""".toByteArray())
+            out.closeEntry()
+            out.putNextEntry(ZipEntry("classes.dex"))
+            File(dexDir, "classes.dex").inputStream().use { it.copyTo(out) }
+            out.closeEntry()
+        }
+    }
 }

@@ -26,12 +26,27 @@ dependencies {
     testImplementation(libs.junit)
 }
 
+// CloudStream's runtime beside lib/ (development builds run the host from
+// here; the Extensions runtime puts it in lib/cloudstream instead).
+distributions {
+    main {
+        contents {
+            from(project(":cloudstream").tasks.named("runtimeJars")) { into("cloudstream") }
+        }
+    }
+}
+
 // The end-to-end test needs the test extension APK and the fixture site.
 tasks.test {
     dependsOn(":testext:apk")
     systemProperty("scancore.testext.apk", project(":testext").layout.buildDirectory.file("apk/testext.apk").get().asFile.path)
     systemProperty("scancore.testanime.apk", project(":testext").layout.buildDirectory.file("animeapk/testanime.apk").get().asFile.path)
     systemProperty("scancore.fixtures", rootProject.layout.projectDirectory.dir("../tests/fixtures/host").asFile.path)
+    // CloudStream's runtime jars, and (by hand) a folder of real plugins.
+    dependsOn(":cloudstream:runtimeJars", ":testext:cs3")
+    systemProperty("scancore.testcs.cs3", project(":testext").layout.buildDirectory.file("cs3/testcs.cs3").get().asFile.path)
+    systemProperty("scancore.cloudstream.lib", project(":cloudstream").layout.buildDirectory.dir("runtime-jars").get().asFile.path)
+    providers.gradleProperty("cloudstream.live").orNull?.let { systemProperty("scancore.cloudstream.live", it) }
     testLogging {
         events("passed", "skipped", "failed")
         showStandardStreams = true
@@ -75,14 +90,15 @@ fun sqliteNative(): String {
     }
 }
 
-val hostVersion = "7"
+val hostVersion = "8"
 
 val runtimeImage by tasks.registering {
-    dependsOn("installDist")
+    dependsOn("installDist", ":cloudstream:runtimeJars")
     val out = layout.buildDirectory.dir("runtime/scancore-extensions-runtime")
     // The host's jars: without them as inputs, a rebuilt host never reached
     // the image.
     inputs.dir(layout.buildDirectory.dir("install/scancore-host/lib"))
+    inputs.dir(project(":cloudstream").layout.buildDirectory.dir("runtime-jars"))
     inputs.property("modules", runtimeModules)
     inputs.property("hostVersion", hostVersion)
     outputs.dir(out)
@@ -119,6 +135,9 @@ val runtimeImage by tasks.registering {
                 }
             }
         }
+        // CloudStream's runtime, in a class loader of its own (core's
+        // CloudStream.kt): its jars beside the host's.
+        project(":cloudstream").layout.buildDirectory.dir("runtime-jars").get().asFile.copyRecursively(File(dir, "lib/cloudstream"))
         File(dir, "scancore-runtime.json").writeText("""{"host": "$hostVersion", "java": "$major", "platform": "${platformName()}"}""" + "\n")
     }
 }

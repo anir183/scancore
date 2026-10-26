@@ -73,7 +73,9 @@ SettingsPane {
             bottomPadding: 12
             spacing: 12
             ChoiceTile {
+                id: stripTile
                 width: pane.tileWidth
+                height: Math.max(implicitHeight, pagesTile.implicitHeight)
                 label: qsTr("Vertical strip")
                 detail: qsTr("Webtoons, manhwa")
                 selected: App.settings.readerMode !== "paged"
@@ -88,7 +90,9 @@ SettingsPane {
                 }
             }
             ChoiceTile {
+                id: pagesTile
                 width: pane.tileWidth
+                height: Math.max(implicitHeight, stripTile.implicitHeight)
                 label: qsTr("Pages")
                 detail: qsTr("Manga")
                 selected: App.settings.readerMode === "paged"

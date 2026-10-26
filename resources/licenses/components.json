@@ -114,6 +114,30 @@
   "file": "MPL-2.0.txt"
  },
  {
+  "name": "CloudStream library (recloudstream/cloudstream)",
+  "use": "Running CloudStream plugins (downloaded with the Extensions runtime, or on Android with the first CloudStream repository)",
+  "licence": "GPL-3.0",
+  "file": "GPL-3.0-only.txt"
+ },
+ {
+  "name": "NiceHttp",
+  "use": "CloudStream plugins' requests",
+  "licence": "GPL-3.0",
+  "file": "GPL-3.0-only.txt"
+ },
+ {
+  "name": "Jackson, Ktor HTTP, kotlinx-datetime, kotlinx-io, atomicfu, cryptography-kotlin, Stately",
+  "use": "CloudStream plugins",
+  "licence": "Apache-2.0",
+  "file": "Apache-2.0.txt"
+ },
+ {
+  "name": "Ksoup",
+  "use": "CloudStream plugins",
+  "licence": "MIT",
+  "file": "MIT.txt"
+ },
+ {
   "name": "dex2jar, apksig, AOSP android.jar stubs",
   "use": "Loading extensions on desktop",
   "licence": "Apache-2.0",

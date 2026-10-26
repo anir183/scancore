@@ -3,7 +3,9 @@ package com.mediumdev.scancore.host.android
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import com.mediumdev.scancore.host.CloudStream
 import com.mediumdev.scancore.host.ExtensionLoader
+import uy.kohesive.injekt.api.get
 import com.mediumdev.scancore.host.HostError
 import com.mediumdev.scancore.host.LoadedExtension
 import dalvik.system.DelegateLastClassLoader
@@ -34,6 +36,13 @@ class AndroidLoader(
         if (!apk.isFile) throw HostError("The extension's file is missing. Install it again.", 404)
         // Android 14 runs code only from files nobody can write to.
         if (apk.canWrite()) apk.setReadOnly()
+        // A CloudStream plugin: its dex over CloudStream's runtime (no
+        // signature: SCANCORE trusts the repository the reader added).
+        if (CloudStream.isPlugin(path)) {
+            val runtime = CloudStream.runtime(context) { uy.kohesive.injekt.Injekt.get<eu.kanade.tachiyomi.network.NetworkHelper>().client }
+            val classes = dalvik.system.DexClassLoader(apk.path, context.codeCacheDir.path, null, runtime.javaClass.classLoader)
+            return LoadedExtension(anime = runtime.load(pkg, apk, classes))
+        }
         val flags = PackageManager.GET_META_DATA or PackageManager.GET_SIGNING_CERTIFICATES
         val info: PackageInfo =
             context.packageManager.getPackageArchiveInfo(apk.path, flags)

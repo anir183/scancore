@@ -12,9 +12,11 @@ namespace sc::ext {
 //    extensions) next to repo.json ({meta: {name, signingKeyFingerprint}});
 //  - Mihon/Aniyomi extension stores: one JSON or protobuf message with the
 //    store's name, signing key and either its extensions or a link to them;
-//  - LNReader repositories: a JSON list of plugins.
+//  - LNReader repositories: a JSON list of plugins;
+//  - CloudStream repositories: repo.json ({name, pluginLists: [...]}) and
+//    the plugins.json lists it links to.
 struct IndexDocument {
-    enum class Type { Unknown, LegacyIndex, LegacyRepo, Store, ExtensionList, PluginList };
+    enum class Type { Unknown, LegacyIndex, LegacyRepo, Store, ExtensionList, PluginList, CloudStreamRepo };
     Type type = Type::Unknown;
     // Name, key and links, when the document has them.
     std::optional<Repository> repo;

@@ -182,7 +182,7 @@ ApplicationWindow {
                 themeConfirm.open()
             } else if (/\.(cbz|zip|cbr|rar|cb7|7z|cbt|pdf|epub|fb2|mobi|azw|azw3|prc)$/.test(lower)) {
                 Router.openFile(target)
-            } else if (Extensions.repositoryLink(target).url && !/^https?:/.test(lower)) {
+            } else if (/^[a-z]+:\/\//.test(lower) && !/^https?:/.test(lower) && Extensions.repositoryLink(target).url) {
                 // A one-tap "add repository" link from a repository's page.
                 Router.addRepository(target)
             }
@@ -359,7 +359,7 @@ ApplicationWindow {
         }
         function resume(entry) {
             const props = { url: entry.sourceUrl, summary: entry, autoResume: true }
-            if (entry.media === "anime" && String(entry.source || "").startsWith("aniyomi:")) {
+            if (entry.media === "anime" && Router.extensionAnime(entry.source)) {
                 push("pages/AnimeDetails.qml", { sourceUrl: entry.sourceUrl, summary: entry, autoResume: true })
             } else if (entry.media === "anime") {
                 const extra = entry.extra || {}

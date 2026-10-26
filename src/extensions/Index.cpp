@@ -281,6 +281,38 @@ QList<Package> pluginList(const QJsonArray &rows, const QUrl &from) {
     return out;
 }
 
+// A CloudStream plugins.json: [{internalName, name, url, version,
+// apiVersion, language, tvTypes, iconUrl, status, ...}]. Plugins marked down
+// (status 0) are left out.
+QList<Package> cloudStreamList(const QJsonArray &array, const QUrl &from) {
+    QList<Package> out;
+    for (const auto &value : array) {
+        const auto o = value.toObject();
+        Package p;
+        p.kind = Kind::CloudStream;
+        p.pkg = o.value("internalName").toString();
+        if (p.pkg.isEmpty() || o.value("url").toString().isEmpty() || o.value("status").toInt(1) == 0)
+            continue;
+        p.name = o.value("name").toString(p.pkg);
+        p.versionCode = o.value("version").toVariant().toLongLong();
+        p.versionName = QString::number(p.versionCode);
+        p.lib = QString::number(o.value("apiVersion").toInt(1));
+        p.lang = o.value("language").toString(QStringLiteral("all")).toLower();
+        if (p.lang.isEmpty())
+            p.lang = QStringLiteral("all");
+        QStringList types;
+        for (const auto &t : o.value("tvTypes").toArray())
+            types.append(t.toString());
+        p.warning = types.contains(QStringLiteral("NSFW")) ? ContentWarning::Nsfw : ContentWarning::Safe;
+        p.torrent = !types.isEmpty() && std::all_of(types.begin(), types.end(), [](const QString &t) { return t == QLatin1String("Torrent"); });
+        p.fileUrl = resolved(from, o.value("url").toString());
+        p.iconUrl = o.value("iconUrl").toString().replace(QLatin1String("%size%"), QLatin1String("128"));
+        p.sources.append({cloudStreamSourceId(p.pkg), p.name, p.lang, QString()});
+        out.append(p);
+    }
+    return out;
+}
+
 } // namespace
 
 Kind kindForLib(const QString &lib) {
@@ -295,6 +327,19 @@ IndexDocument parseIndex(QByteArray body, const QUrl &from, std::optional<Kind> 
     if (trimmed.startsWith('[')) {
         const auto array = QJsonDocument::fromJson(quoteLargeIds(trimmed)).array();
         const auto first = array.isEmpty() ? QJsonObject() : array.first().toObject();
+        if (first.contains("internalName") || (array.isEmpty() && hint == Kind::CloudStream)) {
+            doc.type = IndexDocument::Type::PluginList;
+            doc.packages = cloudStreamList(array, from);
+            doc.hasPackages = true;
+            Repository r;
+            r.kind = Kind::CloudStream;
+            r.url = from.toString();
+            r.name = from.host();
+            r.badge = r.name;
+            r.listUrl = r.url;
+            doc.repo = r;
+            return doc;
+        }
         if (first.contains("pkg") || (array.isEmpty() && hint != Kind::LNReader && from.path().endsWith(QLatin1String("index.min.json")))) {
             doc.type = IndexDocument::Type::LegacyIndex;
             doc.packages = legacyIndex(array, from, hint);
@@ -327,6 +372,20 @@ IndexDocument parseIndex(QByteArray body, const QUrl &from, std::optional<Kind> 
                 if (!o.value("name").toString().isEmpty())
                     doc.repo->name = doc.repo->badge = o.value("name").toString();
             }
+            return doc;
+        }
+        // CloudStream's repo.json: its name and the plugin lists it has
+        // (the first is read).
+        if (o.value("pluginLists").isArray()) {
+            doc.type = IndexDocument::Type::CloudStreamRepo;
+            Repository r;
+            r.kind = Kind::CloudStream;
+            r.url = from.toString();
+            r.name = o.value("name").toString(from.host());
+            r.badge = r.name;
+            r.listUrl = resolved(from, o.value("pluginLists").toArray().first().toString());
+            doc.repo = r;
+            doc.follow = r.listUrl;
             return doc;
         }
         // A plugin list wrapped in an object ({"plugins": [...]}).

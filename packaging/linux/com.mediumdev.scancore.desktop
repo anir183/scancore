@@ -9,4 +9,4 @@ Terminal=false
 Categories=Graphics;Viewer;
 Keywords=manga;manhwa;webtoon;novel;anime;reader;
 StartupWMClass=SCANCORE
-MimeType=application/x-scancore-theme;application/vnd.comicbook+zip;application/vnd.comicbook-rar;application/epub+zip;application/x-fictionbook+xml;application/x-zip-compressed-fb2;application/x-mobipocket-ebook;application/vnd.amazon.mobi8-ebook;x-scheme-handler/scancore;x-scheme-handler/tachiyomi;x-scheme-handler/mihon;x-scheme-handler/aniyomi;x-scheme-handler/lnreader;
+MimeType=application/x-scancore-theme;application/vnd.comicbook+zip;application/vnd.comicbook-rar;application/epub+zip;application/x-fictionbook+xml;application/x-zip-compressed-fb2;application/x-mobipocket-ebook;application/vnd.amazon.mobi8-ebook;x-scheme-handler/scancore;x-scheme-handler/tachiyomi;x-scheme-handler/mihon;x-scheme-handler/aniyomi;x-scheme-handler/lnreader;x-scheme-handler/cloudstreamrepo;

@@ -16,6 +16,8 @@ void Registry::rebuild() {
     QList<std::shared_ptr<ext::AnimeSource>> sources;
     for (const auto &entry : ext::Manager::sources(ext::Kind::Aniyomi))
         sources.append(std::make_shared<ext::AnimeSource>(entry));
+    for (const auto &entry : ext::Manager::sources(ext::Kind::CloudStream))
+        sources.append(std::make_shared<ext::AnimeSource>(entry));
     // The reader's own Jellyfin servers.
     servers::registerImages();
     for (const auto &server : servers::load())

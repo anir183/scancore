@@ -277,6 +277,39 @@ private slots:
         QCOMPARE(languageCode(QStringLiteral("中文 (简体)")), QStringLiteral("zh"));
     }
 
+    // CloudStream: repo.json names its plugin lists; ids are the host's.
+    void cloudStreamRepositories() {
+        const QUrl from(QStringLiteral("https://repo.test/cloudstream/repo.json"));
+        const auto repo = parseIndex(fixture(QStringLiteral("cloudstream/repo.json")), from);
+        QCOMPARE(repo.type, IndexDocument::Type::CloudStreamRepo);
+        QCOMPARE(repo.repo->kind, Kind::CloudStream);
+        QCOMPARE(repo.repo->name, QStringLiteral("Test CloudStream repository"));
+        QCOMPARE(repo.follow, QStringLiteral("https://repo.test/cloudstream/plugins.json"));
+        const auto list = parseIndex(fixture(QStringLiteral("cloudstream/plugins.json")), QUrl(repo.follow));
+        QCOMPARE(list.type, IndexDocument::Type::PluginList);
+        // The one marked down is left out.
+        QCOMPARE(list.packages.size(), 3);
+        const auto &first = list.packages[0];
+        QCOMPARE(first.kind, Kind::CloudStream);
+        QCOMPARE(first.pkg, QStringLiteral("DailymotionProvider"));
+        QCOMPARE(first.versionCode, 4);
+        QCOMPARE(first.lib, QStringLiteral("1"));
+        QCOMPARE(first.iconUrl, QStringLiteral("https://icons.test/x.png?sz=128"));
+        // The id core's CloudStream.sourceId gives (checked against the host).
+        QCOMPARE(first.sources.size(), 1);
+        QCOMPARE(first.sources[0].id, QStringLiteral("1943850539651523733"));
+        QCOMPARE(cloudStreamSourceId(QStringLiteral("DailymotionProvider")), QStringLiteral("1943850539651523733"));
+        QCOMPARE(list.packages[1].fileUrl, QStringLiteral("https://repo.test/cloudstream/Adult.cs3"));
+        QCOMPARE(list.packages[1].warning, ContentWarning::Nsfw);
+        QCOMPARE(list.packages[1].lang, QStringLiteral("pt-br"));
+        QVERIFY(list.packages[2].torrent);
+        QCOMPARE(libSupport(Kind::CloudStream, QStringLiteral("1")), LibSupport::Supported);
+        QCOMPARE(kindMedia(Kind::CloudStream), QStringLiteral("anime"));
+        const auto link = Manager::parseLink(QStringLiteral("cloudstreamrepo://repo.test/cloudstream/repo.json"));
+        QVERIFY(link);
+        QCOMPARE(link->kind, std::optional(Kind::CloudStream));
+    }
+
     void libVersions() {
         QCOMPARE(libSupport(Kind::Mihon, QStringLiteral("1.4")), LibSupport::Supported);
         QCOMPARE(libSupport(Kind::Mihon, QStringLiteral("1.9")), LibSupport::TooNew);
@@ -708,6 +741,24 @@ private slots:
         QCOMPARE(skips.size(), 1);
         QCOMPARE(skips[0].toMap().value("type").toString(), QStringLiteral("op"));
         QCOMPARE(skips[0].toMap().value("end").toDouble(), 95.0);
+    }
+
+    // A CloudStream repository: added without a signing key, its plugins
+    // trusted for it and stored as .cs3 files, their sources anime ones.
+    void cloudStreamInstall() {
+        const auto preview = Manager::preview(QStringLiteral("cloudstreamrepo://repo.test/cloudstream/repo.json"));
+        QCOMPARE(preview.repo.kind, Kind::CloudStream);
+        QCOMPARE(preview.packages.size(), 3);
+        Manager::add(preview);
+        const auto installed = Manager::install(Kind::CloudStream, QStringLiteral("DailymotionProvider"));
+        QVERIFY(installed.trusted);
+        QVERIFY(installed.path.endsWith(QLatin1String(".cs3")));
+        const auto sources = Manager::sources(Kind::CloudStream);
+        QCOMPARE(sources.size(), 1);
+        QCOMPARE(sources[0].key, QStringLiteral("cloudstream:1943850539651523733"));
+        QVERIFY(sources[0].blocked.isEmpty());
+        Manager::uninstall(Kind::CloudStream, QStringLiteral("DailymotionProvider"));
+        Manager::removeRepository(preview.repo.url);
     }
 };
 

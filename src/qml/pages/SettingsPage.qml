@@ -96,6 +96,27 @@ Item {
     function open(section) {
         Router.shell.push("pages/SettingsDetail.qml", { section: section, tint: page.tint(section.tint) })
     }
+    // Router.openSettings(category) on a phone: straight to that category,
+    // once this page is the one showing (its stack is still being made on
+    // the first visit).
+    function jump() {
+        const s = Theme.compact && Router.settingsJump ? sectionFor(Router.settingsJump) : null
+        Router.settingsJump = ""
+        // Its own stack: Router.shell.push goes to the section showing, and
+        // on the first visit this stack is not the section's item yet.
+        if (s && page.StackView.view) Qt.callLater(() => page.StackView.view.push(Qt.resolvedUrl("SettingsDetail.qml"), { section: s, tint: page.tint(s.tint) }))
+        else if (s) open(s)
+    }
+    StackView.onActivated: jump()
+    Connections {
+        target: Router
+        function onSettingsJumpChanged() {
+            if (!Router.settingsJump) return
+            if (page.StackView.status === StackView.Active || !Theme.compact) page.jump()
+            // Under another category: back to the list, which then opens it.
+            else if (page.StackView.view) page.StackView.view.pop(page)
+        }
+    }
 
     Loader {
         anchors.fill: parent

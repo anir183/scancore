@@ -113,7 +113,7 @@ Extensions *Extensions::instance() {
 }
 
 void Extensions::startHost() {
-    // One host runs comic (Mihon) and anime (Aniyomi) extensions.
+    // One host runs comic (Mihon) and anime (Aniyomi, CloudStream) extensions.
 #if defined(SCANCORE_HAVE_ANDROID_HOST)
     // Built into the APK: nothing to download.
     const std::shared_ptr<ext::Host> host =
@@ -121,12 +121,14 @@ void Extensions::startHost() {
                               QString::fromUtf8(Http::userAgent()), QCoreApplication::applicationVersion()});
     ext::setHost(ext::Kind::Mihon, host);
     ext::setHost(ext::Kind::Aniyomi, host);
+    ext::setHost(ext::Kind::CloudStream, host);
     ext::ExtensionSource::installImageWriter();
 #elif !defined(Q_OS_ANDROID)
     ext::Runtime::setDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QStringLiteral("/extensions/runtime"));
     const auto host = std::make_shared<ext::ProcessHost>(hostLaunch());
     ext::setHost(ext::Kind::Mihon, host);
     ext::setHost(ext::Kind::Aniyomi, host);
+    ext::setHost(ext::Kind::CloudStream, host);
     ext::ExtensionSource::installImageWriter();
     // A runtime from an older SCANCORE runs an older host (issue #14: lib
     // values it could not read, no anime): the user chose to have one, so
@@ -165,6 +167,7 @@ void Extensions::stopHost() {
         host->stop();
     ext::setHost(ext::Kind::Mihon, nullptr);
     ext::setHost(ext::Kind::Aniyomi, nullptr);
+    ext::setHost(ext::Kind::CloudStream, nullptr);
 }
 
 bool Extensions::runtimeAvailable() const { return !ext::Runtime::platform().isEmpty(); }
@@ -495,6 +498,10 @@ QVariantMap Extensions::repositoryLink(const QString &text) const {
     static const QRegularExpression shorthand(QStringLiteral(R"(^[A-Za-z0-9-]+/[A-Za-z0-9._-]+/?$)"));
     if (shorthand.match(trimmed).hasMatch() && !trimmed.section(QLatin1Char('/'), 0, 0).contains(QLatin1Char('.')))
         return QVariantMap{{"url", QStringLiteral("https://github.com/") + trimmed}, {"kind", QString()}};
+    // A CloudStream repository code (a word, or "!word").
+    static const QRegularExpression code(QStringLiteral(R"(^!?[A-Za-z0-9_-]+$)"));
+    if (code.match(trimmed).hasMatch())
+        return QVariantMap{{"url", trimmed}, {"kind", QStringLiteral("cloudstream")}};
     // A plain address: an index, a repo.json, a store or a plugin list.
     const QUrl url = QUrl::fromUserInput(trimmed);
     if (trimmed.contains(QLatin1Char(' ')) || !url.isValid() || url.host().isEmpty() || !url.host().contains(QLatin1Char('.')) ||

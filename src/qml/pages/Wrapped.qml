@@ -28,6 +28,9 @@ Item {
     readonly property var monthNames: [qsTr("January"), qsTr("February"), qsTr("March"), qsTr("April"), qsTr("May", "month"), qsTr("June"), qsTr("July"), qsTr("August"),
                                        qsTr("September"), qsTr("October"), qsTr("November"), qsTr("December")]
     readonly property var dayNames: [qsTr("Mondays"), qsTr("Tuesdays"), qsTr("Wednesdays"), qsTr("Thursdays"), qsTr("Fridays"), qsTr("Saturdays"), qsTr("Sundays")]
+    // Under the months chart; numbers where months are numbered (日本語, Tiếng Việt).
+    readonly property var monthLetters: [qsTr("J", "January"), qsTr("F", "February"), qsTr("M", "March"), qsTr("A", "April"), qsTr("M", "May"), qsTr("J", "June"),
+                                         qsTr("J", "July"), qsTr("A", "August"), qsTr("S", "September"), qsTr("O", "October"), qsTr("N", "November"), qsTr("D", "December")]
     readonly property var dayLetters: [qsTr("M", "Monday"), qsTr("T", "Tuesday"), qsTr("W", "Wednesday"), qsTr("T", "Thursday"), qsTr("F", "Friday"), qsTr("S", "Saturday"), qsTr("S", "Sunday")]
 
     function number(n) { return Number(n || 0).toLocaleString(Qt.locale(), "f", 0) }
@@ -57,13 +60,13 @@ Item {
     readonly property var prefs: App.settings.wrapped || ({})
     function pref(key, fallback) { return prefs[key] !== undefined ? prefs[key] : fallback }
     function setPref(key, value) {
-        const next = Object.assign({}, App.plain(prefs))
+        const next = JSON.parse(JSON.stringify(prefs))
         next[key] = value
         App.setSetting("wrapped", next)
     }
     function cardPref(key, fallback) { const c = prefs.card || {}; return c[key] !== undefined ? c[key] : fallback }
     function setCardPref(key, value) {
-        const c = Object.assign({}, App.plain(prefs.card || {}))
+        const c = JSON.parse(JSON.stringify(prefs.card || {}))
         c[key] = value
         setPref("card", c)
     }
@@ -1020,7 +1023,7 @@ Item {
                                     id: initial
                                     anchors.bottom: parent.bottom
                                     anchors.horizontalCenter: parent.horizontalCenter
-                                    text: page.monthNames[month.index].slice(0, 1)
+                                    text: page.monthLetters[month.index]
                                     color: page.soft
                                     font.family: Theme.fontSans
                                     font.pixelSize: Theme.textXs
@@ -1318,8 +1321,13 @@ Item {
                                         readonly property int columns: cardStage.wideCard && !cardStats.beside ? 3 : 2
                                         width: (cardStats.width - (columns - 1) * 16) / columns
                                         spacing: 2
+                                        // Long labels (Polish, Filipino) take a second line.
                                         Text {
+                                            width: parent.width
                                             text: (page.cardChoices.find(c => c.key === modelData) || {}).label || ""
+                                            wrapMode: Text.WordWrap
+                                            maximumLineCount: 2
+                                            elide: Text.ElideRight
                                             color: card.soft
                                             font.family: Theme.fontSans
                                             font.pixelSize: 11
@@ -1334,6 +1342,9 @@ Item {
                                             color: card.hi
                                             font.family: Theme.fontDisplay
                                             font.pixelSize: page.cardFormat === "story" ? 24 : 20
+                                            // "378 Stunden" shrinks rather than losing its end.
+                                            fontSizeMode: Text.HorizontalFit
+                                            minimumPixelSize: 14
                                             font.weight: Font.Bold
                                         }
                                     }
@@ -1358,15 +1369,29 @@ Item {
                 anchors.topMargin: 20
                 anchors.horizontalCenter: parent.horizontalCenter
                 spacing: 8
+                // Where the labels are long (Filipino on a phone), Customise
+                // keeps only its icon.
+                readonly property bool tight: save.implicitWidth + customiseFull.implicitWidth + 40 + 2 * spacing > page.width - 32
                 ScButton {
+                    id: save
                     text: qsTr("Save picture")
                     iconName: "download"
                     variant: "primary"
                     onClicked: saveDialog.open()
                 }
                 ScButton {
+                    id: customiseFull
+                    visible: !actions.tight
                     text: qsTr("Customise")
                     iconName: "sliders-horizontal"
+                    onClicked: sheet.visible = true
+                }
+                IconButton {
+                    anchors.verticalCenter: parent.verticalCenter
+                    visible: actions.tight
+                    iconName: "sliders-horizontal"
+                    iconColor: page.ink
+                    tip: qsTr("Customise")
                     onClicked: sheet.visible = true
                 }
                 IconButton {

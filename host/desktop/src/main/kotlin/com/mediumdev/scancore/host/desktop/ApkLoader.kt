@@ -4,6 +4,8 @@ import com.android.apksig.ApkVerifier
 import com.googlecode.d2j.dex.Dex2jar
 import com.googlecode.d2j.reader.MultiDexFileReader
 import com.googlecode.dex2jar.tools.BaksmaliBaseDexExceptionHandler
+import com.mediumdev.scancore.host.CloudStream
+import uy.kohesive.injekt.api.get
 import com.mediumdev.scancore.host.ExtensionLoader
 import com.mediumdev.scancore.host.HostError
 import com.mediumdev.scancore.host.LoadedExtension
@@ -42,6 +44,7 @@ class ApkLoader(
         val apk = File(path)
         if (!apk.isFile) throw HostError("The extension's file is missing. Install it again.", 404)
         val bytes = apk.readBytes()
+        if (CloudStream.isPlugin(path)) return loadCloudStream(pkg, apk, bytes)
         // A new converter makes older conversions stale.
         val stamp = "${sha256(bytes).take(16)}-c$CONVERTER"
         val jar = File(cacheDir, "$pkg-$stamp.jar")
@@ -96,6 +99,31 @@ class ApkLoader(
                     },
             )
         }
+    }
+
+    // A CloudStream plugin: a dex and its manifest.json in a zip, converted
+    // like an APK (it has no signature: SCANCORE trusts the repository the
+    // reader added) and loaded over CloudStream's runtime.
+    private fun loadCloudStream(
+        pkg: String,
+        file: File,
+        bytes: ByteArray,
+    ): LoadedExtension {
+        val jar = File(cacheDir, "cs-$pkg-${sha256(bytes).take(16)}-c$CONVERTER.jar")
+        val app = uy.kohesive.injekt.Injekt.get<android.app.Application>()
+        val runtime = CloudStream.runtime(app) { uy.kohesive.injekt.Injekt.get<eu.kanade.tachiyomi.network.NetworkHelper>().client }
+        if (!jar.isFile) {
+            val temp = File(jar.path + ".frames")
+            convert(bytes, temp)
+            // dex2jar works out stack frames without CloudStream's classes
+            // in sight and writes "java/util/Object" where it cannot: the
+            // frames are worked out again with them.
+            Frames.recompute(temp, jar, runtime.javaClass.classLoader)
+            temp.delete()
+            cacheDir.listFiles { f -> f.name.startsWith("cs-$pkg-") && f.name != jar.name }?.forEach { it.delete() }
+        }
+        val classes = ChildFirstClassLoader(arrayOf(jar.toURI().toURL()), runtime.javaClass.classLoader)
+        return LoadedExtension(anime = runtime.load(pkg, file, classes))
     }
 
     private fun verify(

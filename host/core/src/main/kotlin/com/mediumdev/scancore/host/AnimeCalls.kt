@@ -201,10 +201,16 @@ class AnimeCalls(
         source: AnimeSource,
         params: JsonObject,
     ): JsonElement {
-        val http = source as? AnimeHttpSource ?: throw HostError("${source.name} has no images.", 501)
         val url =
             params["page"]?.jsonObject?.get("imageUrl")?.jsonPrimitive?.content?.ifEmpty { null }
                 ?: throw HostError("The request has no image.", 400)
+        // CloudStream plugins: covers with the headers their results gave.
+        if (source is PluginAnimeSource) {
+            return kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+                source.fetchCover(url).use { writeImage(it, File(params.string("target"))) }
+            }
+        }
+        val http = source as? AnimeHttpSource ?: throw HostError("${source.name} has no images.", 501)
         return http.client.newCall(GET(url, http.headers)).await().use { writeImage(it, File(params.string("target"))) }
     }
 }

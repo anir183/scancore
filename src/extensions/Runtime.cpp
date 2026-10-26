@@ -5,6 +5,8 @@
 #include <QBuffer>
 #include <QCryptographicHash>
 #include <QDir>
+#include <QSaveFile>
+#include <QStandardPaths>
 #include <QDirIterator>
 #include <QFile>
 #include <QJsonDocument>
@@ -165,6 +167,48 @@ void Runtime::install(const std::function<void(const QString &)> &status, const 
     }
     QDir(old).removeRecursively();
     say(status, QStringLiteral("Installed"));
+}
+
+QString Runtime::cloudStreamPath() {
+    return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
+           QStringLiteral("/extensions/cloudstream-runtime/cloudstream-runtime-%1.jar").arg(QLatin1String(HostVersion));
+}
+
+void Runtime::installCloudStream() {
+#if defined(Q_OS_ANDROID)
+    const auto path = cloudStreamPath();
+    if (QFileInfo::exists(path))
+        return;
+    QString base;
+    {
+        QMutexLocker lock(&g_mutex);
+        base = g_base;
+    }
+    const auto url = QStringLiteral("%1/extensions-runtime-%2/SCANCORE-cloudstream-runtime-%2-android.jar").arg(base, QLatin1String(HostVersion));
+    const auto checksum = Http::get(QUrl(url + QStringLiteral(".sha256")), {}, 30000);
+    if (!checksum.ok())
+        throw Error(QStringLiteral("CloudStream support is not available to download yet (HTTP %1).").arg(checksum.status), checksum.status);
+    Request request;
+    request.url = QUrl(url);
+    request.timeoutMs = 300000;
+    request.maxBytes = 64LL * 1024 * 1024;
+    const auto jar = Http::send(request);
+    if (!jar.ok())
+        throw Error(QStringLiteral("CloudStream support could not be downloaded (HTTP %1).").arg(jar.status), jar.status);
+    if (QCryptographicHash::hash(jar.body, QCryptographicHash::Sha256).toHex() != checksum.body.trimmed().split(' ').value(0).toLower())
+        throw Error(QStringLiteral("The download was damaged. Try again."));
+    QDir().mkpath(QFileInfo(path).absolutePath());
+    // Older versions' runtimes go.
+    for (const auto &old : QDir(QFileInfo(path).absolutePath()).entryInfoList(QDir::Files)) {
+        QFile::setPermissions(old.absoluteFilePath(), QFile::ReadOwner | QFile::WriteOwner);
+        QFile::remove(old.absoluteFilePath());
+    }
+    QSaveFile file(path);
+    if (!file.open(QIODevice::WriteOnly) || file.write(jar.body) != jar.body.size() || !file.commit())
+        throw Error(QStringLiteral("Could not write to the app data folder."));
+    // Code is loaded from read-only files (Android 14 refuses writable ones).
+    QFile::setPermissions(path, QFile::ReadOwner | QFile::ReadGroup | QFile::ReadOther);
+#endif
 }
 
 void Runtime::remove() {

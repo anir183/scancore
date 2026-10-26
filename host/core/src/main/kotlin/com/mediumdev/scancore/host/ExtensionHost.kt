@@ -156,7 +156,7 @@ class ExtensionHost(
                                 put("id", source.id.toString())
                                 put("name", source.name)
                                 put("lang", source.lang)
-                                put("baseUrl", (source as? AnimeHttpSource)?.baseUrl)
+                                put("baseUrl", (source as? AnimeHttpSource)?.baseUrl ?: (source as? PluginAnimeSource)?.baseUrl)
                                 put("supportsLatest", source.supportsLatest)
                                 put("configurable", source is ConfigurableAnimeSource)
                                 put("anime", true)

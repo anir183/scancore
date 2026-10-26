@@ -9,7 +9,7 @@ Item {
     id: page
     property string sourceKey
     readonly property bool novel: sourceKey.startsWith("lnreader:")
-    readonly property bool anime: sourceKey.startsWith("aniyomi:")
+    readonly property bool anime: Router.extensionAnime(sourceKey)
     readonly property var service: anime ? Anime : novel ? Novels : Comics
     readonly property var info: { App.dependOn(App.manifestVersion); return page.service.sources().find(s => s.key === sourceKey) || ({ label: sourceKey }) }
     // "popular", "latest" or "search"

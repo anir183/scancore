@@ -3,6 +3,7 @@ package com.mediumdev.scancore.host.android
 import android.app.Application
 import android.content.Context
 import android.webkit.CookieManager
+import com.mediumdev.scancore.host.CloudStream
 import com.mediumdev.scancore.host.ExtensionHost
 import com.mediumdev.scancore.host.HostError
 import com.mediumdev.scancore.host.MemoStore
@@ -57,6 +58,19 @@ object Bridge {
             }
         }
         Injekt.addSingletonFactory<ProtoBuf> { ProtoBuf }
+        // CloudStream's runtime, which SCANCORE downloads beside the host's
+        // folder (extensions/cloudstream-runtime) with the first CloudStream
+        // repository; its classes load once it is there.
+        val cloudStream = File(folder.parentFile, "cloudstream-runtime/cloudstream-runtime-$CLOUDSTREAM_RUNTIME.jar")
+        var cloudStreamClasses: ClassLoader? = null
+        CloudStream.runtimeClasses = {
+            synchronized(this) {
+                cloudStreamClasses ?: cloudStream.takeIf { it.isFile }?.let {
+                    if (it.canWrite()) it.setReadOnly()
+                    dalvik.system.DexClassLoader(it.path, app.codeCacheDir.path, null, Bridge::class.java.classLoader).also { loader -> cloudStreamClasses = loader }
+                }
+            }
+        }
         val host = ExtensionHost(AndroidLoader(app), MemoStore(File(folder, "memos.json")), HOST_VERSION, AndroidSettings(app))
         server = RpcServer({ method, params -> handle(host, method, params) }).also {
             HostNetwork.readerBrowserCheck = com.mediumdev.scancore.host.ReaderBrowserCheck(it)
@@ -103,4 +117,8 @@ object Bridge {
     }
 
     const val HOST_VERSION = "1"
+
+    // The CloudStream runtime this host loads: the desktop host's version
+    // (ext::Runtime::HostVersion), whose release has it.
+    const val CLOUDSTREAM_RUNTIME = "8"
 }

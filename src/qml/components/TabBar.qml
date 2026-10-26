@@ -79,9 +79,18 @@ Rectangle {
                             color: Theme.accent
                         }
                     }
+                    // Six tabs at 360 px leave 60 px each: long names
+                    // (Truyện tranh) shrink a little rather than overlap.
                     Text {
                         width: tab.width
+                        height: 14
+                        leftPadding: 2
+                        rightPadding: 2
                         horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        fontSizeMode: Text.HorizontalFit
+                        minimumPixelSize: 9
+                        elide: Text.ElideRight
                         text: tab.modelData.label
                         color: bar.currentIndex === tab.index ? Theme.text : Theme.textMuted
                         font.family: Theme.fontSans

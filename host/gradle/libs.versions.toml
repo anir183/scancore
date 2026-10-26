@@ -58,8 +58,20 @@ androidx-preference = "androidx.preference:preference-ktx:1.2.1"
 quickjs-android = "com.github.zhanghai.quickjs-java:quickjs-android:547f5b1597"
 androidx-test-runner = "androidx.test:runner:1.6.2"
 androidx-test-junit = "androidx.test.ext:junit:1.2.1"
+# CloudStream's library (cloudstream/, GPL-3.0) and what it is built with,
+# at the versions its own build pins (gradle/libs.versions.toml there).
+jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.13.1"
+atomicfu = "org.jetbrains.kotlinx:atomicfu:0.33.0"
+kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.8.0"
+kotlinx-io = "org.jetbrains.kotlinx:kotlinx-io-core:0.9.1"
+ksoup = "com.fleeksoft.ksoup:ksoup:0.2.6"
+ktor-http = "io.ktor:ktor-http:3.5.0"
+nicehttp = "com.github.Blatzar:NiceHttp:0.4.18"
+cryptography-core = "dev.whyoleg.cryptography:cryptography-core:0.6.0"
+cryptography-provider = "dev.whyoleg.cryptography:cryptography-provider-optimal:0.6.0"
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

@@ -79,16 +79,19 @@ QtObject {
     // Settings, at one category.
     function openSettings(category) {
         App.setSetting("settingsCategory", category)
+        // Phones list the categories first; the page opens that one.
+        settingsJump = category
         go("settings")
     }
+    property string settingsJump: ""
     // The "Add repository" sheet, for a link or (empty) to paste one.
     function addRepository(link) { if (shell) shell.addRepository(link || "") }
     // A repository link pasted into a search box opens the "Add repository"
     // sheet instead of searching for it. Returns whether it did.
     function takeRepositoryLink(text) {
         const t = String(text).trim()
-        if (!/^(scancore|tachiyomi|mihon|aniyomi|lnreader):\/\//i.test(t)
-                && !/^https?:\/\/\S+\/(index\.min\.json|repo\.json|plugins\.min\.json)$/i.test(t))
+        if (!/^(scancore|tachiyomi|mihon|aniyomi|lnreader|cloudstreamrepo):\/\//i.test(t)
+                && !/^https?:\/\/\S+\/(index\.min\.json|repo\.json|plugins\.min\.json|plugins\.json)$/i.test(t))
             return false
         addRepository(t)
         return true
@@ -126,10 +129,14 @@ QtObject {
     function openExtensionsDiagnostics() { push("pages/ExtensionsDiagnostics.qml", {}) }
     function toast(message, kind, action) { if (shell) shell.toast(message, kind || "info", action) }
 
+    // An anime from an extension's source (Aniyomi, CloudStream, a
+    // Jellyfin server) rather than AniList's.
+    function extensionAnime(source) { return /^(aniyomi|cloudstream):/.test(String(source || "")) }
+
     // item: a search/library map with id, media, sourceUrl, title, cover.
     function openSeries(item, fromCover) {
         if (!shell || !item) return
-        if (item.media === "anime" && String(item.source || "").startsWith("aniyomi:"))
+        if (item.media === "anime" && Router.extensionAnime(item.source))
             shell.push("pages/AnimeDetails.qml", { sourceUrl: item.sourceUrl || item.url, summary: item }, fromCover, item.cover)
         else if (item.media === "anime")
             shell.push("pages/AnimeDetails.qml", { anilistId: item.anilistId || item.extra?.anilistId || 0, summary: item }, fromCover, item.cover)

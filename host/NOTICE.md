@@ -12,6 +12,8 @@ projects under their own licences, kept with their notices:
 | `api/src/main/kotlin/eu/`, `api/src/main/kotlin/mihon/`, `api/src/main/kotlin/tachiyomi/` | [Mihon](https://github.com/mihonapp/mihon)'s source API and network helpers (from Tachiyomi) | Apache License 2.0 |
 | `api/src/main/kotlin/eu/kanade/tachiyomi/animesource/`, the request helpers at the end of `network/Requests.kt`, `util/CoroutinesExtensions.kt`, `util/JsonExtensions.kt`, `util/RxExtension.kt` | [Aniyomi](https://github.com/aniyomiorg/aniyomi)'s anime source API (commit 9741444, 14 Sep 2026) and its [extensions-lib](https://github.com/aniyomiorg/extensions-lib) 17 | Apache License 2.0 |
 
+| `cloudstream/library/`, `cloudstream/app/` | [CloudStream](https://github.com/recloudstream/cloudstream)'s library and the app classes its plugins call (commit a7ac454, 22 Oct 2026); see cloudstream/README.md | GNU General Public License 3.0 (cloudstream/library/LICENSE). The whole `cloudstream` module, and the CloudStream runtimes built from it, are distributed under the GPL-3.0; the rest of the host is not linked to it (it is loaded by name, in a class loader of its own) |
+
 SCANCORE's changes to those files are marked "SCANCORE" in comments:
 Koin and Typesafe Config replaced by plain singletons, the JCEF web view
 set up by the host (CefRuntime) with scripts registered before the page's
@@ -29,7 +31,10 @@ Extensions runtime): Kotlin, kotlinx.coroutines, kotlinx.serialization,
 OkHttp, Okio, Brotli, Jsoup, RxJava, Injekt, NanoHTTPD (BSD-3-Clause), dex2jar, apk-parser, apksig,
 AOSP android.jar stubs, xmlpull, multiplatform-settings, ICU4J,
 TwelveMonkeys ImageIO, webp-imageio, sqlite-jdbc, SLF4J, Mozilla Rhino,
-JetBrains' JCEF (BSD), and a trimmed OpenJDK runtime (GPLv2 with the
+JetBrains' JCEF (BSD), CloudStream's runtime (cloudstream/: GPL-3.0, with
+NiceHttp (GPL-3.0), Jackson, Ktor HTTP, kotlinx-datetime, kotlinx-io,
+atomicfu, cryptography-kotlin and Stately (Apache-2.0) and Ksoup (MIT)),
+and a trimmed OpenJDK runtime (GPLv2 with the
 Classpath Exception). The web view's native part (Chromium Embedded
 Framework, BSD, with Chromium's licences, inside a JetBrains Runtime
 release, GPLv2 with the Classpath Exception) is downloaded from JetBrains

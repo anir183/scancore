@@ -40,6 +40,9 @@ dependencies {
     api(libs.nanohttpd)
     api(libs.androidx.preference)
     api(libs.quickjs.android)
+    // CloudStream plugins (Jackson's Kotlin module) need Kotlin's reflection,
+    // and the standard library finds it only in its own class loader: the app's.
+    api(libs.kotlin.reflect)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.junit)
 }

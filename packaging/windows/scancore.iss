@@ -66,6 +66,9 @@ Root: HKA; Subkey: "Software\Classes\aniyomi\shell\open\command"; ValueType: str
 Root: HKA; Subkey: "Software\Classes\lnreader"; ValueType: string; ValueName: ""; ValueData: "URL:lnreader link"; Flags: uninsdeletekey
 Root: HKA; Subkey: "Software\Classes\lnreader"; ValueType: string; ValueName: "URL Protocol"; ValueData: ""
 Root: HKA; Subkey: "Software\Classes\lnreader\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\scancore.exe"" ""%1"""
+Root: HKA; Subkey: "Software\Classes\cloudstreamrepo"; ValueType: string; ValueName: ""; ValueData: "URL:cloudstreamrepo link"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\cloudstreamrepo"; ValueType: string; ValueName: "URL Protocol"; ValueData: ""
+Root: HKA; Subkey: "Software\Classes\cloudstreamrepo\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\scancore.exe"" ""%1"""
 
 [Icons]
 Name: "{autoprograms}\SCANCORE"; Filename: "{app}\scancore.exe"

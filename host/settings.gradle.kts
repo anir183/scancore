@@ -17,7 +17,11 @@ dependencyResolutionManagement {
         google()
         // Only for QuickJS on Android (the fork Mihon uses).
         maven("https://jitpack.io") {
-            content { includeGroup("com.github.zhanghai.quickjs-java") }
+            content {
+                includeGroup("com.github.zhanghai.quickjs-java")
+                // NiceHttp, CloudStream's HTTP library.
+                includeGroup("com.github.Blatzar")
+            }
         }
         // JetBrains' JCEF (the web view extensions open on computers, as in
         // Suwayomi); its native part comes with JetBrains Runtime, downloaded
@@ -28,7 +32,7 @@ dependencyResolutionManagement {
     }
 }
 
-include(":api", ":compat", ":core", ":desktop", ":testext")
+include(":api", ":compat", ":core", ":cloudstream", ":desktop", ":testext")
 
 // The Android host (an AAR for the app's APK) needs an Android SDK.
 val androidSdk =
