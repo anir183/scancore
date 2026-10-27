@@ -688,6 +688,10 @@
             <source>Paste the link from the repository's page, or the link to its index, repo.json or plugin list; several at once work too. SCANCORE reads Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader repositories, and CloudStream repository codes.</source>
             <translation>วางลิงก์จากหน้าของคลัง หรือลิงก์ไปยัง index, repo.json หรือรายการปลั๊กอิน วางหลายลิงก์พร้อมกันก็ได้ SCANCORE อ่านคลังของ Mihon, Tachiyomi, Aniyomi, CloudStream และ LNReader ใช้รหัสคลังของ CloudStream ได้ด้วย</translation>
         </message>
+        <message>
+            <source>Paste the link from the repository's page, or the link to its index, repo.json or plugin list; several at once work too. SCANCORE reads Mihon, Tachiyomi, Aniyomi, CloudStream, Echo and LNReader repositories, and CloudStream and Echo codes.</source>
+            <translation>วางลิงก์จากหน้าของคลัง หรือลิงก์ไปยัง index, repo.json หรือรายการปลั๊กอิน วางหลายลิงก์พร้อมกันก็ได้ SCANCORE อ่านคลังของ Mihon, Tachiyomi, Aniyomi, CloudStream, Echo และ LNReader ใช้รหัสของ CloudStream และ Echo ได้ด้วย</translation>
+        </message>
     </context>
     <context>
         <name>AddSectionSheet</name>
@@ -1067,6 +1071,22 @@
         <message>
             <source>Openings and endings come from AnimeThemes.</source>
             <translation>เพลงเปิดและเพลงปิดมาจาก AnimeThemes</translation>
+        </message>
+        <message>
+            <source>1 season</source>
+            <translation>1 ซีซัน</translation>
+        </message>
+        <message>
+            <source>%1 seasons</source>
+            <translation>%1 ซีซัน</translation>
+        </message>
+        <message>
+            <source>1 episode</source>
+            <translation>1 ตอน</translation>
+        </message>
+        <message>
+            <source>%1 episodes</source>
+            <translation>%1 ตอน</translation>
         </message>
     </context>
     <context>
@@ -9802,6 +9822,14 @@
             <source>Pin to the hub</source>
             <translation>ปักหมุดไว้บนฮับ</translation>
         </message>
+        <message>
+            <source>1 chapter</source>
+            <translation>1 ตอน</translation>
+        </message>
+        <message>
+            <source>%1 chapters</source>
+            <translation>%1 ตอน</translation>
+        </message>
     </context>
     <context>
         <name>ServerDialog</name>
@@ -10743,6 +10771,10 @@
         <message>
             <source>SCANCORE runs Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader extensions from repositories you add. It has no repository of its own.</source>
             <translation>SCANCORE รันส่วนขยาย Mihon, Tachiyomi, Aniyomi, CloudStream และ LNReader จากคลังที่คุณเพิ่ม ไม่มีคลังของตัวเอง</translation>
+        </message>
+        <message>
+            <source>SCANCORE runs Mihon, Tachiyomi, Aniyomi, CloudStream, Echo and LNReader extensions from repositories you add. It has no repository of its own.</source>
+            <translation>SCANCORE รันส่วนขยาย Mihon, Tachiyomi, Aniyomi, CloudStream, Echo และ LNReader จากคลังที่คุณเพิ่ม ไม่มีคลังของตัวเอง</translation>
         </message>
     </context>
     <context>

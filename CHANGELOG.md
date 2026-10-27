@@ -2,6 +2,18 @@
 
 Downloads for the current version are listed on the [releases page](https://github.com/medium-gh/scancore/releases).
 
+## 2.16.1 — 2026-10-27
+
+Echo music extensions, and fixes.
+
+- **Echo extensions**: add an Echo extension list (its link or code) in Extensions, and its music extensions' songs show under Music → Extensions: search, their home feed, playback and lyrics. Each extension is signed by its author, and an update must keep that key. On Android the Echo part (under 1 MB) downloads with your first Echo extension. Echo's library is under its own GPL-3.0-based licence and ships only in that download and in the desktop Extensions runtime; SCANCORE itself stays MIT.
+- **Series and anime pages**: switching between Chapters (or Episodes), Reviews and Discussion no longer throws you back to the top on phones: the tabs stay where they were.
+- **Android**: no more crash report when SCANCORE closes itself (after an update or a restore, for one).
+- **Strip reader**: the scroll bar follows the page you are on instead of jumping as pages load, and dragging it goes to a page.
+- Home, Library and History skip their refresh work when nothing changed, which helps big libraries on phones.
+- "1 chapter" and "1 episode" instead of "1 chapters"; a series page opened from a plain file path (C:\… or /…) works.
+- The release no longer fails to publish over the smoke tests' leftover files.
+
 ## 2.16.0 — 2026-10-27
 
 CloudStream extensions, your own OPDS and Jellyfin servers, a home-screen widget, FB2 and MOBI books, a new Wrapped, and a steadier strip reader. The last 2.x feature release: fixes come as 2.16.x until 3.0.

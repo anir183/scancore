@@ -1,0 +1,4 @@
+• Echo music extensions under Music (add an Echo extension list)
+• Chapters, Reviews and Discussion tabs keep your place
+• No crash report when the app closes itself
+• Strip reader scroll bar follows the page

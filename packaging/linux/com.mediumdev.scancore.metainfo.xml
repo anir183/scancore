@@ -52,6 +52,11 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="2.16.1" date="2026-10-27">
+      <description>
+        <p>Echo music extensions under Music, series and anime pages that keep their place when you switch between chapters, reviews and discussion, no crash report when the Android app closes itself, and a strip reader scroll bar that follows the page.</p>
+      </description>
+    </release>
     <release version="2.16.0" date="2026-10-27">
       <description>
         <p>CloudStream extensions under Anime, your own OPDS catalogues and Jellyfin server as sources, FB2 and MOBI books, a home-screen widget on Android, music in the system's media controls, a redone Wrapped and a steadier strip reader.</p>

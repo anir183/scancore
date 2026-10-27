@@ -688,6 +688,10 @@
             <source>Paste the link from the repository's page, or the link to its index, repo.json or plugin list; several at once work too. SCANCORE reads Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader repositories, and CloudStream repository codes.</source>
             <translation>粘贴仓库页面的链接，或其 index、repo.json、插件列表的链接；一次粘贴多个也可以。SCANCORE 可读取 Mihon、Tachiyomi、Aniyomi、CloudStream 和 LNReader 仓库。也可以使用 CloudStream 仓库代码。</translation>
         </message>
+        <message>
+            <source>Paste the link from the repository's page, or the link to its index, repo.json or plugin list; several at once work too. SCANCORE reads Mihon, Tachiyomi, Aniyomi, CloudStream, Echo and LNReader repositories, and CloudStream and Echo codes.</source>
+            <translation>粘贴仓库页面的链接，或其 index、repo.json、插件列表的链接；一次粘贴多个也可以。SCANCORE 可读取 Mihon、Tachiyomi、Aniyomi、CloudStream、Echo 和 LNReader 仓库。也可以使用 CloudStream 和 Echo 的代码。</translation>
+        </message>
     </context>
     <context>
         <name>AddSectionSheet</name>
@@ -1067,6 +1071,22 @@
         <message>
             <source>Openings and endings come from AnimeThemes.</source>
             <translation>片头曲和片尾曲来自 AnimeThemes。</translation>
+        </message>
+        <message>
+            <source>1 season</source>
+            <translation>1 季</translation>
+        </message>
+        <message>
+            <source>%1 seasons</source>
+            <translation>%1 季</translation>
+        </message>
+        <message>
+            <source>1 episode</source>
+            <translation>1 集</translation>
+        </message>
+        <message>
+            <source>%1 episodes</source>
+            <translation>%1 集</translation>
         </message>
     </context>
     <context>
@@ -9817,6 +9837,14 @@
             <source>Pin to the hub</source>
             <translation>固定到中心页</translation>
         </message>
+        <message>
+            <source>1 chapter</source>
+            <translation>1 章</translation>
+        </message>
+        <message>
+            <source>%1 chapters</source>
+            <translation>%1 章</translation>
+        </message>
     </context>
     <context>
         <name>ServerDialog</name>
@@ -10758,6 +10786,10 @@
         <message>
             <source>SCANCORE runs Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader extensions from repositories you add. It has no repository of its own.</source>
             <translation>SCANCORE 运行你添加的仓库中的 Mihon、Tachiyomi、Aniyomi、CloudStream 和 LNReader 扩展。它没有自己的仓库。</translation>
+        </message>
+        <message>
+            <source>SCANCORE runs Mihon, Tachiyomi, Aniyomi, CloudStream, Echo and LNReader extensions from repositories you add. It has no repository of its own.</source>
+            <translation>SCANCORE 运行你添加的仓库中的 Mihon、Tachiyomi、Aniyomi、CloudStream、Echo 和 LNReader 扩展。它没有自己的仓库。</translation>
         </message>
     </context>
     <context>

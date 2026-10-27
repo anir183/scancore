@@ -688,6 +688,10 @@
             <source>Paste the link from the repository's page, or the link to its index, repo.json or plugin list; several at once work too. SCANCORE reads Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader repositories, and CloudStream repository codes.</source>
             <translation>रिपॉज़िटरी के पेज का लिंक, या उसके index, repo.json या प्लगइन सूची का लिंक पेस्ट करें; एक साथ कई भी चलते हैं। SCANCORE Mihon, Tachiyomi, Aniyomi, CloudStream और LNReader रिपॉज़िटरी पढ़ता है। CloudStream रिपॉज़िटरी कोड भी चलते हैं।</translation>
         </message>
+        <message>
+            <source>Paste the link from the repository's page, or the link to its index, repo.json or plugin list; several at once work too. SCANCORE reads Mihon, Tachiyomi, Aniyomi, CloudStream, Echo and LNReader repositories, and CloudStream and Echo codes.</source>
+            <translation>रिपॉज़िटरी के पेज का लिंक, या उसके index, repo.json या प्लगइन सूची का लिंक पेस्ट करें; एक साथ कई भी चलते हैं। SCANCORE Mihon, Tachiyomi, Aniyomi, CloudStream, Echo और LNReader रिपॉज़िटरी पढ़ता है। CloudStream और Echo कोड भी चलते हैं।</translation>
+        </message>
     </context>
     <context>
         <name>AddSectionSheet</name>
@@ -1067,6 +1071,22 @@
         <message>
             <source>Openings and endings come from AnimeThemes.</source>
             <translation>ओपनिंग और एंडिंग AnimeThemes से आते हैं।</translation>
+        </message>
+        <message>
+            <source>1 season</source>
+            <translation>1 सीज़न</translation>
+        </message>
+        <message>
+            <source>%1 seasons</source>
+            <translation>%1 सीज़न</translation>
+        </message>
+        <message>
+            <source>1 episode</source>
+            <translation>1 एपिसोड</translation>
+        </message>
+        <message>
+            <source>%1 episodes</source>
+            <translation>%1 एपिसोड</translation>
         </message>
     </context>
     <context>
@@ -9802,6 +9822,14 @@
             <source>Pin to the hub</source>
             <translation>हब पर पिन करें</translation>
         </message>
+        <message>
+            <source>1 chapter</source>
+            <translation>1 चैप्टर</translation>
+        </message>
+        <message>
+            <source>%1 chapters</source>
+            <translation>%1 चैप्टर</translation>
+        </message>
     </context>
     <context>
         <name>ServerDialog</name>
@@ -10743,6 +10771,10 @@
         <message>
             <source>SCANCORE runs Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader extensions from repositories you add. It has no repository of its own.</source>
             <translation>SCANCORE आपकी जोड़ी रिपॉज़िटरी से Mihon, Tachiyomi, Aniyomi, CloudStream और LNReader एक्सटेंशन चलाता है। इसकी अपनी कोई रिपॉज़िटरी नहीं है।</translation>
+        </message>
+        <message>
+            <source>SCANCORE runs Mihon, Tachiyomi, Aniyomi, CloudStream, Echo and LNReader extensions from repositories you add. It has no repository of its own.</source>
+            <translation>SCANCORE आपकी जोड़ी रिपॉज़िटरी से Mihon, Tachiyomi, Aniyomi, CloudStream, Echo और LNReader एक्सटेंशन चलाता है। इसकी अपनी कोई रिपॉज़िटरी नहीं है।</translation>
         </message>
     </context>
     <context>

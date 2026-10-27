@@ -688,6 +688,10 @@
             <source>Paste the link from the repository's page, or the link to its index, repo.json or plugin list; several at once work too. SCANCORE reads Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader repositories, and CloudStream repository codes.</source>
             <translation>Dán liên kết từ trang kho, hoặc liên kết tới index, repo.json hay danh sách plugin; dán nhiều cái một lúc cũng được. SCANCORE đọc kho của Mihon, Tachiyomi, Aniyomi, CloudStream và LNReader. Mã kho CloudStream cũng dùng được.</translation>
         </message>
+        <message>
+            <source>Paste the link from the repository's page, or the link to its index, repo.json or plugin list; several at once work too. SCANCORE reads Mihon, Tachiyomi, Aniyomi, CloudStream, Echo and LNReader repositories, and CloudStream and Echo codes.</source>
+            <translation>Dán liên kết từ trang kho, hoặc liên kết tới index, repo.json hay danh sách plugin; dán nhiều cái một lúc cũng được. SCANCORE đọc kho của Mihon, Tachiyomi, Aniyomi, CloudStream, Echo và LNReader. Mã của CloudStream và Echo cũng dùng được.</translation>
+        </message>
     </context>
     <context>
         <name>AddSectionSheet</name>
@@ -1067,6 +1071,22 @@
         <message>
             <source>Openings and endings come from AnimeThemes.</source>
             <translation>Nhạc mở đầu và kết thúc lấy từ AnimeThemes.</translation>
+        </message>
+        <message>
+            <source>1 season</source>
+            <translation>1 mùa</translation>
+        </message>
+        <message>
+            <source>%1 seasons</source>
+            <translation>%1 mùa</translation>
+        </message>
+        <message>
+            <source>1 episode</source>
+            <translation>1 tập</translation>
+        </message>
+        <message>
+            <source>%1 episodes</source>
+            <translation>%1 tập</translation>
         </message>
     </context>
     <context>
@@ -9817,6 +9837,14 @@
             <source>Pin to the hub</source>
             <translation>Ghim vào hub</translation>
         </message>
+        <message>
+            <source>1 chapter</source>
+            <translation>1 chương</translation>
+        </message>
+        <message>
+            <source>%1 chapters</source>
+            <translation>%1 chương</translation>
+        </message>
     </context>
     <context>
         <name>ServerDialog</name>
@@ -10758,6 +10786,10 @@
         <message>
             <source>SCANCORE runs Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader extensions from repositories you add. It has no repository of its own.</source>
             <translation>SCANCORE chạy các tiện ích Mihon, Tachiyomi, Aniyomi, CloudStream và LNReader từ các kho bạn thêm. Nó không có kho riêng.</translation>
+        </message>
+        <message>
+            <source>SCANCORE runs Mihon, Tachiyomi, Aniyomi, CloudStream, Echo and LNReader extensions from repositories you add. It has no repository of its own.</source>
+            <translation>SCANCORE chạy các tiện ích Mihon, Tachiyomi, Aniyomi, CloudStream, Echo và LNReader từ các kho bạn thêm. Nó không có kho riêng.</translation>
         </message>
     </context>
     <context>

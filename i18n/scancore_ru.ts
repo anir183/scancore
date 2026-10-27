@@ -688,6 +688,10 @@
             <source>Paste the link from the repository's page, or the link to its index, repo.json or plugin list; several at once work too. SCANCORE reads Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader repositories, and CloudStream repository codes.</source>
             <translation>Вставьте ссылку со страницы репозитория или ссылку на его index, repo.json или список плагинов; можно сразу несколько. SCANCORE читает репозитории Mihon, Tachiyomi, Aniyomi, CloudStream и LNReader. Коды репозиториев CloudStream тоже подходят.</translation>
         </message>
+        <message>
+            <source>Paste the link from the repository's page, or the link to its index, repo.json or plugin list; several at once work too. SCANCORE reads Mihon, Tachiyomi, Aniyomi, CloudStream, Echo and LNReader repositories, and CloudStream and Echo codes.</source>
+            <translation>Вставьте ссылку со страницы репозитория или ссылку на его index, repo.json или список плагинов; можно сразу несколько. SCANCORE читает репозитории Mihon, Tachiyomi, Aniyomi, CloudStream, Echo и LNReader. Коды CloudStream и Echo тоже подходят.</translation>
+        </message>
     </context>
     <context>
         <name>AddSectionSheet</name>
@@ -1067,6 +1071,22 @@
         <message>
             <source>Openings and endings come from AnimeThemes.</source>
             <translation>Опенинги и эндинги берутся из AnimeThemes.</translation>
+        </message>
+        <message>
+            <source>1 season</source>
+            <translation>1 сезон</translation>
+        </message>
+        <message>
+            <source>%1 seasons</source>
+            <translation>Сезонов: %1</translation>
+        </message>
+        <message>
+            <source>1 episode</source>
+            <translation>1 серия</translation>
+        </message>
+        <message>
+            <source>%1 episodes</source>
+            <translation>Серий: %1</translation>
         </message>
     </context>
     <context>
@@ -9817,6 +9837,14 @@
             <source>Pin to the hub</source>
             <translation>Закрепить на хабе</translation>
         </message>
+        <message>
+            <source>1 chapter</source>
+            <translation>1 глава</translation>
+        </message>
+        <message>
+            <source>%1 chapters</source>
+            <translation>Глав: %1</translation>
+        </message>
     </context>
     <context>
         <name>ServerDialog</name>
@@ -10758,6 +10786,10 @@
         <message>
             <source>SCANCORE runs Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader extensions from repositories you add. It has no repository of its own.</source>
             <translation>SCANCORE запускает расширения Mihon, Tachiyomi, Aniyomi, CloudStream и LNReader из добавленных вами репозиториев. Собственного репозитория у него нет.</translation>
+        </message>
+        <message>
+            <source>SCANCORE runs Mihon, Tachiyomi, Aniyomi, CloudStream, Echo and LNReader extensions from repositories you add. It has no repository of its own.</source>
+            <translation>SCANCORE запускает расширения Mihon, Tachiyomi, Aniyomi, CloudStream, Echo и LNReader из добавленных вами репозиториев. Собственного репозитория у него нет.</translation>
         </message>
     </context>
     <context>
