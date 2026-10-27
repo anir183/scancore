@@ -727,7 +727,9 @@ jobs:
           prerelease: ${{ needs.version.outputs.prerelease == 'true' }}
           body_path: notes.md
           generate_release_notes: true
-          files: artifacts/*
+          # Only the packages: the smoke runs' screenshots and logs are
+          # artifacts of the same run (an empty one failed 2.16.0's publish).
+          files: artifacts/SCANCORE-*
 
   # AUR, Homebrew and winget manifests with this release's checksums, ready
   # to submit (see packaging/update-manifests.py).
