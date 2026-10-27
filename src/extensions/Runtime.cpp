@@ -169,14 +169,17 @@ void Runtime::install(const std::function<void(const QString &)> &status, const 
     say(status, QStringLiteral("Installed"));
 }
 
-QString Runtime::cloudStreamPath() {
+QString Runtime::pluginRuntimePath(const QString &name) {
     return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
-           QStringLiteral("/extensions/cloudstream-runtime/cloudstream-runtime-%1.jar").arg(QLatin1String(HostVersion));
+           QStringLiteral("/extensions/%1-runtime/%1-runtime-%2.jar").arg(name, QLatin1String(HostVersion));
 }
 
-void Runtime::installCloudStream() {
+QString Runtime::cloudStreamPath() { return pluginRuntimePath(QStringLiteral("cloudstream")); }
+QString Runtime::echoPath() { return pluginRuntimePath(QStringLiteral("echo")); }
+
+void Runtime::installPluginRuntime(const QString &name, const QString &label) {
 #if defined(Q_OS_ANDROID)
-    const auto path = cloudStreamPath();
+    const auto path = pluginRuntimePath(name);
     if (QFileInfo::exists(path))
         return;
     QString base;
@@ -184,17 +187,17 @@ void Runtime::installCloudStream() {
         QMutexLocker lock(&g_mutex);
         base = g_base;
     }
-    const auto url = QStringLiteral("%1/extensions-runtime-%2/SCANCORE-cloudstream-runtime-%2-android.jar").arg(base, QLatin1String(HostVersion));
+    const auto url = QStringLiteral("%1/extensions-runtime-%2/SCANCORE-%3-runtime-%2-android.jar").arg(base, QLatin1String(HostVersion), name);
     const auto checksum = Http::get(QUrl(url + QStringLiteral(".sha256")), {}, 30000);
     if (!checksum.ok())
-        throw Error(QStringLiteral("CloudStream support is not available to download yet (HTTP %1).").arg(checksum.status), checksum.status);
+        throw Error(QStringLiteral("%1 support is not available to download yet (HTTP %2).").arg(label).arg(checksum.status), checksum.status);
     Request request;
     request.url = QUrl(url);
     request.timeoutMs = 300000;
     request.maxBytes = 64LL * 1024 * 1024;
     const auto jar = Http::send(request);
     if (!jar.ok())
-        throw Error(QStringLiteral("CloudStream support could not be downloaded (HTTP %1).").arg(jar.status), jar.status);
+        throw Error(QStringLiteral("%1 support could not be downloaded (HTTP %2).").arg(label).arg(jar.status), jar.status);
     if (QCryptographicHash::hash(jar.body, QCryptographicHash::Sha256).toHex() != checksum.body.trimmed().split(' ').value(0).toLower())
         throw Error(QStringLiteral("The download was damaged. Try again."));
     QDir().mkpath(QFileInfo(path).absolutePath());
@@ -208,8 +211,14 @@ void Runtime::installCloudStream() {
         throw Error(QStringLiteral("Could not write to the app data folder."));
     // Code is loaded from read-only files (Android 14 refuses writable ones).
     QFile::setPermissions(path, QFile::ReadOwner | QFile::ReadGroup | QFile::ReadOther);
+#else
+    Q_UNUSED(name)
+    Q_UNUSED(label)
 #endif
 }
+
+void Runtime::installCloudStream() { installPluginRuntime(QStringLiteral("cloudstream"), QStringLiteral("CloudStream")); }
+void Runtime::installEcho() { installPluginRuntime(QStringLiteral("echo"), QStringLiteral("Echo")); }
 
 void Runtime::remove() {
     if (!dir().isEmpty())

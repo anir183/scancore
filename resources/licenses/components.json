@@ -120,6 +120,18 @@
   "file": "GPL-3.0-only.txt"
  },
  {
+  "name": "Echo common library (brahmkshatriya/echo)",
+  "use": "Running Echo music extensions (downloaded with the Extensions runtime, or on Android with the first Echo extension)",
+  "licence": "Unabandon Public License (GPL-3.0 with public source)",
+  "file": "Unabandon-Public-License.txt"
+ },
+ {
+  "name": "Protocol Buffers for Java",
+  "use": "Echo extensions",
+  "licence": "BSD-3-Clause",
+  "file": "BSD-3-Clause.txt"
+ },
+ {
   "name": "NiceHttp",
   "use": "CloudStream plugins' requests",
   "licence": "GPL-3.0",

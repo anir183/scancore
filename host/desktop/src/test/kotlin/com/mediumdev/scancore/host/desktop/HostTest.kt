@@ -43,6 +43,7 @@ class HostTest {
         private val animeSigner = File(animeApk.parentFile, "signer.txt").takeIf { it.exists() }?.readText()?.trim()
         private val fixtures = File(System.getProperty("scancore.fixtures", ""))
         private val cs3 = File(System.getProperty("scancore.testcs.cs3", ""))
+        private val eapk = File(System.getProperty("scancore.testecho.eapk", ""))
         private lateinit var server: HttpServer
         private lateinit var host: ExtensionHost
         private val requests = Collections.synchronizedList(mutableListOf<String>())
@@ -505,5 +506,52 @@ class HostTest {
         val cover = csCall("fetchImage", mapOf("target" to target.path), page = first.text("cover")).toString()
         target.delete()
         assertTrue(cover, cover.isNotEmpty())
+    }
+
+    // ------------------------------------------------------------ Echo
+
+    private fun echoCall(
+        method: String,
+        extra: Map<String, JsonElement> = emptyMap(),
+    ) = runBlocking {
+        host.handle(
+            method,
+            buildJsonObject {
+                put("pkg", "testecho")
+                put("apk", eapk.path)
+                put("source", com.mediumdev.scancore.host.Echo.sourceId("testecho").toString())
+                for ((k, v) in extra) put(k, v)
+            },
+        )
+    }
+
+    @Test
+    fun echoExtension() {
+        assumeTrue("No test Echo extension (no Android SDK)", eapk.isFile)
+        val source = echoCall("load").jsonArray.single().jsonObject
+        assertEquals("Test Echo", source.text("name"))
+        assertEquals("true", source["music"].toString())
+
+        // A search's shelves, lists and single items alike, as songs.
+        val found = echoCall("searchSongs", mapOf("query" to JsonPrimitive("test"), "page" to JsonPrimitive(1))).jsonArray.map { it.jsonObject }
+        assertEquals(listOf("Song 1", "Song 2", "Song 3"), found.map { it.text("title") })
+        assertEquals("The Testers", found[0]["artists"]!!.jsonArray.single().jsonPrimitive.content)
+        assertEquals(180.001, found[0]["duration"]!!.jsonPrimitive.content.toDouble(), 0.0001)
+        assertTrue(found[0].text("cover").endsWith("/img/cover.png"))
+
+        // The home feed is the popular list, page by page.
+        assertEquals("Song 11", echoCall("popularSongs", mapOf("page" to JsonPrimitive(1))).jsonArray.single().jsonObject.text("title"))
+        assertEquals("Song 12", echoCall("popularSongs", mapOf("page" to JsonPrimitive(2))).jsonArray.single().jsonObject.text("title"))
+        assertEquals(0, echoCall("popularSongs", mapOf("page" to JsonPrimitive(3))).jsonArray.size)
+
+        // The best server's stream, with the extension's headers (its
+        // settings kept: it counted one start).
+        val stream = echoCall("streamOf", mapOf("song" to found[0])).jsonObject
+        assertTrue(stream.text("url"), stream.text("url").endsWith("/audio/high-1.mp3"))
+        assertEquals("1", stream["headers"]!!.jsonObject["X-Test-Echo"]!!.jsonPrimitive.content)
+
+        // Timed lyrics as LRC.
+        val lyrics = echoCall("lyricsOf", mapOf("song" to found[0])).jsonObject
+        assertEquals("[00:01.50]First line\n[01:02.25]Second line", lyrics.text("synced"))
     }
 }

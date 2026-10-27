@@ -152,7 +152,7 @@ SettingsPane {
     readonly property int extensionCount: { App.dependOn(Extensions.revision); return Extensions.installedCount() }
     SettingsGroup {
         title: qsTr("Extensions")
-        note: qsTr("SCANCORE runs Mihon, Tachiyomi, Aniyomi, CloudStream and LNReader extensions from repositories you add. It has no repository of its own.")
+        note: qsTr("SCANCORE runs Mihon, Tachiyomi, Aniyomi, CloudStream, Echo and LNReader extensions from repositories you add. It has no repository of its own.")
         SettingRow {
             iconName: "puzzle"
             title: qsTr("Extensions")

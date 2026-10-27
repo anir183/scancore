@@ -1,0 +1,4 @@
+[
+  {"tag_name": "v1.3-beta", "published_at": "2026-10-25T10:00:00Z", "draft": false, "prerelease": true, "assets": [{"name": "testecho.eapk", "browser_download_url": "https://repo.test/apk/tiny-beta.apk"}]},
+  {"tag_name": "v1.2", "published_at": "2026-10-20T10:00:00Z", "draft": false, "prerelease": false, "assets": [{"name": "notes.txt", "browser_download_url": "https://repo.test/echo/notes.txt"}, {"name": "testecho.eapk", "browser_download_url": "https://repo.test/apk/tiny-alpha.apk"}]}
+]

@@ -2,6 +2,7 @@
 
 #include "core/Database.h"
 #include "core/Http.h"
+#include "extensions/Host.h"
 #include "extensions/Manager.h"
 #include "plugins/Runtime.h"
 #include "sources/Manifest.h"
@@ -138,21 +139,45 @@ QVariantMap songOfFile(const local::Entry &e, const QString &folder, const local
 
 // Music plugins ------------------------------------------------------------
 
-std::optional<plugins::PluginRef> pluginRef(const QString &key) {
-    for (const auto &e : ext::Manager::sources(ext::Kind::Music))
+// Music sources: SCANCORE's own plugins (the JavaScript runtime) and Echo
+// extensions (the extension host).
+QList<ext::SourceEntry> musicEntries() { return ext::Manager::sources(ext::Kind::Music) + ext::Manager::sources(ext::Kind::Echo); }
+
+std::optional<ext::SourceEntry> musicSource(const QString &key) {
+    for (const auto &e : musicEntries())
         if (e.key == key && e.enabled && e.blocked.isEmpty())
-            return plugins::PluginRef{e.key, e.id, e.path};
+            return e;
     return std::nullopt;
 }
 
-plugins::PluginRef requirePlugin(const QString &key) {
-    if (const auto plugin = pluginRef(key))
-        return *plugin;
+ext::SourceEntry requireSource(const QString &key) {
+    if (const auto source = musicSource(key))
+        return *source;
     throw Error(QStringLiteral("That music extension is not installed or is turned off."), 404);
 }
 
+// One of the music plugin contract's calls (docs/music-plugins.md):
+// searchSongs(query, page), popularSongs(page), streamOf(song),
+// lyricsOf(song). Echo's go to the host with the same names.
+QJsonValue musicCall(const ext::SourceEntry &e, const QString &method, const QJsonArray &args, int timeoutMs) {
+    if (e.kind != ext::Kind::Echo)
+        return plugins::Runtime::call(plugins::PluginRef{e.key, e.id, e.path}, method, args, timeoutMs);
+    QJsonObject params{{"source", e.id}, {"pkg", e.pkg}, {"apk", e.path}};
+    if (!e.signer.isEmpty())
+        params.insert(QStringLiteral("signer"), e.signer);
+    if (method == QLatin1String("searchSongs")) {
+        params.insert(QStringLiteral("query"), args.at(0));
+        params.insert(QStringLiteral("page"), args.at(1));
+    } else if (method == QLatin1String("popularSongs")) {
+        params.insert(QStringLiteral("page"), args.at(0));
+    } else {
+        params.insert(QStringLiteral("song"), args.at(0));
+    }
+    return ext::requireHost(ext::Kind::Echo)->call(method, params);
+}
+
 QString sourceName(const QString &key) {
-    for (const auto &e : ext::Manager::sources(ext::Kind::Music))
+    for (const auto &e : musicEntries())
         if (e.key == key)
             return e.name;
     return key;
@@ -458,9 +483,9 @@ Task *Music::lyrics(const QVariantMap &song, double duration) {
         }
         // The plugin the song came from, when it has lyrics.
         if (!source.isEmpty()) {
-            if (const auto plugin = pluginRef(source)) {
+            if (const auto plugin = musicSource(source)) {
                 try {
-                    const auto o = plugins::Runtime::call(*plugin, QStringLiteral("lyricsOf"), {QJsonObject::fromVariantMap(raw)}, 20000).toObject();
+                    const auto o = musicCall(*plugin, QStringLiteral("lyricsOf"), {QJsonObject::fromVariantMap(raw)}, 20000).toObject();
                     const auto synced = parseLrc(o.value("synced").toString());
                     const auto plain = o.value("plain").toString().trimmed();
                     if (!synced.isEmpty() || !plain.isEmpty())
@@ -533,7 +558,7 @@ Task *Music::lyrics(const QVariantMap &song, double duration) {
 
 QVariantList Music::sources() const {
     QVariantList out;
-    for (const auto &e : ext::Manager::sources(ext::Kind::Music))
+    for (const auto &e : musicEntries())
         if (e.enabled && e.blocked.isEmpty())
             out.append(QVariantMap{{"key", e.key}, {"name", e.name}, {"site", e.baseUrl}});
     return out;
@@ -567,11 +592,11 @@ QVariantMap Music::songOfPlugin(const QString &key, const QString &name, const Q
 
 namespace {
 QVariantList pluginSongs(const QString &key, const QString &method, const QJsonArray &args) {
-    const auto plugin = requirePlugin(key);
+    const auto plugin = requireSource(key);
     const auto name = sourceName(key);
     QJsonValue result;
     try {
-        result = plugins::Runtime::call(plugin, method, args, 30000);
+        result = musicCall(plugin, method, args, 30000);
     } catch (const Error &e) {
         // A plugin without popular songs simply has none.
         if (method == QLatin1String("popularSongs") && e.message().contains(QLatin1String("cannot do that")))
@@ -605,7 +630,7 @@ Task *Music::streamOf(const QVariantMap &song) {
     const auto key = song.value("source").toString();
     const auto raw = song.value("raw").toMap();
     return Task::run([key, raw]() -> QVariant {
-        const auto result = plugins::Runtime::call(requirePlugin(key), QStringLiteral("streamOf"), {QJsonObject::fromVariantMap(raw)}, 30000);
+        const auto result = musicCall(requireSource(key), QStringLiteral("streamOf"), {QJsonObject::fromVariantMap(raw)}, 30000);
         const auto o = result.isString() ? QJsonObject{{"url", result.toString()}} : result.toObject();
         const QUrl url(o.value("url").toString());
         if (!url.isValid() || (url.scheme() != QLatin1String("https") && url.scheme() != QLatin1String("http")))

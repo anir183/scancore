@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The manifest of SCANCORE's test Echo extension, shaped like one made from Echo's extension template. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.mediumdev.scancore.testecho"
+    android:versionCode="3"
+    android:versionName="v1.2">
+    <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="34" />
+    <uses-feature android:name="dev.brahmkshatriya.echo.music" />
+    <application android:label="@string/app_name" android:allowBackup="false">
+        <meta-data android:name="class" android:value="com.mediumdev.scancore.testecho.TestEchoExtension" />
+        <meta-data android:name="id" android:value="testecho" />
+        <meta-data android:name="name" android:value="Test Echo" />
+        <meta-data android:name="version" android:value="v1.2" />
+        <meta-data android:name="description" android:value="SCANCORE's test Echo extension" />
+        <meta-data android:name="author" android:value="SCANCORE" />
+    </application>
+</manifest>

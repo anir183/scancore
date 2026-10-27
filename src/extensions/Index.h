@@ -14,7 +14,8 @@ namespace sc::ext {
 //    store's name, signing key and either its extensions or a link to them;
 //  - LNReader repositories: a JSON list of plugins;
 //  - CloudStream repositories: repo.json ({name, pluginLists: [...]}) and
-//    the plugins.json lists it links to.
+//    the plugins.json lists it links to;
+//  - Echo extension lists: [{id, name, iconUrl, updateUrl}].
 struct IndexDocument {
     enum class Type { Unknown, LegacyIndex, LegacyRepo, Store, ExtensionList, PluginList, CloudStreamRepo };
     Type type = Type::Unknown;

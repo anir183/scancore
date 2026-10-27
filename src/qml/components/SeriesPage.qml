@@ -175,7 +175,11 @@ Item {
     readonly property var pageRows: paged ? rows.slice(pageIndex * perPage, (pageIndex + 1) * perPage) : rows
     readonly property var shownRows: tab === "chapters" ? pageRows : []
     // What the list shows: one row each, or lines of `columns` cells.
+    // Other tabs keep one empty line: a ListView without rows goes back to
+    // its top whenever its header changes height (the tab's own content
+    // loading), which threw the reader up to the details.
     readonly property var shownLines: {
+        if (tab !== "chapters") return [{ cells: [], spacer: true }]
         if (columns < 2) return shownRows
         const out = []
         for (let i = 0; i < shownRows.length; i += columns) out.push({ cells: shownRows.slice(i, i + columns) })
@@ -418,7 +422,11 @@ Item {
         cacheBuffer: 1200
         reuseItems: true
         ScrollBar.vertical: ScScrollBar {}
-        bottomMargin: 40
+        // Once the tabs have been switched, room below them for a whole
+        // screen, so a short tab (Reviews loading) keeps them in place.
+        property bool keepTabs: false
+        property real tabsAt: 0   // the tab row's top, from the list's top
+        bottomMargin: keepTabs ? Math.max(40, height - contentHeight + tabsAt) : 40
 
         Component.onCompleted: {
             show(page.shownLines)
@@ -431,8 +439,36 @@ Item {
         // The header grows as details and pictures arrive; until the
         // reader scrolls, the page stays at its top.
         property bool touched: false
-        onMovementStarted: touched = true
+        onMovementStarted: {
+            touched = true
+            holdTabs = false
+        }
         property bool shown: false
+        // Another tab: the tab row stays where it was on screen, at the top
+        // if the reader had scrolled past it, instead of the page jumping
+        // back up to the details as the rows change.
+        function switchTab(value) {
+            if (value === page.tab || !headerItem) return
+            const top = headerItem.tabs.mapToItem(contentItem, 0, 0).y
+            tabsOnScreen = Math.max(0, top - contentY)
+            touched = true
+            tabsAt = top - originY
+            keepTabs = true
+            holdTabs = true
+            page.tab = value
+            placeTabs()
+            Qt.callLater(placeTabs)
+        }
+        // Where the tab row stays until the reader scrolls: the tab's content
+        // arriving changes the header's height and moves it.
+        property bool holdTabs: false
+        property real tabsOnScreen: 0
+        function placeTabs() {
+            if (!headerItem || !holdTabs) return
+            const top = headerItem.tabs.mapToItem(contentItem, 0, 0).y
+            tabsAt = top - originY
+            contentY = top - tabsOnScreen
+        }
         function show(rows) {
             const y = contentY
             const atTop = !shown || y <= originY + 1
@@ -444,9 +480,13 @@ Item {
 
         header: Column {
             readonly property alias details: details
+            readonly property alias tabs: tabRow
             width: list.width
             spacing: 0
-            onHeightChanged: if (!list.touched) Qt.callLater(() => { if (!list.touched) list.positionViewAtBeginning() })
+            onHeightChanged: {
+                if (!list.touched) Qt.callLater(() => { if (!list.touched) list.positionViewAtBeginning() })
+                else if (list.holdTabs) Qt.callLater(list.placeTabs)
+            }
 
             DetailsHeader {
                 id: details
@@ -612,6 +652,7 @@ Item {
             }
 
             Item {
+                id: tabRow
                 width: list.width
                 height: 60
                 visible: !page.local
@@ -622,7 +663,7 @@ Item {
                               { value: "reviews", label: qsTr("Reviews") },
                               { value: "discussion", label: qsTr("Discussion") }]
                     value: page.tab
-                    onPicked: (v) => page.tab = v
+                    onPicked: (v) => list.switchTab(v)
                 }
             }
 
@@ -885,7 +926,7 @@ Item {
             // A row, or a line of grid cells.
             readonly property var cells: modelData.cells || [modelData]
             width: list.width
-            height: lineHeight
+            height: modelData.spacer ? 0 : lineHeight
             // As tall as its tallest cell (titles take one or two lines).
             property real lineHeight: 54
             function measure() {

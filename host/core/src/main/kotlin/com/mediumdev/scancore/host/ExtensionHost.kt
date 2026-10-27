@@ -41,11 +41,12 @@ import java.util.concurrent.ConcurrentHashMap
 import kotlin.coroutines.coroutineContext
 import kotlinx.coroutines.withContext
 
-// What one extension holds: Mihon sources (comics) or Aniyomi sources
-// (anime).
+// What one extension holds: Mihon sources (comics), Aniyomi sources
+// (anime, CloudStream's too) or music sources (Echo).
 class LoadedExtension(
     val sources: List<Source> = emptyList(),
     val anime: List<AnimeSource> = emptyList(),
+    val music: List<MusicSource> = emptyList(),
 )
 
 // Loads extensions on first use (desktop: converted APKs; Android: the
@@ -138,7 +139,7 @@ class ExtensionHost(
         return lock.withLock {
             loaded[pkg] ?: eu.kanade.tachiyomi.network.NetworkUse
                 .during(pkg) { loader.load(pkg, params.string("apk"), params.optString("signer")) }
-                .let { it.sources.associateBy { s -> s.id } + it.anime.associateBy { s -> s.id } }
+                .let { it.sources.associateBy { s -> s.id } + it.anime.associateBy { s -> s.id } + it.music.associateBy { s -> s.id } }
                 .also {
                     loaded[pkg] = it
                     for (id in it.keys) packages[id] = pkg
@@ -151,6 +152,16 @@ class ExtensionHost(
             for (source in sources.values) {
                 add(
                     when (source) {
+                        is MusicSource ->
+                            buildJsonObject {
+                                put("id", source.id.toString())
+                                put("name", source.name)
+                                put("lang", source.lang)
+                                put("baseUrl", source.baseUrl)
+                                put("supportsLatest", false)
+                                put("configurable", false)
+                                put("music", true)
+                            }
                         is AnimeSource ->
                             buildJsonObject {
                                 put("id", source.id.toString())
@@ -312,6 +323,7 @@ class ExtensionHost(
         val source =
             when (found) {
                 is AnimeSource -> return anime.call(method, found, params)
+                is MusicSource -> return music(method, found, params)
                 else -> found as Source
             }
         val page = params.int("page", 1)
@@ -350,6 +362,20 @@ class ExtensionHost(
             else -> throw HostError("The host does not know \"$method\".", 400)
         }
     }
+
+    // Echo's music sources: the music plugin contract's calls.
+    private suspend fun music(
+        method: String,
+        source: MusicSource,
+        params: JsonObject,
+    ): JsonElement =
+        when (method) {
+            "searchSongs" -> source.search(params.optString("query").orEmpty(), params.int("page", 1))
+            "popularSongs" -> source.popular(params.int("page", 1))
+            "streamOf" -> source.stream(params["song"]?.jsonObject ?: throw HostError("The request has no song.", 400))
+            "lyricsOf" -> source.lyrics(params["song"]?.jsonObject ?: throw HostError("The request has no song.", 400))
+            else -> throw HostError("The host does not know \"$method\" for music.", 400)
+        }
 
     // The image through the source's own client (its rate limits, headers
     // and any interceptor that unscrambles pages), written straight to the

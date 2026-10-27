@@ -1,0 +1,4 @@
+[
+  {"id": "testecho", "name": "Test Echo", "subtitle": "Songs for tests", "iconUrl": "icon.png", "updateUrl": "https://repo.test/echo/releases.json"},
+  {"id": "elsewhere", "name": "Elsewhere", "updateUrl": "https://example.com/updates"}
+]

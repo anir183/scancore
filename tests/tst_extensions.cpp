@@ -17,6 +17,7 @@
 #include "sources/anime/Playback.h"
 #include "sources/comics/Registry.h"
 
+#include <QDateTime>
 #include <QDir>
 #include <QElapsedTimer>
 #include <QFile>
@@ -308,6 +309,29 @@ private slots:
         const auto link = Manager::parseLink(QStringLiteral("cloudstreamrepo://repo.test/cloudstream/repo.json"));
         QVERIFY(link);
         QCOMPARE(link->kind, std::optional(Kind::CloudStream));
+    }
+
+    // Echo: a list of {id, name, iconUrl, updateUrl}; ids are the host's.
+    void echoLists() {
+        const QUrl from(QStringLiteral("https://repo.test/echo/extensions.json"));
+        const auto doc = parseIndex(fixture(QStringLiteral("echo/extensions.json")), from);
+        QCOMPARE(doc.type, IndexDocument::Type::PluginList);
+        QCOMPARE(doc.repo->kind, Kind::Echo);
+        QCOMPARE(doc.packages.size(), 2);
+        const auto &first = doc.packages[0];
+        QCOMPARE(first.kind, Kind::Echo);
+        QCOMPARE(first.pkg, QStringLiteral("testecho"));
+        QCOMPARE(first.name, QStringLiteral("Test Echo"));
+        QCOMPARE(first.iconUrl, QStringLiteral("https://repo.test/echo/icon.png"));
+        // The file comes from the release updateUrl names.
+        QCOMPARE(first.fileUrl, QStringLiteral("https://repo.test/echo/releases.json"));
+        QCOMPARE(first.versionCode, 0);
+        // The id core's Echo.sourceId gives.
+        QCOMPARE(first.sources[0].id, QStringLiteral("1270673316770206241"));
+        QCOMPARE(echoSourceId(QStringLiteral("testecho")), QStringLiteral("1270673316770206241"));
+        QCOMPARE(kindMedia(Kind::Echo), QStringLiteral("music"));
+        QCOMPARE(libSupport(Kind::Echo, first.lib), LibSupport::Supported);
+        QVERIFY(isMusicKind(Kind::Echo) && isSignedFile(Kind::Echo) && isUnsignedKind(Kind::Echo));
     }
 
     void libVersions() {
@@ -758,6 +782,46 @@ private slots:
         QCOMPARE(sources[0].key, QStringLiteral("cloudstream:1943850539651523733"));
         QVERIFY(sources[0].blocked.isEmpty());
         Manager::uninstall(Kind::CloudStream, QStringLiteral("DailymotionProvider"));
+        Manager::removeRepository(preview.repo.url);
+    }
+
+    // An Echo list: each extension's latest release (not a pre-release) is
+    // its file and version; installed as an .eapk with its author's key,
+    // which an update must keep; its source is a music one.
+    void echoInstall() {
+        const auto preview = Manager::preview(QStringLiteral("https://repo.test/echo/extensions.json"));
+        QCOMPARE(preview.repo.kind, Kind::Echo);
+        QCOMPARE(preview.packages.size(), 2);
+        const auto &first = preview.packages[0];
+        QCOMPARE(first.versionName, QStringLiteral("v1.2"));
+        QCOMPARE(first.versionCode, QDateTime::fromString(QStringLiteral("2026-10-20T10:00:00Z"), Qt::ISODate).toSecsSinceEpoch());
+        QCOMPARE(first.fileUrl, QStringLiteral("https://repo.test/apk/tiny-alpha.apk"));
+        // Not on GitHub: nothing to install from.
+        QCOMPARE(preview.packages[1].versionCode, 0);
+        Manager::add(preview);
+        const auto installed = Manager::install(Kind::Echo, QStringLiteral("testecho"));
+        QVERIFY(installed.trusted);
+        QVERIFY(installed.path.endsWith(QLatin1String(".eapk")));
+        QCOMPARE(installed.signers, QStringList{key("alpha")});
+        const auto sources = Manager::sources(Kind::Echo);
+        QCOMPARE(sources.size(), 1);
+        QCOMPARE(sources[0].key, QStringLiteral("echo:1270673316770206241"));
+        QCOMPARE(sources[0].signer, key("alpha"));
+        QVERIFY(sources[0].blocked.isEmpty());
+        QVERIFY_THROWS_EXCEPTION(Error, Manager::install(Kind::Echo, QStringLiteral("elsewhere")));
+
+        // A new release signed with another key is offered and refused.
+        m_server->serve(QStringLiteral("echo/releases.json"), fixture(QStringLiteral("echo/releases-new.json")));
+        // Releases are looked up at most once an hour.
+        Database::exec(QStringLiteral("DELETE FROM cache WHERE key LIKE 'echo-release|%'"));
+        Manager::refresh(preview.repo.url);
+        const auto now = Manager::installed(Kind::Echo);
+        QCOMPARE(now.size(), 1);
+        QVERIFY(now[0].update);
+        QCOMPARE(now[0].update->versionName, QStringLiteral("v1.4"));
+        QVERIFY_THROWS_EXCEPTION(Error, Manager::install(Kind::Echo, QStringLiteral("testecho")));
+        m_server->reset();
+        Manager::uninstall(Kind::Echo, QStringLiteral("testecho"));
         Manager::removeRepository(preview.repo.url);
     }
 };

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import com.mediumdev.scancore.host.CloudStream
+import com.mediumdev.scancore.host.Echo
 import com.mediumdev.scancore.host.ExtensionLoader
 import uy.kohesive.injekt.api.get
 import com.mediumdev.scancore.host.HostError
@@ -56,6 +57,17 @@ class AndroidLoader(
         val signers = certificates.map { sha256(it.toByteArray()) }
         if (signers.isEmpty()) throw HostError("The extension is not signed.", 403)
         if (signer != null && signer.lowercase() !in signers) throw HostError("The extension is signed with a key SCANCORE did not trust.", 403)
+
+        // An Echo extension: its classes over Echo's runtime, parent first
+        // as Echo's app loads one; its meta-data names its class.
+        if (Echo.isPlugin(path)) {
+            val bundle = app.metaData ?: throw HostError("The extension does not say which class it is.", 422)
+            val meta = bundle.keySet().associateWith { bundle.get(it)?.toString().orEmpty() }
+            val runtime =
+                Echo.runtime(context, { uy.kohesive.injekt.Injekt.get<eu.kanade.tachiyomi.network.NetworkHelper>().client }, File(context.filesDir, "echo"))
+            val classes = dalvik.system.PathClassLoader(apk.path, app.nativeLibraryDir, runtime.javaClass.classLoader)
+            return LoadedExtension(music = runtime.load(pkg, apk, classes, meta))
+        }
 
         val meta = app.metaData ?: throw HostError("The extension does not say which sources it has.", 422)
         // Aniyomi's extensions name their classes under their own key, and

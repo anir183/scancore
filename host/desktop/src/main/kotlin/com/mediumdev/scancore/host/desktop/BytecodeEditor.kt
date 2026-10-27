@@ -41,7 +41,21 @@ object BytecodeEditor {
      *
      * @param jarFile The JarFile to replace class references in
      */
-    fun fixAndroidClasses(jarFile: Path) {
+    fun fixAndroidClasses(
+        jarFile: Path,
+        runtime: ClassLoader? = null,
+    ) {
+        // SCANCORE: a plugin runtime's interfaces (CloudStream's, Echo's)
+        // count too; the host's class loader does not see them.
+        pluginClasses.set(runtime)
+        try {
+            fix(jarFile)
+        } finally {
+            pluginClasses.remove()
+        }
+    }
+
+    private fun fix(jarFile: Path) {
         FileSystems.newFileSystem(jarFile, null as ClassLoader?)?.use {
             // SCANCORE: dex2jar writes calls to interface methods (a default
             // method called through super, as getSourcePreferences() is) as
@@ -115,9 +129,14 @@ object BytecodeEditor {
     private val jarInterfaces = java.util.Collections.synchronizedSet(HashSet<String>())
     private val hostInterfaces = java.util.concurrent.ConcurrentHashMap<String, Boolean>()
 
+    private val pluginClasses = ThreadLocal<ClassLoader?>()
+
     private fun isInterface(owner: String?): Boolean {
         if (owner == null || owner.startsWith("[")) return false
         if (owner in jarInterfaces) return true
+        pluginClasses.get()?.let { loader ->
+            runCatching { Class.forName(owner.replace('/', '.'), false, loader).isInterface }.getOrNull()?.let { return it }
+        }
         return hostInterfaces.getOrPut(owner) {
             runCatching { Class.forName(owner.replace('/', '.'), false, BytecodeEditor::class.java.classLoader).isInterface }.getOrDefault(false)
         }

@@ -18,6 +18,7 @@ plugins {
 
 val anime by sourceSets.creating
 val cloudstream by sourceSets.creating
+val echo by sourceSets.creating
 
 dependencies {
     // As in real extensions: the API comes from the app, not the APK.
@@ -25,6 +26,7 @@ dependencies {
     "animeCompileOnly"(project(":api"))
     "cloudstreamCompileOnly"(project(":api"))
     "cloudstreamCompileOnly"(project(":cloudstream"))
+    "echoCompileOnly"(project(":echo"))
 }
 
 fun sdkDir(): File? =
@@ -107,6 +109,10 @@ fun apkTask(
 
 val mangaApk = apkTask("mangaApk", sourceSets["main"], "apk", "testext.apk")
 val animeApk = apkTask("animeApk", anime, "animeapk", "testanime.apk")
+
+// An Echo extension: an APK like any other, with Echo's meta-data.
+val echoApk = apkTask("echoApk", echo, "eapk", "testecho.eapk")
+val eapk by tasks.registering { dependsOn(echoApk) }
 
 val apk by tasks.registering {
     dependsOn(mangaApk, animeApk)

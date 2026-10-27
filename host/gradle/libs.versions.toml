@@ -69,6 +69,8 @@ ktor-http = "io.ktor:ktor-http:3.5.0"
 nicehttp = "com.github.Blatzar:NiceHttp:0.4.18"
 cryptography-core = "dev.whyoleg.cryptography:cryptography-core:0.6.0"
 cryptography-provider = "dev.whyoleg.cryptography:cryptography-provider-optimal:0.6.0"
+# Echo's extension library (echo/, the Unabandon Public License).
+echo-common = "dev.brahmkshatriya.echo:common-jvm:1.0.0"
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "agp" }

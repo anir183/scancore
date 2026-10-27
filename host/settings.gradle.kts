@@ -32,7 +32,7 @@ dependencyResolutionManagement {
     }
 }
 
-include(":api", ":compat", ":core", ":cloudstream", ":desktop", ":testext")
+include(":api", ":compat", ":core", ":cloudstream", ":echo", ":desktop", ":testext")
 
 // The Android host (an AAR for the app's APK) needs an Android SDK.
 val androidSdk =

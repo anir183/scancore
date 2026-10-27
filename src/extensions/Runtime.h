@@ -15,7 +15,7 @@ namespace sc::ext {
 // keep running the old host.
 class Runtime {
 public:
-    static constexpr const char *HostVersion = "8";
+    static constexpr const char *HostVersion = "9";
 
     // Where it is installed (<app data>/extensions/runtime).
     static void setDir(const QString &dir);
@@ -42,9 +42,16 @@ public:
     // about 4 MB), which the host loads with the first CloudStream plugin;
     // asset SCANCORE-cloudstream-runtime-<HostVersion>-android.jar of the
     // same release. Downloaded and checked when a CloudStream plugin is
-    // installed; nothing elsewhere (desktop runtimes have it).
+    // installed; nothing elsewhere (desktop runtimes have it). Echo's the
+    // same way (SCANCORE-echo-runtime-<HostVersion>-android.jar).
     static QString cloudStreamPath();
     static void installCloudStream();
+    static QString echoPath();
+    static void installEcho();
+
+private:
+    static QString pluginRuntimePath(const QString &name);
+    static void installPluginRuntime(const QString &name, const QString &label);
 };
 
 } // namespace sc::ext

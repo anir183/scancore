@@ -12,19 +12,27 @@ namespace sc::ext {
 // The extension ecosystems SCANCORE runs: Mihon/Tachiyomi extensions
 // (comics), Aniyomi extensions (anime), LNReader plugins (novels),
 // SCANCORE's own music plugins (JavaScript like LNReader's; see
-// docs/music-plugins.md) and CloudStream plugins (.cs3 files, shown as
-// anime; run by the host's CloudStream runtime).
-enum class Kind { Mihon, Aniyomi, LNReader, Music, CloudStream };
+// docs/music-plugins.md), CloudStream plugins (.cs3 files, shown as
+// anime; run by the host's CloudStream runtime) and Echo extensions (.eapk
+// files, shown as music; run by the host's Echo runtime).
+enum class Kind { Mihon, Aniyomi, LNReader, Music, CloudStream, Echo };
 
 // JavaScript plugins (no APK, no signing key): LNReader and music.
 inline bool isPluginKind(Kind kind) { return kind == Kind::LNReader || kind == Kind::Music; }
-// Files without a signature, trusted for the repository the reader added:
-// the JavaScript plugins and CloudStream's.
-inline bool isUnsignedKind(Kind kind) { return isPluginKind(kind) || kind == Kind::CloudStream; }
+// Trusted for the repository the reader added, which has no signing key:
+// the JavaScript plugins, CloudStream's and Echo's (each Echo extension is
+// signed by its own author: an update must keep the key it came with).
+inline bool isUnsignedKind(Kind kind) { return isPluginKind(kind) || kind == Kind::CloudStream || kind == Kind::Echo; }
+// Files that are signed APKs: Mihon's, Aniyomi's and Echo's.
+inline bool isSignedFile(Kind kind) { return kind == Kind::Mihon || kind == Kind::Aniyomi || kind == Kind::Echo; }
+// Music sources: SCANCORE's own plugins and Echo's.
+inline bool isMusicKind(Kind kind) { return kind == Kind::Music || kind == Kind::Echo; }
 
 // A CloudStream plugin's source id, as the host gives it (core's
 // CloudStream.sourceId): the first 8 bytes of MD5 of "cloudstream/<pkg>".
 QString cloudStreamSourceId(const QString &pkg);
+// An Echo extension's, the same way (core's Echo.sourceId): "echo/<pkg>".
+QString echoSourceId(const QString &pkg);
 
 QString kindName(Kind kind);           // "mihon", "aniyomi", "lnreader", "music"
 std::optional<Kind> kindFrom(const QString &name);

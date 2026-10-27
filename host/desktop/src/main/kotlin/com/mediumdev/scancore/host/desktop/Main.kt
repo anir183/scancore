@@ -9,6 +9,7 @@ import android.app.Application
 import android.content.Context
 import android.os.Looper
 import com.mediumdev.scancore.host.CloudStream
+import com.mediumdev.scancore.host.Echo
 import com.mediumdev.scancore.host.ExtensionHost
 import com.mediumdev.scancore.host.MemoStore
 import com.mediumdev.scancore.host.RpcServer
@@ -30,7 +31,7 @@ import java.io.PrintStream
 import java.util.concurrent.CountDownLatch
 import kotlin.system.exitProcess
 
-const val HOST_VERSION = "8"
+const val HOST_VERSION = "9"
 
 fun main(args: Array<String>) {
     val options = args.toList().zipWithNext().filter { it.first.startsWith("--") }.associate { it.first.removePrefix("--") to it.second }
@@ -87,7 +88,8 @@ fun setUp(
 
     // CloudStream's runtime: lib/cloudstream beside the host's own jars
     // (lib/host) in the Extensions runtime.
-    CloudStream.runtimeClasses = cloudStreamClasses()
+    CloudStream.runtimeClasses = pluginClasses("cloudstream")
+    Echo.runtimeClasses = pluginClasses("echo")
 
     val memos = MemoStore(File(root, "memos.json"))
     val host = ExtensionHost(ApkLoader(File(root, "jars")), memos, HOST_VERSION, CompatSettings(app))
@@ -113,13 +115,14 @@ private fun startMainThread() {
     ready.await()
 }
 
-// The class loader of CloudStream's jars, made once; null when they are not
-// there. scancore.cloudstream.lib names the folder in tests.
-private fun cloudStreamClasses(): () -> ClassLoader? {
+// The class loader of a plugin runtime's jars (lib/cloudstream, lib/echo
+// beside lib/host), made once; null when they are not there.
+// scancore.<name>.lib names the folder in tests.
+private fun pluginClasses(name: String): () -> ClassLoader? {
     val loader by lazy {
         val dir =
-            System.getProperty("scancore.cloudstream.lib")?.let(::File)
-                ?: File(ExtensionHost::class.java.protectionDomain.codeSource.location.toURI()).parentFile.resolveSibling("cloudstream")
+            System.getProperty("scancore.$name.lib")?.let(::File)
+                ?: File(ExtensionHost::class.java.protectionDomain.codeSource.location.toURI()).parentFile.resolveSibling(name)
         val jars = dir.listFiles { f -> f.name.endsWith(".jar") }?.sortedBy { it.name }.orEmpty()
         if (jars.isEmpty()) null else java.net.URLClassLoader(jars.map { it.toURI().toURL() }.toTypedArray(), ExtensionHost::class.java.classLoader)
     }

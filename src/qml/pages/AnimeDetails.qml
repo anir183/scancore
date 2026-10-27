@@ -146,7 +146,23 @@ Item {
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        contentHeight: column.height + 60
+        // Once the tabs have been switched, room below them for a whole
+        // screen, so a short tab (Reviews loading) keeps them in place.
+        property bool keepTabs: false
+        contentHeight: column.height + (keepTabs ? Math.max(60, height - column.height + tabBar.y) : 60)
+
+        // Another tab: the tab row stays where it was on screen, at the top
+        // if the reader had scrolled past it, instead of the page jumping
+        // back up as the tab's content changes.
+        function switchTab(value) {
+            if (value === page.tab) return
+            const at = Math.max(0, tabBar.y - contentY)
+            keepTabs = true
+            page.tab = value
+            const place = () => { contentY = Math.max(0, tabBar.y - at) }
+            place()
+            Qt.callLater(place)
+        }
 
         Column {
             id: column
@@ -234,6 +250,7 @@ Item {
             }
 
             Segmented {
+                id: tabBar
                 x: Theme.gutter
                 // Reviews and discussions are kept by AniList title.
                 visible: !page.fromSource
@@ -243,7 +260,7 @@ Item {
                             ? [{ value: "songs", label: qsTr("Songs") }] : [])
                     .concat([{ value: "reviews", label: qsTr("Reviews") }, { value: "discussion", label: qsTr("Discussion") }])
                 value: page.tab
-                onPicked: (v) => page.tab = v
+                onPicked: (v) => flick.switchTab(v)
             }
             Loader {
                 x: Theme.gutter - 8

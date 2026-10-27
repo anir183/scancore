@@ -14,6 +14,7 @@ QString kindName(Kind kind) {
     case Kind::LNReader: return QStringLiteral("lnreader");
     case Kind::Music: return QStringLiteral("music");
     case Kind::CloudStream: return QStringLiteral("cloudstream");
+    case Kind::Echo: return QStringLiteral("echo");
     }
     return {};
 }
@@ -29,6 +30,8 @@ std::optional<Kind> kindFrom(const QString &name) {
         return Kind::Music;
     if (name == QLatin1String("cloudstream"))
         return Kind::CloudStream;
+    if (name == QLatin1String("echo"))
+        return Kind::Echo;
     return std::nullopt;
 }
 
@@ -39,17 +42,22 @@ QString kindMedia(Kind kind) {
     case Kind::LNReader: return QStringLiteral("novel");
     case Kind::Music: return QStringLiteral("music");
     case Kind::CloudStream: return QStringLiteral("anime");
+    case Kind::Echo: return QStringLiteral("music");
     }
     return {};
 }
 
-QString cloudStreamSourceId(const QString &pkg) {
-    const auto hash = QCryptographicHash::hash(QStringLiteral("cloudstream/%1").arg(pkg).toUtf8(), QCryptographicHash::Md5);
+static QString hashedSourceId(const QString &name) {
+    const auto hash = QCryptographicHash::hash(name.toUtf8(), QCryptographicHash::Md5);
     quint64 id = 0;
     for (int i = 0; i < 8; ++i)
         id = (id << 8) | quint8(hash[i]);
     return QString::number(id & 0x7fffffffffffffffULL);
 }
+
+QString cloudStreamSourceId(const QString &pkg) { return hashedSourceId(QStringLiteral("cloudstream/%1").arg(pkg)); }
+
+QString echoSourceId(const QString &pkg) { return hashedSourceId(QStringLiteral("echo/%1").arg(pkg)); }
 
 QJsonObject Package::toJson() const {
     QJsonArray list;
@@ -126,7 +134,8 @@ QStringList supportedLibs(Kind kind) {
     switch (kind) {
     case Kind::Mihon: return {QStringLiteral("1.4"), QStringLiteral("1.5"), QStringLiteral("1.6")};
     case Kind::Aniyomi: return {QStringLiteral("14"), QStringLiteral("16"), QStringLiteral("17")};
-    case Kind::CloudStream: return {QStringLiteral("1")};
+    case Kind::CloudStream:
+    case Kind::Echo: return {QStringLiteral("1")};
     case Kind::LNReader:
     case Kind::Music: return {};
     }

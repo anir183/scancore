@@ -10,6 +10,7 @@
 #include "core/Text.h"
 
 #include <QCryptographicHash>
+#include <QDateTime>
 #include <QDir>
 #include <QFile>
 #include <QHash>
@@ -361,6 +362,83 @@ Response fetch(const QUrl &url, const QString &etag = {}, const QString &modifie
     return response;
 }
 
+// Echo's lists name no file or version: each extension's latest GitHub
+// release does, as Echo's app reads it (its tag is the version, its first
+// .eapk asset the file). Looked up at most once an hour per extension; one
+// that cannot be looked up keeps what was known before.
+bool resolveEcho(Package &p) {
+    if (p.kind != Kind::Echo || p.versionCode > 0)
+        return true;
+    QUrl url(p.fileUrl);
+    static const QRegularExpression github(QStringLiteral(R"(^/repos/([^/]+)/([^/]+))"));
+    if (url.host() == QLatin1String("api.github.com")) {
+        const auto m = github.match(url.path());
+        if (!m.hasMatch())
+            return false;
+        url = QUrl(QStringLiteral("https://api.github.com/repos/%1/%2/releases/latest").arg(m.captured(1), m.captured(2)));
+    } else if (!allowedHost(url) || !(url.host().endsWith(QLatin1String(".test")) || url.host() == QLatin1String("localhost") ||
+                                      url.host() == QLatin1String("127.0.0.1"))) {
+        // Echo's app follows GitHub only (a test server stands in for it).
+        return false;
+    }
+    const auto key = QStringLiteral("echo-release|") + url.toString();
+    auto body = Database::cacheGet(key);
+    if (!body) {
+        Request request;
+        request.url = url;
+        request.timeoutMs = 20000;
+        request.headers = {{"Accept", "application/vnd.github+json"}};
+        const auto response = Http::send(request);
+        if (!response.ok())
+            return false;
+        body = response.body;
+        Database::cachePut(key, *body, 3600);
+    }
+    const auto doc = QJsonDocument::fromJson(*body);
+    // A list of releases (the newest first) or one.
+    QJsonObject release = doc.object();
+    for (const auto &value : doc.array())
+        if (!value.toObject().value("draft").toBool() && !value.toObject().value("prerelease").toBool()) {
+            release = value.toObject();
+            break;
+        }
+    QString file;
+    for (const auto &value : release.value("assets").toArray()) {
+        const auto name = value.toObject().value("name").toString();
+        if (name.endsWith(QLatin1String(".eapk")) || (file.isEmpty() && name.endsWith(QLatin1String(".apk"))))
+            file = value.toObject().value("browser_download_url").toString();
+        if (name.endsWith(QLatin1String(".eapk")))
+            break;
+    }
+    const auto published = QDateTime::fromString(release.value("published_at").toString(), Qt::ISODate);
+    if (file.isEmpty() || !published.isValid())
+        return false;
+    p.fileUrl = url.resolved(QUrl(file)).toString();
+    p.versionName = release.value("tag_name").toString();
+    p.versionCode = published.toSecsSinceEpoch();
+    return true;
+}
+
+void resolveEcho(QList<Package> &packages, const QList<Package> &before = {}) {
+    QList<std::function<Package()>> jobs;
+    for (const auto &p : std::as_const(packages))
+        jobs.append([p] {
+            auto resolved = p;
+            resolveEcho(resolved);
+            return resolved;
+        });
+    const auto results = parallel<Package>(jobs);
+    for (int i = 0; i < packages.size(); ++i) {
+        if (results[i].ok())
+            packages[i] = *results[i].value;
+        if (packages[i].versionCode > 0)
+            continue;
+        for (const auto &old : before)
+            if (old.pkg == packages[i].pkg && old.versionCode > 0)
+                packages[i] = old;
+    }
+}
+
 // Reads a repository: follows repo.json, index_v2 and extension lists until
 // it has the repository's details and its extensions.
 RepoState read(const QUrl &start, std::optional<Kind> hint) {
@@ -400,7 +478,7 @@ RepoState read(const QUrl &start, std::optional<Kind> hint) {
         throw Error(QStringLiteral("The repository has no signing key, so its extensions cannot be checked."));
     // One kind per repository: the hint, else what most extensions are.
     // CloudStream's files say what they are, whatever link led there.
-    Kind kind = repo->kind == Kind::CloudStream ? Kind::CloudStream : hint.value_or(repo->kind);
+    Kind kind = repo->kind == Kind::CloudStream || repo->kind == Kind::Echo ? repo->kind : hint.value_or(repo->kind);
     if (!hint && !isUnsignedKind(repo->kind)) {
         int anime = 0;
         for (const auto &p : *packages)
@@ -410,6 +488,8 @@ RepoState read(const QUrl &start, std::optional<Kind> hint) {
     repo->kind = kind;
     for (auto &p : *packages)
         p.kind = kind;
+    if (kind == Kind::Echo)
+        resolveEcho(*packages);
     state.repo = *repo;
     state.packages = *packages;
     state.etag = listEtag;
@@ -467,7 +547,9 @@ void Manager::reload() {
 
 // CloudStream's ways of naming a repository: cloudstreamrepo://<address>,
 // https://cs.repo/<address>, and short codes (a word, or "!word"), which
-// cutt.ly or py.md redirect to its repo.json.
+// cutt.ly or py.md redirect to its repo.json. Echo's codes are words too,
+// which v.gd redirects to an extension list: tried when CloudStream has no
+// repository by that code.
 static QString cloudStreamAddress(const QString &text) {
     auto t = text.trimmed();
     static const QRegularExpression prefix(QStringLiteral(R"(^(cloudstreamrepo://|https?://cs\.repo/\??))"), QRegularExpression::CaseInsensitiveOption);
@@ -478,13 +560,20 @@ static QString cloudStreamAddress(const QString &text) {
     static const QRegularExpression code(QStringLiteral(R"(^!?[A-Za-z0-9_-]+$)"));
     if (!code.match(t).hasMatch())
         return text;
-    Request request;
-    request.url = t.startsWith(QLatin1Char('!')) ? QUrl(QStringLiteral("https://py.md/") + t.mid(1)) : QUrl(QStringLiteral("https://cutt.ly/") + t);
-    request.method = "HEAD";
-    request.timeoutMs = 15000;
-    const auto response = Http::send(request);
-    const auto target = response.finalUrl.toString();
-    if (response.finalUrl.host() == request.url.host() || target.isEmpty())
+    const auto follow = [](const QUrl &url) -> QString {
+        Request request;
+        request.url = url;
+        request.method = "HEAD";
+        request.timeoutMs = 15000;
+        const auto response = Http::send(request);
+        if (response.finalUrl.host() == url.host())
+            return {};
+        return response.finalUrl.toString();
+    };
+    auto target = follow(t.startsWith(QLatin1Char('!')) ? QUrl(QStringLiteral("https://py.md/") + t.mid(1)) : QUrl(QStringLiteral("https://cutt.ly/") + t));
+    if (target.isEmpty() && !t.startsWith(QLatin1Char('!')))
+        target = follow(QUrl(QStringLiteral("https://v.gd/") + t));
+    if (target.isEmpty())
         throw Error(QStringLiteral("No repository has the code %1.").arg(t), 404);
     return target;
 }
@@ -640,7 +729,9 @@ bool Manager::refresh(const QString &url) {
     RepoState next = *current;
     try {
         const QUrl listUrl(current->repo.listUrl.isEmpty() ? current->repo.url : current->repo.listUrl);
-        const auto response = fetch(listUrl, current->etag, current->modified);
+        // Echo's list stays the same when its extensions get new releases.
+        const bool echo = current->repo.kind == Kind::Echo;
+        const auto response = fetch(listUrl, echo ? QString() : current->etag, echo ? QString() : current->modified);
         if (response.status == 304) {
             Database::exec(QStringLiteral("UPDATE ext_repos SET refreshed_at = ?, error = NULL WHERE url = ?"), {Database::now(), url});
             return false;
@@ -655,6 +746,8 @@ bool Manager::refresh(const QString &url) {
         next.packages = doc.packages;
         for (auto &p : next.packages)
             p.kind = current->repo.kind;
+        if (echo)
+            resolveEcho(next.packages, current->packages);
         next.etag = QString::fromUtf8(response.header("ETag"));
         next.modified = QString::fromUtf8(response.header("Last-Modified"));
         next.error.clear();
@@ -762,6 +855,8 @@ Installed Manager::install(Kind kind, const QString &pkg) {
             listed = p;
     if (!listed)
         throw Error(QStringLiteral("No repository lists that extension."));
+    if (!resolveEcho(*listed))
+        throw Error(QStringLiteral("The latest release of %1 could not be found. Try again later.").arg(listed->name));
     const auto &package = *listed;
     if (const auto problem = libProblem(package); !problem.isEmpty())
         throw Error(problem);
@@ -773,6 +868,8 @@ Installed Manager::install(Kind kind, const QString &pkg) {
     // CloudStream plugins run on a runtime phones download separately.
     if (kind == Kind::CloudStream)
         Runtime::installCloudStream();
+    else if (kind == Kind::Echo)
+        Runtime::installEcho();
 
     const QUrl fileUrl(package.fileUrl);
     if (!allowedHost(fileUrl))
@@ -786,7 +883,7 @@ Installed Manager::install(Kind kind, const QString &pkg) {
         throw Error(QStringLiteral("%1 could not be downloaded (HTTP %2).").arg(package.name).arg(response.status), response.status);
 
     QStringList signers;
-    if (!isUnsignedKind(kind)) {
+    if (isSignedFile(kind)) {
         signers = apkSigners(response.body);
         if (signers.isEmpty())
             throw Error(QStringLiteral("%1 is not signed, so SCANCORE will not install it.").arg(package.name));
@@ -801,7 +898,7 @@ Installed Manager::install(Kind kind, const QString &pkg) {
 
     const auto folder = QStringLiteral("%1/%2/%3").arg(g_storage, kindName(kind), pkg);
     QDir().mkpath(folder);
-    const auto path = QStringLiteral("%1/%2.%3").arg(folder).arg(package.versionCode).arg(kind == Kind::CloudStream ? "cs3" : isPluginKind(kind) ? "js" : "apk");
+    const auto path = QStringLiteral("%1/%2.%3").arg(folder).arg(package.versionCode).arg(kind == Kind::CloudStream ? "cs3" : kind == Kind::Echo ? "eapk" : isPluginKind(kind) ? "js" : "apk");
     {
         QFile::setPermissions(path, QFile::ReadOwner | QFile::WriteOwner);
         QSaveFile file(path);

@@ -12,11 +12,12 @@ Item {
     property var task: Extensions.diagnostics()
     readonly property var report: task && task.ok ? task.result : ({})
     readonly property var installedList: { App.dependOn(Extensions.revision); return Extensions.installed("") }
-    // Every extension source, for the test.
+    // Every extension source with titles to browse, for the test (music
+    // sources have songs).
     readonly property var sourceOptions: {
         const out = []
         for (const ext of installedList)
-            for (const s of (ext.sources || []))
+            for (const s of (ext.media === "music" ? [] : (ext.sources || [])))
                 out.push({ value: s.key, label: s.name + (s.languageName ? " · " + s.languageName : ""), kind: ext.kind })
         return out
     }

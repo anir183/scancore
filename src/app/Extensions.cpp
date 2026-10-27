@@ -122,6 +122,7 @@ void Extensions::startHost() {
     ext::setHost(ext::Kind::Mihon, host);
     ext::setHost(ext::Kind::Aniyomi, host);
     ext::setHost(ext::Kind::CloudStream, host);
+    ext::setHost(ext::Kind::Echo, host);
     ext::ExtensionSource::installImageWriter();
 #elif !defined(Q_OS_ANDROID)
     ext::Runtime::setDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QStringLiteral("/extensions/runtime"));
@@ -129,6 +130,7 @@ void Extensions::startHost() {
     ext::setHost(ext::Kind::Mihon, host);
     ext::setHost(ext::Kind::Aniyomi, host);
     ext::setHost(ext::Kind::CloudStream, host);
+    ext::setHost(ext::Kind::Echo, host);
     ext::ExtensionSource::installImageWriter();
     // A runtime from an older SCANCORE runs an older host (issue #14: lib
     // values it could not read, no anime): the user chose to have one, so
@@ -168,6 +170,7 @@ void Extensions::stopHost() {
     ext::setHost(ext::Kind::Mihon, nullptr);
     ext::setHost(ext::Kind::Aniyomi, nullptr);
     ext::setHost(ext::Kind::CloudStream, nullptr);
+    ext::setHost(ext::Kind::Echo, nullptr);
 }
 
 bool Extensions::runtimeAvailable() const { return !ext::Runtime::platform().isEmpty(); }

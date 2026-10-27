@@ -5,6 +5,7 @@ import com.googlecode.d2j.dex.Dex2jar
 import com.googlecode.d2j.reader.MultiDexFileReader
 import com.googlecode.dex2jar.tools.BaksmaliBaseDexExceptionHandler
 import com.mediumdev.scancore.host.CloudStream
+import com.mediumdev.scancore.host.Echo
 import uy.kohesive.injekt.api.get
 import com.mediumdev.scancore.host.ExtensionLoader
 import com.mediumdev.scancore.host.HostError
@@ -45,6 +46,7 @@ class ApkLoader(
         if (!apk.isFile) throw HostError("The extension's file is missing. Install it again.", 404)
         val bytes = apk.readBytes()
         if (CloudStream.isPlugin(path)) return loadCloudStream(pkg, apk, bytes)
+        if (Echo.isPlugin(path)) return loadEcho(pkg, apk, bytes, signer)
         // A new converter makes older conversions stale.
         val stamp = "${sha256(bytes).take(16)}-c$CONVERTER"
         val jar = File(cacheDir, "$pkg-$stamp.jar")
@@ -114,7 +116,7 @@ class ApkLoader(
         val runtime = CloudStream.runtime(app) { uy.kohesive.injekt.Injekt.get<eu.kanade.tachiyomi.network.NetworkHelper>().client }
         if (!jar.isFile) {
             val temp = File(jar.path + ".frames")
-            convert(bytes, temp)
+            convert(bytes, temp, runtime.javaClass.classLoader)
             // dex2jar works out stack frames without CloudStream's classes
             // in sight and writes "java/util/Object" where it cannot: the
             // frames are worked out again with them.
@@ -124,6 +126,37 @@ class ApkLoader(
         }
         val classes = ChildFirstClassLoader(arrayOf(jar.toURI().toURL()), runtime.javaClass.classLoader)
         return LoadedExtension(anime = runtime.load(pkg, file, classes))
+    }
+
+    // An Echo extension: an APK (signed by its author, whose key SCANCORE
+    // keeps from the first install), converted like any other and loaded
+    // over Echo's runtime; its manifest's meta-data names its class.
+    private fun loadEcho(
+        pkg: String,
+        file: File,
+        bytes: ByteArray,
+        signer: String?,
+    ): LoadedExtension {
+        val stamp = "${sha256(bytes).take(16)}-c$CONVERTER"
+        val jar = File(cacheDir, "echo-$pkg-$stamp.jar")
+        val manifest = File(cacheDir, "echo-$pkg-$stamp.meta")
+        val app = uy.kohesive.injekt.Injekt.get<android.app.Application>()
+        val root = File(System.getProperty("scancore.host.root") ?: cacheDir.parent)
+        val runtime = Echo.runtime(app, { uy.kohesive.injekt.Injekt.get<eu.kanade.tachiyomi.network.NetworkHelper>().client }, File(root, "echo"))
+        if (!jar.isFile || !manifest.isFile) {
+            verify(file, signer)
+            val temp = File(jar.path + ".frames")
+            convert(bytes, temp, runtime.javaClass.classLoader)
+            Frames.recompute(temp, jar, runtime.javaClass.classLoader)
+            temp.delete()
+            manifest.writeText(metadata(file).entries.joinToString("\n") { "${it.key}=${it.value}" })
+            cacheDir.listFiles { f -> f.name.startsWith("echo-$pkg-") && !f.name.startsWith("echo-$pkg-$stamp") }?.forEach { it.delete() }
+        }
+        val meta = manifest.readLines().filter { '=' in it }.associate { it.substringBefore('=') to it.substringAfter('=') }
+        // Parent first, as Echo's app loads extensions: Echo's classes are
+        // the runtime's even when an extension carries a copy.
+        val classes = java.net.URLClassLoader(arrayOf(jar.toURI().toURL()), runtime.javaClass.classLoader)
+        return LoadedExtension(music = runtime.load(pkg, file, classes, meta))
     }
 
     private fun verify(
@@ -144,6 +177,7 @@ class ApkLoader(
     private fun convert(
         apk: ByteArray,
         jar: File,
+        runtime: ClassLoader? = null,
     ) {
         cacheDir.mkdirs()
         val temp = File(jar.path + ".part")
@@ -166,7 +200,7 @@ class ApkLoader(
             temp.delete()
             throw HostError("The extension could not be converted to run on this computer.", 422)
         }
-        BytecodeEditor.fixAndroidClasses(temp.toPath())
+        BytecodeEditor.fixAndroidClasses(temp.toPath(), runtime)
         copyResources(apk, temp)
         if (!temp.renameTo(jar)) throw HostError("The converted extension could not be saved.", 500)
     }

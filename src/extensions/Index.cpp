@@ -313,6 +313,30 @@ QList<Package> cloudStreamList(const QJsonArray &array, const QUrl &from) {
     return out;
 }
 
+// An Echo extension list: [{id, name, subtitle, iconUrl, updateUrl}]. The
+// file and its version are the latest release updateUrl names (GitHub's
+// releases API), looked up when the repository is read (Manager).
+QList<Package> echoList(const QJsonArray &array, const QUrl &from) {
+    QList<Package> out;
+    for (const auto &value : array) {
+        const auto o = value.toObject();
+        Package p;
+        p.kind = Kind::Echo;
+        p.pkg = o.value("id").toString();
+        if (p.pkg.isEmpty() || o.value("updateUrl").toString().isEmpty())
+            continue;
+        p.name = o.value("name").toString(p.pkg);
+        p.lib = QStringLiteral("1");
+        p.lang = QStringLiteral("all");
+        p.fileUrl = resolved(from, o.value("updateUrl").toString());
+        p.iconUrl = resolved(from, o.value("iconUrl").toString());
+        p.site = o.value("subtitle").toString();
+        p.sources.append({echoSourceId(p.pkg), p.name, p.lang, QString()});
+        out.append(p);
+    }
+    return out;
+}
+
 } // namespace
 
 Kind kindForLib(const QString &lib) {
@@ -333,6 +357,19 @@ IndexDocument parseIndex(QByteArray body, const QUrl &from, std::optional<Kind> 
             doc.hasPackages = true;
             Repository r;
             r.kind = Kind::CloudStream;
+            r.url = from.toString();
+            r.name = from.host();
+            r.badge = r.name;
+            r.listUrl = r.url;
+            doc.repo = r;
+            return doc;
+        }
+        if (first.contains("updateUrl") || (array.isEmpty() && hint == Kind::Echo)) {
+            doc.type = IndexDocument::Type::PluginList;
+            doc.packages = echoList(array, from);
+            doc.hasPackages = true;
+            Repository r;
+            r.kind = Kind::Echo;
             r.url = from.toString();
             r.name = from.host();
             r.badge = r.name;
