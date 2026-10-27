@@ -164,10 +164,10 @@ Item {
                 stacked: Theme.compact || page.wide
                 series: Object.assign({}, page.media, { author: page.fromSource ? ((page.media.extra || {}).author || "") : (page.media.studios || []).join(", ") })
                 kicker: qsTr("Anime") + (page.fromSource ? " · " + (page.media.sourceLabel || "") : page.media.format ? " · " + page.media.format : "")
-                meta: page.fromSource ? [page.media.status, page.seasons.length ? page.seasons.length + qsTr(" seasons") : page.episodes.length ? page.episodes.length + qsTr(" episodes") : ""] : [
+                meta: page.fromSource ? [page.media.status, page.seasons.length === 1 ? qsTr("1 season") : page.seasons.length ? qsTr("%1 seasons").arg(page.seasons.length) : page.episodes.length === 1 ? qsTr("1 episode") : page.episodes.length ? qsTr("%1 episodes").arg(page.episodes.length) : ""] : [
                     page.media.status,
                     page.media.year,
-                    page.media.episodes ? page.media.episodes + qsTr(" episodes") : (page.media.released ? page.media.released + qsTr(" episodes so far") : ""),
+                    page.media.episodes === 1 ? qsTr("1 episode") : page.media.episodes ? qsTr("%1 episodes").arg(page.media.episodes) : (page.media.released ? page.media.released + qsTr(" episodes so far") : ""),
                     page.media.duration ? page.media.duration + qsTr(" min") : "",
                     page.media.score ? "★ " + page.media.score + "%" : "",
                     page.media.nextEpisode ? qsTr("Ep ") + page.media.nextEpisode + " " + App.relativeTime(page.media.nextAiringAt) : ""

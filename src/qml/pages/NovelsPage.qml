@@ -72,11 +72,11 @@ Item {
     property var saved: []
     Connections {
         target: page.historyTask
-        function onFinished(result) { page.history = Router.keep(page.history, result, page.historyTask.digest) }
+        function onFinished() { page.history = Router.keepTask(page.history, page.historyTask) }
     }
     Connections {
         target: page.libraryTask
-        function onFinished(result) { page.saved = Router.keep(page.saved, result, page.libraryTask.digest) }
+        function onFinished() { page.saved = Router.keepTask(page.saved, page.libraryTask) }
     }
 
     function search(text) {

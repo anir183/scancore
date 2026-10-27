@@ -30,7 +30,7 @@ Item {
     property var all: []
     Connections {
         target: page.task
-        function onFinished(result) { page.all = Router.keep(page.all, result, page.task.digest) }
+        function onFinished() { page.all = Router.keepTask(page.all, page.task) }
     }
     readonly property var inMedia: all.filter(e => e.media === media)
     // How many series each chip holds.

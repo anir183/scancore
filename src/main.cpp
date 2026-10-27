@@ -37,6 +37,9 @@
 #include <QSystemTrayIcon>
 #endif
 #include <QCryptographicHash>
+#if defined(Q_OS_ANDROID)
+#include <unistd.h>
+#endif
 #include <QDir>
 #include <QElapsedTimer>
 #include <QFile>
@@ -248,7 +251,22 @@ static void startStep(const char *step) {
         qInfo("start-up: %-22s %5lld ms", step, g_startClock.elapsed());
 }
 
+#if defined(Q_OS_ANDROID)
+// What main returns, for the process's end (EndProcess below).
+static int g_exitCode = 0;
+#endif
+
 int main(int argc, char *argv[]) {
+#if defined(Q_OS_ANDROID)
+    // Once main returns, Android's render threads (hwuiTask) may still be
+    // drawing while the process's static destructors run: they lock a mutex
+    // already destroyed and the app aborts (SIGABRT on every exit SCANCORE
+    // makes itself). Declared first, so it runs once main's own objects are
+    // gone: the process then ends without the static destructors.
+    struct EndProcess {
+        ~EndProcess() { _exit(g_exitCode); }
+    } endProcess;
+#endif
     g_startClock.start();
     // Where Qt hashes through OpenSSL 3 (Arch's own Qt, for one), every hash
     // loads OpenSSL's default provider and unloads it when done; the last
@@ -473,5 +491,9 @@ int main(int argc, char *argv[]) {
     });
     // A hang (the interface not answering) leaves a report like a crash.
     sc::crashlog::watchHangs();
-    return app.exec();
+    const int code = app.exec();
+#if defined(Q_OS_ANDROID)
+    g_exitCode = code;
+#endif
+    return code;
 }

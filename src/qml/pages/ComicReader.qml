@@ -569,7 +569,6 @@ Rectangle {
         flickDeceleration: Motion.flickDeceleration
         spacing: reader.gap
         reuseItems: false
-        ScrollBar.vertical: ScScrollBar { policy: reader.controlsShown ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded }
 
         onContentYChanged: {
             const i = indexAt(width / 2, contentY + height * 0.35)
@@ -736,6 +735,55 @@ Rectangle {
                 anchors.centerIn: parent
                 host: reader
             }
+        }
+    }
+
+    // The strip's scroll bar, placed by page (the row on screen and how far
+    // through it) rather than by the list's height, which ListView guesses
+    // from the pages made so far and which jumps as pages of other heights
+    // load. Drag it to go to a page.
+    Item {
+        id: stripBar
+        readonly property int rows: stripModel.count
+        readonly property real progress: {
+            if (rows < 2) return 0
+            const y = strip.contentY + 1
+            const row = strip.indexAt(strip.width / 2, y)
+            const item = row >= 0 ? strip.itemAtIndex(row) : null
+            const within = item ? Math.min(1, Math.max(0, (y - item.y) / Math.max(1, item.height))) : 0
+            return row < 0 ? (strip.atYEnd ? 1 : 0) : Math.min(1, (row + within) / rows)
+        }
+        readonly property bool shown: drag.pressed || drag.containsMouse || reader.controlsShown || strip.moving || stripWheel.ease.running
+        visible: reader.mode === "strip" && rows > 1
+        anchors.right: strip.right
+        anchors.top: strip.top
+        anchors.bottom: strip.bottom
+        width: 16
+        Rectangle {
+            readonly property real length: Math.max(32, stripBar.height * Math.min(0.5, 2 / Math.max(1, stripBar.rows)))
+            anchors.right: parent.right
+            anchors.rightMargin: 2
+            width: drag.pressed || drag.containsMouse ? 10 : 6
+            height: length
+            y: (stripBar.height - length) * stripBar.progress
+            radius: width / 2
+            color: drag.pressed ? Theme.textMuted : Theme.alpha(Theme.text, drag.containsMouse ? 0.35 : 0.2)
+            opacity: stripBar.shown ? 1 : 0
+            Behavior on opacity { NumberAnimation { duration: Motion.slow } }
+            Behavior on width { NumberAnimation { duration: Motion.fast } }
+        }
+        MouseArea {
+            id: drag
+            anchors.fill: parent
+            enabled: stripBar.shown
+            hoverEnabled: true
+            preventStealing: true
+            function go(y) {
+                const row = Math.max(0, Math.min(stripBar.rows - 1, Math.floor(y / Math.max(1, height) * stripBar.rows)))
+                strip.positionViewAtIndex(row, ListView.Beginning)
+            }
+            onPressed: (mouse) => go(mouse.y)
+            onPositionChanged: (mouse) => { if (pressed) go(mouse.y) }
         }
     }
 

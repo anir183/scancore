@@ -94,7 +94,7 @@ Item {
     property var history: []
     Connections {
         target: page.historyTask
-        function onFinished(result) { page.history = Router.keep(page.history, result, page.historyTask.digest) }
+        function onFinished() { page.history = Router.keepTask(page.history, page.historyTask) }
     }
 
     // Slide timing: the active dot fills as it runs; hovering the spotlight

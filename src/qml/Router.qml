@@ -71,7 +71,9 @@ QtObject {
     // A comic or book file: an archive, folder or PDF of pages, or a book
     // (EPUB, FB2, MOBI).
     function openFile(url) {
-        const address = String(url)
+        // A plain path (C:\… or /…) as a file:// link.
+        let address = String(url)
+        if (/^(\/|[A-Za-z]:[\\/])/.test(address)) address = "file:///" + address.replace(/\\/g, "/").replace(/^\/+/, "")
         const name = decodeURIComponent(address.replace(/[?#].*$/, "").replace(/\/$/, "").replace(/^.*\//, ""))
         const media = /\.(epub|fb2|fb2\.zip|mobi|azw|azw3|prc)$/i.test(name) ? "novel" : "comic"
         openSeries({ media: media, sourceUrl: address, source: "local", title: name.replace(/(\.fb2)?\.[^.]+$/i, "").replace(/_/g, " ") }, null)
@@ -236,6 +238,13 @@ QtObject {
     // (a 2000-series library took a noticeable moment on phones). Long
     // lists come with their task's digest, made off the interface's thread,
     // which stands in for the text.
+    // A task's rows, or `old` when its digest says nothing changed: then
+    // the rows are never converted to JavaScript (2000+ library rows took
+    // about 18 ms each load). Read in an onFinished without parameters.
+    function keepTask(old, task) {
+        if (old && typeof old === "object" && task.digest && old.__keepText === task.digest) return old
+        return keep(old, task.result, task.digest)
+    }
     function keep(old, fresh, digest) {
         if (!fresh || typeof fresh !== "object") return fresh
         const text = digest || JSON.stringify(fresh)

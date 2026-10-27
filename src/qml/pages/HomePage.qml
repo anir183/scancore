@@ -25,11 +25,11 @@ Item {
     readonly property var updates: library.filter(e => e.newUnits > 0)
     Connections {
         target: page.historyTask
-        function onFinished(result) { page.history = Router.keep(page.history, result, page.historyTask.digest) }
+        function onFinished() { page.history = Router.keepTask(page.history, page.historyTask) }
     }
     Connections {
         target: page.libraryTask
-        function onFinished(result) { page.library = Router.keep(page.library, result, page.libraryTask.digest) }
+        function onFinished() { page.library = Router.keepTask(page.library, page.libraryTask) }
     }
 
     // Library changes come every couple of seconds while reading (progress):

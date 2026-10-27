@@ -455,7 +455,7 @@ Item {
                 kicker: (page.series.sourceLabel || page.series.source || "") + (page.media === "novel" ? qsTr(" · Novel") : qsTr(" · Comic"))
                 meta: [
                     page.series.status,
-                    page.chapters.length ? page.chapters.length + (page.media === "novel" ? qsTr(" chapters") : qsTr(" chapters")) : "",
+                    page.chapters.length === 1 ? qsTr("1 chapter") : page.chapters.length ? qsTr("%1 chapters").arg(page.chapters.length) : "",
                     page.series.type,
                     page.series.rating ? "★ " + page.series.rating : "",
                     page.task && page.task.ok && page.task.result.offline ? qsTr("Offline copy") : ""
@@ -668,7 +668,7 @@ Item {
                     spacing: 12
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: page.chapters.length + (page.media === "novel" ? qsTr(" chapters") : qsTr(" chapters"))
+                        text: page.chapters.length === 1 ? qsTr("1 chapter") : qsTr("%1 chapters").arg(page.chapters.length)
                         color: Theme.text
                         font.family: Theme.fontDisplay
                         font.pixelSize: Theme.textLg
